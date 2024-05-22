@@ -1,0 +1,32 @@
+.cart-info {
+  // flex: 0 0 rem(100);
+  // width: rem(300);
+
+  // flex: 0 0 rem(300);
+  flex: 1 1 auto;
+  // width: 100%;
+  height: fit-content;
+  margin-top: rem(6);
+  // position: sticky;
+  // top: 10px;
+
+  &__container {
+    padding: rem(16);
+  }
+
+  &__link-checkout {
+    width: rem(160);
+
+    &-btn {
+      width: rem(160);
+      background-color: $stockx-color;
+      color: $white;
+    }
+
+    &-container {
+      display: flex;
+      justify-content: center;
+      padding: 0 rem(16) rem(16) rem(16);
+    }
+  }
+}

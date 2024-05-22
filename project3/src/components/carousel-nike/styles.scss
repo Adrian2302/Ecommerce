@@ -1,0 +1,12 @@
+.carousel-nike {
+  margin-top: rem(32);
+  overflow: hidden;
+  &__title {
+    &--bold {
+      font-weight: $fontWeights-bold;
+    }
+    &--big {
+      font-size: $fontSizes-lg;
+    }
+  }
+}

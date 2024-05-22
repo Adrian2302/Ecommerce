@@ -1,0 +1,13 @@
+.checkbox-filter {
+  &__container {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__title {
+    margin-bottom: rem(2);
+    &--bold {
+      font-weight: $fontWeights-bold;
+    }
+  }
+}

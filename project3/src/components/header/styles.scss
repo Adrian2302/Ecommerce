@@ -1,0 +1,15 @@
+.header {
+  border-bottom: solid rem(1) $lightgray;
+
+  &__logo {
+    max-width: rem(144);
+  }
+
+  &__shopping-bag {
+    max-width: rem(38);
+  }
+}
+
+header {
+  max-width: none !important;
+}

@@ -1,0 +1,55 @@
+$letter-item-name: 1.2rem;
+$letter-item-price: 1.6rem;
+$letter-spacing: 0.004rem;
+
+$breakpoint-xs: 576px;
+$breakpoint-sm: 778px;
+$breakpoint-md: 992px;
+$breakpoint-xl: 1200px;
+
+$gap-1: 0.5rem;
+$gap-2: 0.75rem;
+$gap-3: 1rem;
+
+$mobile: 576px;
+$mobile-tablet: 577px;
+$tablet: 768px;
+$tablet-desktop: 1100px;
+$desktop: 1270px;
+
+$fontSizes-3xs: 0.45rem;
+$fontSizes-2xs: 0.625rem;
+$fontSizes-xs: 0.75rem;
+$fontSizes-sm: 0.875rem;
+$fontSizes-md: 1rem;
+$fontSizes-lg: 1.125rem;
+$fontSizes-xl: 1.25rem;
+$fontSizes-1xl: 1.6rem;
+$fontSizes-2xl: clamp(22px, calc(0.1877934272vw + 21.2957746479px), 24px);
+$fontSizes-3xl: clamp(24px, calc(0.7407407407vw + 21.3333333333px), 32px);
+$fontSizes-4xl: clamp(26px, calc(1.2962962963vw + 21.3333333333px), 40px);
+$fontSizes-5xl: clamp(28px, calc(1.8518518519vw + 21.3333333333px), 48px);
+$fontSizes-6xl: clamp(30px, calc(2.4074074074vw + 21.3333333333px), 56px);
+$fontSizes-7xl: 4.5rem;
+$fontSizes-8xl: 6rem;
+$fontSizes-9xl: 8rem;
+$fontSizes-2xl-static: 1.5rem;
+$fontSizes-3xl-static: 2rem;
+$fontSizes-4xl-static: 2.5rem;
+$fontSizes-5xl-static: 3rem;
+$fontSizes-6xl-static: 3.5rem;
+$fontWeights-hairline: 100;
+$fontWeights-thin: 200;
+$fontWeights-light: 300;
+$fontWeights-normal: 400;
+$fontWeights-medium: 500;
+$fontWeights-semibold: 600;
+$fontWeights-bold: 700;
+$fontWeights-extrabold: 800;
+$fontWeights-black: 900;
+$letterSpacings-tighter: -0.05em;
+$letterSpacings-tight: -0.025em;
+$letterSpacings-normal: 0;
+$letterSpacings-wide: 0.025em;
+$letterSpacings-wider: 0.05em;
+$letterSpacings-widest: 0.1em;

@@ -1,0 +1,10 @@
+.buy-container {
+  &__add-btn {
+    background-color: $stockx-color;
+    color: white;
+    width: 100%;
+    &--bold {
+      font-weight: $fontWeights-bold;
+    }
+  }
+}

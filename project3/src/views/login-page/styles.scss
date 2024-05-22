@@ -1,0 +1,17 @@
+.login-page {
+  width: 100%;
+  margin-inline: auto;
+  max-width: 1296px;
+  padding-inline: 0px;
+  min-height: 100vh;
+  padding: rem(16) rem(16);
+
+  &__title {
+    &--big {
+      font-size: rem(32);
+    }
+    &--bold {
+      font-weight: $fontWeights-bold;
+    }
+  }
+}

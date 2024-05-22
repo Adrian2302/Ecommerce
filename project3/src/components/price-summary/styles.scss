@@ -1,0 +1,12 @@
+.price-summary {
+  width: rem(300);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  &__container {
+    display: flex;
+    flex-direction: row-reverse;
+  }
+  &--bold {
+    font-weight: $fontWeights-bold;
+  }
+}

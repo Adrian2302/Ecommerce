@@ -1,0 +1,109 @@
+.product-details {
+  width: 100%;
+  margin-inline: auto;
+  max-width: 1296px;
+  padding-inline: 0px;
+  min-height: 100vh;
+  padding: rem(16);
+
+  &__container {
+    display: grid;
+    grid-template-areas:
+      "buy-container"
+      "heading-container"
+      "image-container"
+      "performance-container"
+      "verified-container"
+      "promise-container";
+    // // "prod-price-container"
+    // // "verify"
+    // // "promise";
+    grid-template-rows: auto;
+    grid-template-columns: 100%;
+    width: 100%;
+  }
+
+  &__divider {
+    margin: rem(16) 0;
+  }
+
+  &__heading {
+    &-container {
+      grid-area: heading-container;
+      margin-top: rem(16);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    &-title {
+      &--1xl {
+        font-size: $fontSizes-1xl;
+      }
+      &--semi-bold {
+        font-weight: $fontWeights-semibold;
+      }
+    }
+  }
+
+  &__image {
+    &-container {
+      grid-area: image-container;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+    }
+  }
+
+  &__details {
+    &-part1 {
+      display: flex;
+      flex-direction: column;
+    }
+    &--bold {
+      font-weight: $fontWeights-bold;
+    }
+    &-color,
+    &-price,
+    &-date {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+    }
+  }
+  &__buy-container {
+    grid-area: buy-container;
+  }
+
+  &__performance-container {
+    margin-top: rem(16);
+    grid-area: performance-container;
+  }
+
+  &__verified-container {
+    margin-top: rem(16);
+    grid-area: verified-container;
+  }
+
+  @include for-tablet-up {
+    &__container {
+      grid-template-areas:
+        "heading-container heading-container"
+        "image-container performance-container"
+        "image-container buy-container"
+        "image-container verified-container"
+        "image-container  promise-container";
+      grid-template-columns: 60% 40%;
+    }
+
+    &__performance-container {
+      margin-bottom: rem(16);
+    }
+
+    &__buy-container {
+      border: solid rem(1) $lightgray;
+      border-radius: rem(12);
+      padding: 1rem;
+    }
+  }
+}

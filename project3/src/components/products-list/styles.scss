@@ -1,0 +1,24 @@
+.product-list {
+  // min-height: 100vh;
+  margin-top: rem(16);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: rem(15);
+  justify-content: center;
+
+  @include for-mobile-tablet {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+
+  @include for-tablet-up {
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+  }
+
+  @include for-tablet-desktop {
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  }
+
+  @include for-desktop {
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+  }
+}
