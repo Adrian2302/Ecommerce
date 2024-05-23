@@ -2,7 +2,7 @@ import "./styles.scss";
 import React, { useEffect, useState } from "react";
 import { Divider } from "@nextui-org/react";
 import CartList from "../../components/cart-list";
-import CartInfo from "../../components/cart-info";
+import WishlistInfo from "../../components/wishlist-info";
 // import cartItemStateAtom from "../../states/cart-item-state";
 import { useRecoilValue, useRecoilState } from "recoil";
 import { WishlistProduct } from "../../models/components-props";
@@ -88,7 +88,7 @@ const WishlistPage: React.FC = () => {
                     />
                   ))}
                 />
-                <CartInfo cartItems={wishlist} />
+                <WishlistInfo cartItems={wishlist} />
               </>
             )}
           </>

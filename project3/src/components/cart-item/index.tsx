@@ -1,7 +1,7 @@
 import "./styles.scss";
 import React from "react";
 import { Card, Input } from "@nextui-org/react";
-import { CartProduct, WishlistProduct } from "../../models/components-props";
+import { CartProduct } from "../../models/components-props";
 // import cartItemStateAtom from "../../states/cart-item-state";
 import { useRecoilState } from "recoil";
 import { getImageURL } from "../../utils/functions";
@@ -10,7 +10,7 @@ import axios from "axios";
 import tokenStateAtom from "../../states/token-state";
 import updateCartStateAtom from "../../states/update-cart-state";
 
-const CartItem: React.FC<CartProduct | WishlistProduct> = ({
+const CartItem: React.FC<CartProduct> = ({
   id,
   product,
   price,

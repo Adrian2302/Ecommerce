@@ -1,8 +1,7 @@
 import "./styles.scss";
 import React from "react";
 import { Card, Input } from "@nextui-org/react";
-import { CartProduct, WishlistProduct } from "../../models/components-props";
-// import cartItemStateAtom from "../../states/cart-item-state";
+import { WishlistProduct } from "../../models/components-props";
 import { useRecoilState } from "recoil";
 import { getImageURL } from "../../utils/functions";
 import { useNavigate } from "react-router-dom";
@@ -10,34 +9,18 @@ import axios from "axios";
 import tokenStateAtom from "../../states/token-state";
 import updateWishlistStateAtom from "../../states/update-wishlist-state";
 
-const WishlistItem: React.FC<CartProduct | WishlistProduct> = ({
+const WishlistItem: React.FC<WishlistProduct> = ({
   id,
   product,
   price,
   size,
   quantity,
 }) => {
-  // const setCartItem = useSetRecoilState<CartProduct[]>(cartItemStateAtom);
   const navigate = useNavigate();
   const [token, setToken] = useRecoilState(tokenStateAtom);
   const [updateList, setUpdateList] = useRecoilState(updateWishlistStateAtom);
 
-  const modifyItem = async (newQuantity: number) => {
-    // setCartItem((prevCart) => {
-    //   if (newQuantity <= 0) {
-    //     newQuantity = 1;
-    //   }
-    //   return prevCart.map((item: CartProduct) => {
-    //     if (item.size === size && item.id === id) {
-    //       return {
-    //         ...item,
-    //         quantity: newQuantity,
-    //       };
-    //     }
-    //     return item;
-    //   });
-    // });
-    // console.log(newQuantity);
+  const modifyItemQuantity = async (newQuantity: number) => {
     try {
       await axios.put(
         "http://localhost:8080/api/wishlist/editQuantity",
@@ -59,17 +42,32 @@ const WishlistItem: React.FC<CartProduct | WishlistProduct> = ({
     }
   };
 
+  const modifyItemSize = async (newSize: string) => {
+    try {
+      await axios.put(
+        "http://localhost:8080/api/wishlist/editSize",
+        {
+          id: id,
+          size: newSize,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setUpdateList(!updateList);
+    } catch (error: any) {
+      console.log(`El error: ${error.response.data.description}`);
+      // setToken(null);
+      // navigate("/login");
+    }
+  };
+
   const clickRemove = async () => {
     try {
-      // const getUser = await axios.get("http://localhost:8080/users/me", {
-      //   headers: {
-      //     Authorization: `Bearer ${token === undefined ? null : token}`,
-      //   },
-      // });
-      // const user = getUser.data;
-
       await axios.delete<void>(
-        `http://localhost:8080/api/wishlist/remove/${id}`,
+        `http://localhost:8080/api/wishlist/remove/${product.id}`,
         {
           headers: {
             Authorization: `Bearer ${token === undefined ? null : token}`,
@@ -85,42 +83,71 @@ const WishlistItem: React.FC<CartProduct | WishlistProduct> = ({
   };
 
   return (
-    <Card isBlurred shadow="sm" className="cart-item__container mx-0 my-2">
-      <div className="cart-item">
+    <Card isBlurred shadow="sm" className="wishlist-item__container mx-0 my-2">
+      <div className="wishlist-item">
         <button
-          className="cart-item__remove-btn cart-item__remove-btn--big"
+          className="wishlist-item__remove-btn wishlist-item__remove-btn--big"
           onClick={clickRemove}
         >
           &times;
         </button>
-        <div className="cart-item__image-container">
+        <div className="wishlist-item__image-container">
           <img
             alt={product.name}
-            className="cart-item__image"
+            className="wishlist-item__image"
             src={getImageURL(`../assets/products/${product.images[0]}`)}
           />
         </div>
-        <div className="cart-item__info">
+        <div className="wishlist-item__info">
           <h2 className="font-semibold text-foreground/90">{product.name}</h2>
           <p className="text-small text-foreground/80">
             {product.releaseYear} | {product.color}
           </p>
-          {size ? <p>Size: {size}</p> : null}
+          {size ? (
+            // <p>Size: {size}</p>
+            <>
+              <div>
+                <label
+                  className="wishlist-item__select-size__label"
+                  htmlFor="wishlist-select-size"
+                  tabIndex={0}
+                >
+                  Size:
+                </label>
+                <select
+                  className="wishlist-item__select-size__option wishlist-item__select-option--color"
+                  name="wishlist-select-size"
+                  id="wishlist-select-size"
+                  value={size}
+                  onChange={(event) =>
+                    modifyItemSize(String(event.target.value))
+                  }
+                >
+                  {product.sizes!.map((option) => (
+                    <option key={option} value={option} aria-label={option}>
+                      {option}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </>
+          ) : null}
+
           <Input
-            className="cart-item__quantity"
+            className="wishlist-item__quantity"
             type="number"
             label="Quantity:"
             placeholder="1"
             defaultValue={String(quantity)}
             min="1"
             labelPlacement="outside"
-            onChange={(event) => modifyItem(Number(event.target.value))}
+            onChange={(event) => modifyItemQuantity(Number(event.target.value))}
             startContent={
               <div className="pointer-events-none flex items-center"></div>
             }
           />
         </div>
-        <p className="cart-item__price cart-item__price--bold cart-item__price--xl">
+        <p className="wishlist-item__price wishlist-item__price--bold wishlist-item__price--xl">
           ${price}
         </p>
       </div>

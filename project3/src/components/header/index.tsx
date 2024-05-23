@@ -64,9 +64,11 @@ const Header = () => {
         <NavbarItem isActive={pathname === "/all-products" ? true : false}>
           <Link to="/all-products">All products</Link>
         </NavbarItem>
-        <NavbarItem isActive={pathname === "/wishlist" ? true : false}>
-          <Link to="/wishlist">Wishlist</Link>
-        </NavbarItem>
+        {token !== null ? (
+          <NavbarItem isActive={pathname === "/wishlist" ? true : false}>
+            <Link to="/wishlist">Wishlist</Link>
+          </NavbarItem>
+        ) : null}
         {token !== null && totalQuantity > 0 ? (
           <NavbarItem isActive={pathname === "/checkout" ? true : false}>
             <Link to="/checkout">Checkout</Link>

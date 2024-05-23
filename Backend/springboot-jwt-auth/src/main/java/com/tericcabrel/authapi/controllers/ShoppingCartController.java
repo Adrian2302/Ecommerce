@@ -37,9 +37,18 @@ public class ShoppingCartController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ShoppingCartDto> getUserShoppingCart(@PathVariable Long id) {
+    public ResponseEntity<ShoppingCartDto> getUserShoppingCart(@PathVariable Integer id) {
         ShoppingCartDto shoppingCartDto = shoppingCartService.getUserShoppingCart(id);
         return new ResponseEntity<>(shoppingCartDto, HttpStatus.OK);
+    }
+
+    @PutMapping("/convertToShoppingCart")
+    public ResponseEntity<Void> wishlistToShoppingCart() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User currentUser = (User) authentication.getPrincipal();
+
+        shoppingCartService.wishlistToShoppingCart(currentUser.getId());
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 //    @DeleteMapping("/remove/{itemId}")

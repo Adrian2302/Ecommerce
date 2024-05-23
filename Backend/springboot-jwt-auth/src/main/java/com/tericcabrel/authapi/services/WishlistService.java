@@ -54,7 +54,7 @@ public class WishlistService {
         wishlistItem.setQuantity(1);
         wishlistItem.setPrice(product.getPrice());
 
-        if(product.getSizes() != null){
+        if(!product.getSizes().isEmpty()){
             wishlistItem.setSize(product.getSizes().get(0));
         }
 

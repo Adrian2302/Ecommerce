@@ -5,10 +5,7 @@ import com.tericcabrel.authapi.dtos.ShoppingCartDto;
 import com.tericcabrel.authapi.dtos.ShoppingCartItemDto;
 import com.tericcabrel.authapi.entities.*;
 import com.tericcabrel.authapi.exceptions.*;
-import com.tericcabrel.authapi.repositories.ProductRepository;
-import com.tericcabrel.authapi.repositories.ShoppingCartItemRepository;
-import com.tericcabrel.authapi.repositories.ShoppingCartRepository;
-import com.tericcabrel.authapi.repositories.UserRepository;
+import com.tericcabrel.authapi.repositories.*;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,6 +29,12 @@ public class ShoppingCartService {
     private ShoppingCartItemRepository shoppingCartItemRepository;
 
     @Autowired
+    private WishlistRepository wishlistRepository;
+
+    @Autowired
+    private WishlistItemRepository wishlistItemRepository;
+
+    @Autowired
     private UserRepository userRepository;
 
     @Autowired
@@ -48,13 +51,17 @@ public class ShoppingCartService {
         Product product = productRepository.findById(itemDto.getProduct().getId()).orElse(null);
 
         if (product == null) {
-            throw new RuntimeException("Product not found");
+            throw new ProductNotFoundException();
         }
-
         for (ShoppingCartItem existingItem : userShoppingCart.getItems()) {
-            if (existingItem.getProduct().getId().equals(itemDto.getProduct().getId()) && existingItem.getSize().equals(itemDto.getSize())) {
-                throw new ProductAlreadyInCartException();
-            } else if (product.getSizes() != null && itemDto.getSize() == null) {
+            if (existingItem.getProduct().getId().equals(itemDto.getProduct().getId())) {
+                if(product.getSizes().isEmpty()){
+                    throw new ProductAlreadyInCartException();
+                }else if(existingItem.getSize().equals(itemDto.getSize())){
+                    throw new ProductAlreadyInCartException();
+                }
+
+            } else if (!product.getSizes().isEmpty() && itemDto.getSize() == null) {
                 throw new NoSizeSelectedException();
             }
         }
@@ -132,9 +139,57 @@ public class ShoppingCartService {
 //        return new ShoppingCartDto(shoppingCart);
 //    }
 
-    public ShoppingCartDto getUserShoppingCart(Long id) {
+    public ShoppingCartDto getUserShoppingCart(Integer id) {
 //        return shoppingCartRepository.findById(id).orElseThrow(() -> new RuntimeException("Product not found"));
         return new ShoppingCartDto(shoppingCartRepository.findByUserId(id));
+    }
+
+    @Transactional
+    public void wishlistToShoppingCart(Integer userId) {
+        ShoppingCart userShoppingCart = shoppingCartRepository.findByUserId(userId);
+        Wishlist userWishlist = wishlistRepository.findByUserId(userId);
+
+        for (WishlistItem existingWishlistItem : userWishlist.getItems()) {
+            Product product = productRepository.findById(existingWishlistItem.getProduct().getId()).orElse(null);
+
+            if (product == null) {
+                throw new ProductNotFoundException();
+            }
+
+//            ShoppingCartItem existingCartItem = shoppingCartItemRepository.findByProductId(product.getId());
+            ShoppingCartItem existingCartItem = userShoppingCart.getItems().stream()
+                    .filter(item -> item.getProduct().getId().equals(product.getId()))
+                    .findFirst()
+                    .orElse(null);
+
+            if(existingCartItem != null && existingCartItem.getSize().equals(existingWishlistItem.getSize())) {
+                existingCartItem.setQuantity(existingCartItem.getQuantity() + existingWishlistItem.getQuantity());
+                shoppingCartItemRepository.save(existingCartItem);
+            }else{
+                ShoppingCartItem newShoppingCartItem = new ShoppingCartItem();
+                newShoppingCartItem.setProduct(product);
+                newShoppingCartItem.setShoppingCart(userShoppingCart);
+                newShoppingCartItem.setQuantity(existingWishlistItem.getQuantity());
+                newShoppingCartItem.setPrice(product.getPrice());
+                newShoppingCartItem.setSize(existingWishlistItem.getSize());
+
+                userShoppingCart.getItems().add(newShoppingCartItem);
+                shoppingCartRepository.save(userShoppingCart);
+            }
+//            for (ShoppingCartItem existingCartItem : userShoppingCart.getItems()) {
+//                if (existingCartItem.getProduct().getId().equals(existingWishlistItem.getProduct().getId())) {
+//                    if (product.getSizes().isEmpty()) {
+//                        existingCartItem.setQuantity(existingCartItem.getQuantity() + existingWishlistItem.getQuantity());
+//                        shoppingCartItemRepository.save(existingCartItem);
+//                    } else if (existingCartItem.getSize().equals(existingWishlistItem.getSize())) {
+//                        existingCartItem.setQuantity(existingCartItem.getQuantity() + existingWishlistItem.getQuantity());
+//                        shoppingCartItemRepository.save(existingCartItem);
+//                    }
+//                }
+//            }
+        }
+        userWishlist.getItems().clear();
+        wishlistRepository.save(userWishlist);
     }
 
 //    @Transactional

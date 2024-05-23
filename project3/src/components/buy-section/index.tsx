@@ -71,8 +71,8 @@ const BuySection: React.FC<BuySectionProps> = ({ product }) => {
     e.preventDefault();
     try {
       if (
-        (product.sizes !== null && selectedSize === null) ||
-        selectedSize === undefined
+        product.sizes!.length > 0 &&
+        (selectedSize === null || selectedSize === undefined)
       ) {
         toast.error("Please select a size.");
       } else {
@@ -83,6 +83,10 @@ const BuySection: React.FC<BuySectionProps> = ({ product }) => {
         });
         const user = response.data;
         // console.log(user, product.id, selectedSize, token);
+
+        // if (product.sizes!.length === 0) {
+        //   setSelectedSize(null);
+        // }
 
         await axios.post(
           `http://localhost:8080/api/cart/${user.id}`,
@@ -112,12 +116,11 @@ const BuySection: React.FC<BuySectionProps> = ({ product }) => {
       }
     }
   };
-
   return (
     <div className="buy-container">
-      {product?.sizes !== undefined ? (
+      {product?.sizes!.length > 0 ? (
         <MySelect
-          dictionary={product.sizes}
+          dictionary={product.sizes!}
           onChange={setSelectedSize}
           label="Select a size"
         />

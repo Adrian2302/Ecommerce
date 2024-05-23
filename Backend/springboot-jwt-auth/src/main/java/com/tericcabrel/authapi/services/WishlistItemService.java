@@ -57,6 +57,18 @@ public class WishlistItemService {
         wishlistItemRepository.save(optionalWishlistItem);
     }
 
+    @Transactional
+    public void editWishlistItemSize(User user, Long itemId, String size) {
+        final var optionalWishlistItem = wishlistItemRepository.findById(itemId).orElseThrow(ProductNotFoundException::new);
+
+        if(user.getShoppingCart().getId().equals(optionalWishlistItem.getWishlist().getId())){
+            optionalWishlistItem.setSize(size);
+        } else {
+            throw new ProductNotFoundException();
+        }
+        wishlistItemRepository.save(optionalWishlistItem);
+    }
+
 //    @Transactional
 //    public boolean deleteShoppingCartItemById(Long id) {
 //        if (shoppingCartItemRepository.existsById(id)) {

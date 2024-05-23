@@ -60,12 +60,21 @@ public class WishlistController {
     }
 
     @PutMapping("/editQuantity")
-    public ResponseEntity<Void> editShoppingCartItemQuantity(@RequestBody WishlistItemDto wishlistItemDto) {
+    public ResponseEntity<Void> editWishlistItemQuantity(@RequestBody WishlistItemDto wishlistItemDto) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User currentUser = (User) authentication.getPrincipal();
 
         wishlistItemService.editWishlistItemQuantity(currentUser, wishlistItemDto.getId(), wishlistItemDto.getQuantity());
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PutMapping("/editSize")
+    public ResponseEntity<Void> editWishlistItemSize(@RequestBody WishlistItemDto wishlistItemDto) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User currentUser = (User) authentication.getPrincipal();
+
+        wishlistItemService.editWishlistItemSize(currentUser, wishlistItemDto.getId(), wishlistItemDto.getSize());
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 }

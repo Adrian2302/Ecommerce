@@ -1,5 +1,6 @@
 export interface SizeDictionary {
-  [size: string]: number;
+  // [size: string]: number;
+  size: string[];
 }
 
 export interface ProvinceDictionary {
