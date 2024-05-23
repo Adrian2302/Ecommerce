@@ -8,9 +8,9 @@ import { getImageURL } from "../../utils/functions";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import tokenStateAtom from "../../states/token-state";
-import updateCartStateAtom from "../../states/update-cart-state";
+import updateWishlistStateAtom from "../../states/update-wishlist-state";
 
-const CartItem: React.FC<CartProduct | WishlistProduct> = ({
+const WishlistItem: React.FC<CartProduct | WishlistProduct> = ({
   id,
   product,
   price,
@@ -20,7 +20,7 @@ const CartItem: React.FC<CartProduct | WishlistProduct> = ({
   // const setCartItem = useSetRecoilState<CartProduct[]>(cartItemStateAtom);
   const navigate = useNavigate();
   const [token, setToken] = useRecoilState(tokenStateAtom);
-  const [updateList, setUpdateList] = useRecoilState(updateCartStateAtom);
+  const [updateList, setUpdateList] = useRecoilState(updateWishlistStateAtom);
 
   const modifyItem = async (newQuantity: number) => {
     // setCartItem((prevCart) => {
@@ -40,7 +40,7 @@ const CartItem: React.FC<CartProduct | WishlistProduct> = ({
     // console.log(newQuantity);
     try {
       await axios.put(
-        "http://localhost:8080/api/cart/editQuantity",
+        "http://localhost:8080/api/wishlist/editQuantity",
         {
           id: id,
           quantity: newQuantity,
@@ -68,11 +68,14 @@ const CartItem: React.FC<CartProduct | WishlistProduct> = ({
       // });
       // const user = getUser.data;
 
-      await axios.delete<void>(`http://localhost:8080/api/cart/remove/${id}`, {
-        headers: {
-          Authorization: `Bearer ${token === undefined ? null : token}`,
-        },
-      });
+      await axios.delete<void>(
+        `http://localhost:8080/api/wishlist/remove/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token === undefined ? null : token}`,
+          },
+        }
+      );
       setUpdateList(!updateList);
     } catch (error: any) {
       console.log(`El error: ${error.response.data.description}`);
@@ -125,4 +128,4 @@ const CartItem: React.FC<CartProduct | WishlistProduct> = ({
   );
 };
 
-export default CartItem;
+export default WishlistItem;

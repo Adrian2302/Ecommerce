@@ -64,7 +64,7 @@ public class WishlistService {
         return new WishlistDto(userWishlist);
     }
 
-    public WishlistDto getUserWishlist(Long id) {
+    public WishlistDto getUserWishlist(Integer id) {
         return new WishlistDto(wishlistRepository.findByUserId(id));
     }
 

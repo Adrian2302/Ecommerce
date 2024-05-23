@@ -11,8 +11,11 @@ import EmptyCart from "../../components/empty-cart";
 import tokenStateAtom from "../../states/token-state";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import updateCartStateAtom from "../../states/updateCart-state";
+import updateCartStateAtom from "../../states/update-cart-state";
 import LoadingCircle from "../../components/loading-circle";
+import CartItem from "../../components/cart-item";
+// Si tienes WishlistItem, importarlo también
+// import WishlistItem from "../../components/wishlist-item";
 
 interface ShoppingCartListApiResponse {
   items: CartProduct[];
@@ -29,7 +32,6 @@ const ShoppingCartPage: React.FC = () => {
   if (thankYouValue) {
     setThankYou(false);
   }
-  // const cartItem = useRecoilValue<CartProduct[]>(cartItemStateAtom);
 
   const fetchShoppingCartItems = async () => {
     try {
@@ -50,13 +52,13 @@ const ShoppingCartPage: React.FC = () => {
       );
       setShoppingCartList(shoppingCartList.data.items);
       setLoading(false);
-      // console.log(shoppingCartList);
     } catch (error: any) {
       console.log(`El error: ${error.response.data.description}`);
       setToken(null);
       navigate("/login");
     }
   };
+
   useEffect(() => {
     fetchShoppingCartItems();
   }, [updateList]);
@@ -76,8 +78,19 @@ const ShoppingCartPage: React.FC = () => {
               <EmptyCart />
             ) : (
               <>
-                <CartList itemList={shoppingCartList} />
-                <CartInfo cartItems={shoppingCartList} />{" "}
+                <CartList
+                  children={shoppingCartList.map((item) => (
+                    <CartItem
+                      key={item.id}
+                      id={item.id}
+                      product={item.product}
+                      price={item.price}
+                      size={item.size}
+                      quantity={item.quantity}
+                    />
+                  ))}
+                />
+                <CartInfo cartItems={shoppingCartList} />
               </>
             )}
           </>

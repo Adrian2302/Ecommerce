@@ -12,7 +12,6 @@ import { Accordion, AccordionItem, Slider } from "@nextui-org/react";
 import thankYouStateAtom from "../../states/thank-you-state";
 import { useRecoilState } from "recoil";
 import LoadingCircle from "../../components/loading-circle";
-import Nothing from "../../components/nothing";
 
 interface ProductsApiResponse {
   content: Products[];
@@ -178,7 +177,8 @@ const AllProductsPage: React.FC = () => {
       ) : (
         <div className="all-products__list">
           {filteredProducts.length === 0 ? (
-            <Nothing />
+            // <Nothing />
+            <p>No items match the description</p>
           ) : (
             <ProductList itemList={filteredProducts} />
           )}

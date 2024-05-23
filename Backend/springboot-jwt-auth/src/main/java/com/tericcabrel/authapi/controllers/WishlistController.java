@@ -1,8 +1,10 @@
 package com.tericcabrel.authapi.controllers;
 
+import com.tericcabrel.authapi.dtos.ShoppingCartItemDto;
 import com.tericcabrel.authapi.dtos.WishlistDto;
 import com.tericcabrel.authapi.dtos.WishlistItemDto;
 import com.tericcabrel.authapi.entities.User;
+import com.tericcabrel.authapi.services.WishlistItemService;
 import com.tericcabrel.authapi.services.WishlistService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,15 +20,21 @@ public class WishlistController {
     @Autowired
     private WishlistService wishlistService;
 
+    @Autowired
+    private WishlistItemService wishlistItemService;
+
     @PostMapping("/{id}")
     public ResponseEntity<WishlistDto> addItemToWishlist(@PathVariable Integer id, @RequestBody WishlistItemDto item) {
         WishlistDto wishlistDto = wishlistService.addItemToWishlist(id, item);
         return new ResponseEntity<>(wishlistDto, HttpStatus.OK);
     }
 
-    @GetMapping("{id}")
-    public ResponseEntity<WishlistDto> getUserWishlist(@PathVariable Long id) {
-        WishlistDto wishlistDto = wishlistService.getUserWishlist(id);
+    @GetMapping()
+    public ResponseEntity<WishlistDto> getUserWishlist() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User currentUser = (User) authentication.getPrincipal();
+
+        WishlistDto wishlistDto = wishlistService.getUserWishlist(currentUser.getId());
         return new ResponseEntity<>(wishlistDto, HttpStatus.OK);
     }
 
@@ -48,6 +56,15 @@ public class WishlistController {
         User currentUser = (User) authentication.getPrincipal();
 
         wishlistService.removeItemFromWishlist(currentUser.getId(), itemId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @PutMapping("/editQuantity")
+    public ResponseEntity<Void> editShoppingCartItemQuantity(@RequestBody WishlistItemDto wishlistItemDto) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User currentUser = (User) authentication.getPrincipal();
+
+        wishlistItemService.editWishlistItemQuantity(currentUser, wishlistItemDto.getId(), wishlistItemDto.getQuantity());
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 

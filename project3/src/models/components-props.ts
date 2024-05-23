@@ -64,3 +64,11 @@ export type CartProduct = {
   quantity: number;
   size: string;
 };
+
+export type WishlistProduct = {
+  id: number;
+  price: number;
+  product: Products;
+  quantity: number;
+  size: string;
+};
