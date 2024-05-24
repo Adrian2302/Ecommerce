@@ -30,15 +30,21 @@ public class ShoppingCartController {
     @Autowired
     private ShoppingCartItemService shoppingCartItemService;
 
-    @PostMapping("/{id}")
-    public ResponseEntity<ShoppingCartDto> addItemToShoppingCart(@PathVariable Integer id, @RequestBody ShoppingCartItemDto item) {
-        ShoppingCartDto shoppingCartDto = shoppingCartService.addItemToShoppingCart(id, item);
+    @PostMapping()
+    public ResponseEntity<ShoppingCartDto> addItemToShoppingCart(@RequestBody ShoppingCartItemDto item) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User currentUser = (User) authentication.getPrincipal();
+
+        ShoppingCartDto shoppingCartDto = shoppingCartService.addItemToShoppingCart(currentUser.getId(), item);
         return new ResponseEntity<>(shoppingCartDto, HttpStatus.OK);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<ShoppingCartDto> getUserShoppingCart(@PathVariable Integer id) {
-        ShoppingCartDto shoppingCartDto = shoppingCartService.getUserShoppingCart(id);
+    @GetMapping()
+    public ResponseEntity<ShoppingCartDto> getUserShoppingCart() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User currentUser = (User) authentication.getPrincipal();
+
+        ShoppingCartDto shoppingCartDto = shoppingCartService.getUserShoppingCart(currentUser.getId());
         return new ResponseEntity<>(shoppingCartDto, HttpStatus.OK);
     }
 

@@ -76,20 +76,8 @@ const BuySection: React.FC<BuySectionProps> = ({ product }) => {
       ) {
         toast.error("Please select a size.");
       } else {
-        const response = await axios.get("http://localhost:8080/users/me", {
-          headers: {
-            Authorization: `Bearer ${token === undefined ? null : token}`,
-          },
-        });
-        const user = response.data;
-        // console.log(user, product.id, selectedSize, token);
-
-        // if (product.sizes!.length === 0) {
-        //   setSelectedSize(null);
-        // }
-
         await axios.post(
-          `http://localhost:8080/api/cart/${user.id}`,
+          `http://localhost:8080/api/cart`,
           {
             product: { id: product.id },
             size: selectedSize,

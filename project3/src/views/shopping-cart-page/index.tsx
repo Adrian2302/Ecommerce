@@ -14,12 +14,13 @@ import { useNavigate } from "react-router-dom";
 import updateCartStateAtom from "../../states/update-cart-state";
 import LoadingCircle from "../../components/loading-circle";
 import CartItem from "../../components/cart-item";
+import { ShoppingCartListApiResponse } from "../../models/components-props";
 // Si tienes WishlistItem, importarlo también
 // import WishlistItem from "../../components/wishlist-item";
 
-interface ShoppingCartListApiResponse {
-  items: CartProduct[];
-}
+// interface ShoppingCartListApiResponse {
+//   items: CartProduct[];
+// }
 
 const ShoppingCartPage: React.FC = () => {
   const updateList = useRecoilValue(updateCartStateAtom);
@@ -35,15 +36,8 @@ const ShoppingCartPage: React.FC = () => {
 
   const fetchShoppingCartItems = async () => {
     try {
-      const fetchUser = await axios.get("http://localhost:8080/users/me", {
-        headers: {
-          Authorization: `Bearer ${token === undefined ? null : token}`,
-        },
-      });
-      const user = fetchUser.data;
-
       const shoppingCartList = await axios.get<ShoppingCartListApiResponse>(
-        `http://localhost:8080/api/cart/${user.id}`,
+        `http://localhost:8080/api/cart`,
         {
           headers: {
             Authorization: `Bearer ${token === undefined ? null : token}`,

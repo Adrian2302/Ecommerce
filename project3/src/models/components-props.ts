@@ -73,3 +73,7 @@ export type WishlistProduct = {
   quantity: number;
   size: string;
 };
+
+export interface ShoppingCartListApiResponse {
+  items: CartProduct[];
+}
