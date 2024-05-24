@@ -9,6 +9,7 @@ import MySelect from "../../components/my-select";
 import toast, { Toaster } from "react-hot-toast";
 import tokenStateAtom from "../../states/token-state";
 import axios from "axios";
+import updateCartStateAtom from "../../states/update-cart-state";
 
 interface BuySectionProps {
   product: Products;
@@ -17,6 +18,7 @@ interface BuySectionProps {
 const BuySection: React.FC<BuySectionProps> = ({ product }) => {
   const [selectedSize, setSelectedSize] = useState<string>();
   const [token, setToken] = useRecoilState(tokenStateAtom);
+  const [updateCart, setUpdateCart] = useRecoilState(updateCartStateAtom);
   // const [cartItem, setCartItem] =
   //   useRecoilState<CartProduct[]>(cartItemStateAtom);
 
@@ -89,6 +91,7 @@ const BuySection: React.FC<BuySectionProps> = ({ product }) => {
           }
         );
         toast.success("Product added to cart!");
+        setUpdateCart(!updateCart);
       }
     } catch (error: any) {
       console.log(`El error: ${error.response.data.description}`);

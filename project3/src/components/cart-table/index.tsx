@@ -9,14 +9,16 @@ import {
   getKeyValue,
 } from "@nextui-org/react";
 import { useRecoilValue } from "recoil";
-import { CartProduct } from "../../models/components-props";
-import cartItemStateAtom from "../../states/cart-item-state";
+// import { CartProduct } from "../../models/components-props";
+// import cartItemStateAtom from "../../states/cart-item-state";
 import "./styles.scss";
 import { calculateTotalPrice } from "../../utils/functions";
+import shoppingCartStateAtom from "../../states/shoppingcart-state";
 
 const CartTable: React.FC = () => {
-  const cartItem = useRecoilValue<CartProduct[]>(cartItemStateAtom);
-  const total = calculateTotalPrice(cartItem);
+  // const cartItem = useRecoilValue<CartProduct[]>(cartItemStateAtom);
+  const shoppingCartList = useRecoilValue(shoppingCartStateAtom);
+  const total = calculateTotalPrice(shoppingCartList);
 
   return (
     <Table
@@ -46,12 +48,14 @@ const CartTable: React.FC = () => {
         <TableColumn key="quantity">Quantity</TableColumn>
         <TableColumn key="price">Price</TableColumn>
       </TableHeader>
-      <TableBody items={cartItem}>
+      <TableBody items={shoppingCartList}>
         {(item) => (
-          <TableRow key={`${item.id}-${item.size}`}>
+          <TableRow key={`${item.id}`}>
             {(columnKey) => {
               if (columnKey === "price") {
                 return <TableCell>${item.price * item.quantity}</TableCell>;
+              } else if (columnKey === "name") {
+                return <TableCell>{item.product.name}</TableCell>;
               } else {
                 return <TableCell>{getKeyValue(item, columnKey)}</TableCell>;
               }

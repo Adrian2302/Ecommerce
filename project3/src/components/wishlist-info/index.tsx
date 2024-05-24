@@ -10,6 +10,7 @@ import tokenStateAtom from "../../states/token-state";
 import toast, { Toaster } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import updateWishlistStateAtom from "../../states/update-wishlist-state";
+import updateCartStateAtom from "../../states/update-cart-state";
 
 interface WishlistInfoProps {
   cartItems: WishlistProduct[];
@@ -21,6 +22,7 @@ const WishlistInfo: React.FC<WishlistInfoProps> = ({ cartItems }) => {
   );
   const totalItems = calculateQuantity(cartItems);
   const [token, setToken] = useRecoilState(tokenStateAtom);
+  const [updateCart, setUpdateCart] = useRecoilState(updateCartStateAtom);
   const navigate = useNavigate();
 
   const toShoppingCart = async () => {
@@ -36,6 +38,8 @@ const WishlistInfo: React.FC<WishlistInfoProps> = ({ cartItems }) => {
       );
       toast.success("Product added to cart!");
       setUpdateWishlist(!updateWishlist);
+      setUpdateCart(!updateCart);
+      console.log(`update en wishlist info: ${updateCart}`)
     } catch (error: any) {
       console.log(`El error: ${error.response.data.description}`);
       if (

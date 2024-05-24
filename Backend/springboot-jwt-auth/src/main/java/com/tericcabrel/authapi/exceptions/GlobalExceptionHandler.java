@@ -72,6 +72,16 @@ public class GlobalExceptionHandler {
             errorDetail.setProperty("description", "No size selected.");
         }
 
+        if (exception instanceof EmailAlreadyExistException) {
+            errorDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(401), exception.getMessage());
+            errorDetail.setProperty("description", "Email already has an account associated.");
+        }
+
+        if (exception instanceof InvalidPasswordException) {
+            errorDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(401), exception.getMessage());
+            errorDetail.setProperty("description", "Password must contain at least 8 characters, have at least 1 lowercase and 1 uppercase letter and 1 number.");
+        }
+
         if (errorDetail == null) {
             errorDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(500), exception.getMessage());
             errorDetail.setProperty("description", "Unknown internal server error.");

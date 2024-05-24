@@ -1,5 +1,5 @@
 import "./styles.scss";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Navbar,
   NavbarBrand,
@@ -14,23 +14,50 @@ import {
 import { useLocation, Link } from "react-router-dom";
 import logo from "../../assets/icons/stockx-logo.png";
 import shoppingBag from "../../assets/icons/shopping-bag.svg";
-import { useRecoilState, useRecoilValue } from "recoil";
-import cartItemStateAtom from "../../states/cart-item-state";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+// import cartItemStateAtom from "../../states/cart-item-state";
 import { calculateQuantity } from "../../utils/functions";
 import tokenStateAtom from "../../states/token-state";
+import shoppingCartStateAtom from "../../states/shoppingcart-state";
+import updateCartStateAtom from "../../states/update-cart-state";
+import axios from "axios";
+import { ShoppingCartListApiResponse } from "../../models/components-props";
 
 const Header = () => {
+  const updateCart = useRecoilValue(updateCartStateAtom);
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const { pathname } = useLocation();
   const [token, setToken] = useRecoilState(tokenStateAtom);
+  const [totalQuantity, setQuantity] = useState<number>();
+  const setShoppingCartList = useSetRecoilState(shoppingCartStateAtom);
 
-  const cartItem = useRecoilValue(cartItemStateAtom);
-
-  const totalQuantity = calculateQuantity(cartItem);
+  // const cartItem = useRecoilValue(cartItemStateAtom);
 
   function ClickHandlerFalse() {
     setToken(null);
   }
+
+  const fetchShoppingCartItems = async () => {
+    try {
+      const fetchedShoppingCartList =
+        await axios.get<ShoppingCartListApiResponse>(
+          `http://localhost:8080/api/cart`,
+          {
+            headers: {
+              Authorization: `Bearer ${token === undefined ? null : token}`,
+            },
+          }
+        );
+      setShoppingCartList(fetchedShoppingCartList.data.items);
+      setQuantity(calculateQuantity(fetchedShoppingCartList.data.items));
+    } catch (error: any) {
+      console.log(`El error: ${error.response.data.description}`);
+    }
+  };
+
+  useEffect(() => {
+    fetchShoppingCartItems();
+  }, [updateCart, token]);
 
   // function ClickHandlerTrue() {
   //   // localStorage.setItem("isLoggedIn", "true");
@@ -69,7 +96,7 @@ const Header = () => {
             <Link to="/wishlist">Wishlist</Link>
           </NavbarItem>
         ) : null}
-        {token !== null && totalQuantity > 0 ? (
+        {token !== null && totalQuantity! > 0 ? (
           <NavbarItem isActive={pathname === "/checkout" ? true : false}>
             <Link to="/checkout">Checkout</Link>
           </NavbarItem>
@@ -117,7 +144,7 @@ const Header = () => {
             <Link to={"/wishlist"}>Wishlist</Link>
           </NavbarMenuItem>
         ) : null}
-        {token !== null && totalQuantity > 0 ? (
+        {token !== null && totalQuantity! > 0 ? (
           <NavbarMenuItem>
             <Link to={"/checkout"}>Checkout</Link>
           </NavbarMenuItem>

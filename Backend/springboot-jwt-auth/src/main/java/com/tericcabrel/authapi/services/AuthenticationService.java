@@ -3,6 +3,8 @@ package com.tericcabrel.authapi.services;
 import com.tericcabrel.authapi.dtos.LoginUserDto;
 import com.tericcabrel.authapi.dtos.RegisterUserDto;
 import com.tericcabrel.authapi.entities.*;
+import com.tericcabrel.authapi.exceptions.EmailAlreadyExistException;
+import com.tericcabrel.authapi.exceptions.InvalidPasswordException;
 import com.tericcabrel.authapi.repositories.RoleRepository;
 import com.tericcabrel.authapi.repositories.UserRepository;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -13,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.regex.Pattern;
 
 @Service
 public class AuthenticationService {
@@ -34,6 +37,14 @@ public class AuthenticationService {
     }
 
     public User signup(RegisterUserDto input) {
+        if (userRepository.findByEmail(input.getEmail()).isPresent()) {
+            throw new EmailAlreadyExistException();
+        }
+
+        if (!isValidPassword(input.getPassword())) {
+            throw new InvalidPasswordException();
+        }
+
         Optional<Role> optionalRole = roleRepository.findByName(RoleEnum.USER);
 
         if (optionalRole.isEmpty()) {
@@ -74,5 +85,11 @@ public class AuthenticationService {
         userRepository.findAll().forEach(users::add);
 
         return users;
+    }
+
+    private boolean isValidPassword(String password) {
+        // Expresión regular para validar la contraseña
+        String passwordPattern = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{8,}$";
+        return Pattern.compile(passwordPattern).matcher(password).matches();
     }
 }

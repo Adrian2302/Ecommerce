@@ -77,3 +77,7 @@ export type WishlistProduct = {
 export interface ShoppingCartListApiResponse {
   items: CartProduct[];
 }
+
+export interface WishlistApiResponse {
+  items: WishlistProduct[];
+}

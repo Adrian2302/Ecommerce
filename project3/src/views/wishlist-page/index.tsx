@@ -14,10 +14,11 @@ import { useNavigate } from "react-router-dom";
 import updateWishlistStateAtom from "../../states/update-wishlist-state";
 import LoadingCircle from "../../components/loading-circle";
 import WishlistItem from "../../components/wishlist-item";
+import { WishlistApiResponse } from "../../models/components-props";
 
-interface WishlistApiResponse {
-  items: WishlistProduct[];
-}
+// interface WishlistApiResponse {
+//   items: WishlistProduct[];
+// }
 
 const WishlistPage: React.FC = () => {
   const updateList = useRecoilValue(updateWishlistStateAtom);
@@ -57,6 +58,7 @@ const WishlistPage: React.FC = () => {
       navigate("/login");
     }
   };
+
   useEffect(() => {
     fetchWishlistItems();
   }, [updateList]);
