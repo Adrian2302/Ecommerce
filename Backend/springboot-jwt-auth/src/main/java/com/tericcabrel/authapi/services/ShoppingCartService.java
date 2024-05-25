@@ -162,9 +162,14 @@ public class ShoppingCartService {
                     .findFirst()
                     .orElse(null);
 
-            if(existingCartItem != null && existingCartItem.getSize().equals(existingWishlistItem.getSize())) {
-                existingCartItem.setQuantity(existingCartItem.getQuantity() + existingWishlistItem.getQuantity());
-                shoppingCartItemRepository.save(existingCartItem);
+            if(existingCartItem != null) {
+                if(!product.getSizes().isEmpty() && existingCartItem.getSize().equals(existingWishlistItem.getSize())){
+                    existingCartItem.setQuantity(existingCartItem.getQuantity() + existingWishlistItem.getQuantity());
+                    shoppingCartItemRepository.save(existingCartItem);
+                }else{
+                    existingCartItem.setQuantity(existingCartItem.getQuantity() + existingWishlistItem.getQuantity());
+                    shoppingCartItemRepository.save(existingCartItem);
+                }
             }else{
                 ShoppingCartItem newShoppingCartItem = new ShoppingCartItem();
                 newShoppingCartItem.setProduct(product);

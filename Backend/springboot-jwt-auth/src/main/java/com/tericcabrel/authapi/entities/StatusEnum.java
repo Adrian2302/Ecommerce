@@ -1,8 +1,8 @@
-//package com.tericcabrel.authapi.entities;
-//
-//public enum StatusEnum {
-//    PENDING,
-//    CONFIRMED,
-//    CANCELLED
-//}
-//
+package com.tericcabrel.authapi.entities;
+
+public enum StatusEnum {
+    PENDING,
+    CONFIRMED,
+    CANCELLED
+}
+

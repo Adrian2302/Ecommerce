@@ -43,9 +43,9 @@ public class User implements UserDetails {
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @JsonManagedReference
     private Wishlist wishlist;
-//    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-//    @JsonManagedReference
-//    private Orders orders;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @JsonManagedReference
+    private List<Orders> orders;
 
     public User() {
     }
@@ -58,7 +58,7 @@ public class User implements UserDetails {
         this.createdAt = userDto.getCreatedAt();
         this.updatedAt = userDto.getUpdatedAt();
         this.role = userDto.getRole();
-//        this.orders = userDto.getOrders();
+        this.orders = userDto.getOrders();
         this.shoppingCart = userDto.getShoppingCart(); //this.shoppingCart = new ShoppingCart(userDto.getShoppingCart());
         this.wishlist = userDto.getWishlist(); //this.wishlist = new Wishlist(userDto.getWishlist());
     }
@@ -68,6 +68,14 @@ public class User implements UserDetails {
         SimpleGrantedAuthority authority = new SimpleGrantedAuthority("ROLE_" + role.getName().toString());
 
         return List.of(authority);
+    }
+
+    public List<Orders> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<Orders> orders) {
+        this.orders = orders;
     }
 
     public String getPassword() {

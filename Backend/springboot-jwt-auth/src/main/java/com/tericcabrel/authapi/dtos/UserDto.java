@@ -1,9 +1,6 @@
 package com.tericcabrel.authapi.dtos;
 
-import com.tericcabrel.authapi.entities.Role;
-import com.tericcabrel.authapi.entities.ShoppingCart;
-import com.tericcabrel.authapi.entities.User;
-import com.tericcabrel.authapi.entities.Wishlist;
+import com.tericcabrel.authapi.entities.*;
 
 import java.util.Date;
 import java.util.List;
@@ -19,6 +16,7 @@ public class UserDto {
 //    private List<Orders> orders;
     private ShoppingCart shoppingCart;
     private Wishlist wishlist;
+    private List<Orders> orders;
 
     public UserDto(Integer id, String fullName, String email, String password, Date createdAt, Date updatedAt, ShoppingCart shoppingCart, Wishlist wishlist, Role role) { //List<Orders> orders
         this.id = id;
@@ -40,9 +38,17 @@ public class UserDto {
         this.password = user.getPassword();
         this.createdAt = user.getCreatedAt();
         this.updatedAt = user.getUpdatedAt();
-//        this.orders = user.getOrders();
+        this.orders = user.getOrders();
         this.shoppingCart = user.getShoppingCart(); //this.shoppingCart = new ShoppingCartDto(user.getShoppingCart());
         this.wishlist = user.getWishlist(); //this.wishlist = new WishlistDto(user.getWishlist());
+    }
+
+    public List<Orders> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<Orders> orders) {
+        this.orders = orders;
     }
 
     public Role getRole() {
