@@ -25,14 +25,10 @@ export function validDate(expirationDate: string): boolean {
   const currentYear = currentDate.getFullYear() % 100;
   const currentMonth = currentDate.getMonth() + 1;
 
-  console.log(currentMonth, currentYear);
-  console.log(
-    month,
-    year,
-    year > currentYear || (year === currentYear && month > currentMonth)
+  return (
+    (year > currentYear && 1 <= month && month <= 12) ||
+    (year === currentYear && month > currentMonth && month <= 12)
   );
-
-  return year > currentYear || (year === currentYear && month > currentMonth);
 }
 
 export function validateCreditCard(cardNumber: string) {

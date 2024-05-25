@@ -121,7 +121,7 @@ const BuySection: React.FC<BuySectionProps> = ({ product }) => {
         onClick={AddProduct}
       >
         <p className="buy-container__add-btn--bold">
-          Add to Cart For ${product.price}
+          Add to Cart for ${product.price}
         </p>
       </Button>
       <Toaster />

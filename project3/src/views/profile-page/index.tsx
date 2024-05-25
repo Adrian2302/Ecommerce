@@ -4,22 +4,46 @@ import "./styles.scss";
 import React, { useEffect, useState } from "react";
 // import { calculateQuantity } from "../../utils/functions";
 // import cartItemStateAtom from "../../states/cart-item-state";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import ThankYou from "../../components/thank-you";
 import thankYouStateAtom from "../../states/thank-you-state";
 import ErrorPage from "../error-page";
 import shoppingCartStateAtom from "../../states/shoppingcart-state";
 import LoadingCircle from "../../components/loading-circle";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import tokenStateAtom from "../../states/token-state";
 
-const CheckoutPage: React.FC = () => {
+const ProfilePage: React.FC = () => {
+  const [token, setToken] = useRecoilState(tokenStateAtom);
+  const navigate = useNavigate();
   const thankyou = useRecoilValue<boolean>(thankYouStateAtom);
   const [isLoading, setLoading] = useState(true);
-  // const cartItem = useRecoilValue(cartItemStateAtom);
   const shoppingCartList = useRecoilValue(shoppingCartStateAtom);
-  // const [quantity, setQuantity] = useState<number>();
+
+  const fetchUser = async () => {
+    try {
+      const fetchedShoppingCartList = await axios.get(
+        `http://localhost:8080/users/me`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setShoppingCartList(fetchedShoppingCartList.data.items);
+      setQuantity(calculateQuantity(fetchedShoppingCartList.data.items));
+    } catch (error: any) {
+      console.log(`El error: ${error.response.data.description}`);
+      if (error.response && error.response.status === 440) {
+        setToken(null);
+        navigate("/login");
+      }
+    }
+  };
 
   useEffect(() => {
-    // setQuantity(calculateQuantity(shoppingCartList));
+    fetchUser();
     setLoading(false);
   }, [shoppingCartList]);
 
@@ -30,7 +54,7 @@ const CheckoutPage: React.FC = () => {
       ) : thankyou === false && shoppingCartList.length > 0 ? (
         <>
           <h1 className="checkout-page__title checkout-page__title--bold checkout-page__title--big">
-            Checkout
+            Profile
           </h1>
           <Divider className="checkout-page__divider" />
           <CheckoutTable />
@@ -52,4 +76,4 @@ const CheckoutPage: React.FC = () => {
   );
 };
 
-export default CheckoutPage;
+export default ProfilePage;

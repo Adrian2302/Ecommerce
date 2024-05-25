@@ -109,7 +109,7 @@ const CheckoutForm: React.FC = () => {
           cardHolderName: data.creditCard.cardHolderName,
           expirationDate: data.creditCard.expirationDate,
           cvv: data.creditCard.cvv,
-          price: total! * 1.13 + 10,
+          price: (total! * 1.13 + 10).toFixed(2),
           status: "PENDING",
         },
         {
@@ -120,6 +120,7 @@ const CheckoutForm: React.FC = () => {
       );
 
       setThankYou(true);
+      setUpdateCart(!updateCart);
     } catch (error: any) {
       console.log(error);
     }

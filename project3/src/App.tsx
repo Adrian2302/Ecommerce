@@ -13,6 +13,7 @@ import PrivateRoutes from "./utils/protected-routes";
 import ScrollToTop from "./components/scroll-to-top";
 import ErrorPage from "./views/error-page";
 import WishlistPage from "./views/wishlist-page";
+import ProfilePage from "./views/profile-page";
 
 function App() {
   // const [token, setToken] = useRecoilState(tokenStateAtom);
@@ -32,6 +33,7 @@ function App() {
           <Route path="/wishlist" Component={WishlistPage} />
           <Route path="/shopping-cart" Component={ShoppingCartPage} />
           <Route path="/checkout" Component={CheckoutPage} />
+          <Route path="/profile" Component={ProfilePage} />
           {/* <Route element={<AdminRoute />}>
             <Route path="/admin-home-page" Component={AdminHomePage} />
           </Route> */}
