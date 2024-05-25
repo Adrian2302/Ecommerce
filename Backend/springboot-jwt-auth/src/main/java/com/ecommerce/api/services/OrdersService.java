@@ -78,7 +78,7 @@ public class OrdersService {
         return new ArrayList<>(ordersRepository.findAll());
     }
 
-    public List<OrdersDto> getUserOrders(Integer id) {
+    public List<Orders> getUserOrders(Integer id) {
         return ordersRepository.findByUserId(id);
     }
 //

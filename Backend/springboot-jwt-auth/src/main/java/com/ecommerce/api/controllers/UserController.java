@@ -31,6 +31,15 @@ public class UserController {
         return ResponseEntity.ok(currentUser);
     }
 
+    @GetMapping("/me/role")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<Integer> userRole() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User currentUser = (User) authentication.getPrincipal();
+
+        return ResponseEntity.ok(currentUser.getRole().getId());
+    }
+
     @GetMapping
     @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN')")
     public ResponseEntity<List<User>> allUsers() {

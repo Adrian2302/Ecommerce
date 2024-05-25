@@ -47,11 +47,11 @@ public class OrdersController {
     }
 
     @GetMapping()
-    public ResponseEntity<List<OrdersDto>> getUserOrders() {
+    public ResponseEntity<List<Orders>> getUserOrders() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User currentUser = (User) authentication.getPrincipal();
 
-        List<OrdersDto> userOrders = ordersService.getUserOrders(currentUser.getId());
+        List<Orders> userOrders = ordersService.getUserOrders(currentUser.getId());
         return new ResponseEntity<>(userOrders, HttpStatus.OK);
     }
 

@@ -81,3 +81,13 @@ export interface ShoppingCartListApiResponse {
 export interface WishlistApiResponse {
   items: WishlistProduct[];
 }
+
+export interface UserRole {
+  role: number | undefined;
+}
+
+export interface UserData {
+  fullName: string;
+  email: string;
+  createdAt: string;
+}

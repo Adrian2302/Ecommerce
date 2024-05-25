@@ -1,0 +1,30 @@
+.checkout-table {
+  &__tab {
+    height: fit-content;
+    max-height: rem(700);
+  }
+
+  //   @include for-mobile-tablet {
+  //     &__tab {
+  //       max-height: rem(700);
+  //     }
+  //   }
+
+  //   @include for-tablet-up {
+  //     &__tab {
+  //       max-height: rem(700);
+  //     }
+  //   }
+
+  //   @include for-tablet-desktop {
+  //     &__tab {
+  //       max-height: rem(700);
+  //     }
+  //   }
+
+  //   @include for-desktop {
+  //     &__tab {
+  //       max-height: rem(700);
+  //     }
+  //   }
+}

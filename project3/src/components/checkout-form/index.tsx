@@ -3,10 +3,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Button, Divider, Input } from "@nextui-org/react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
-import cartItemStateAtom from "../../states/cart-item-state";
+// import cartItemStateAtom from "../../states/cart-item-state";
 import cardStateAtom from "../../states/card-state";
-import { CartProduct } from "../../models/components-props";
-import { useRecoilState, useSetRecoilState } from "recoil";
+// import { CartProduct } from "../../models/components-props";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import mastercard from "../../assets/icons/mastercard.jpeg";
 import visa from "../../assets/icons/visa.png";
 import amex from "../../assets/icons/amex.png";
@@ -23,6 +23,7 @@ import updateCartStateAtom from "../../states/update-cart-state";
 import axios from "axios";
 import { calculateTotalPrice } from "../../utils/functions";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const provinces = [
   "Heredia",
@@ -74,11 +75,10 @@ const CheckoutForm: React.FC = () => {
   // const setCartItem = useSetRecoilState<CartProduct[]>(cartItemStateAtom);
   const setThankYou = useSetRecoilState<boolean>(thankYouStateAtom);
   const [token, setToken] = useRecoilState(tokenStateAtom);
-  const [shoppingCartList, setShoppingCartList] = useRecoilState(
-    shoppingCartStateAtom
-  );
+  const shoppingCartList = useRecoilValue(shoppingCartStateAtom);
   const [updateCart, setUpdateCart] = useRecoilState(updateCartStateAtom);
   const [total, setTotal] = useState<number>();
+  const navigate = useNavigate();
 
   useEffect(() => {
     setTotal(calculateTotalPrice(shoppingCartList));
@@ -123,6 +123,10 @@ const CheckoutForm: React.FC = () => {
       setUpdateCart(!updateCart);
     } catch (error: any) {
       console.log(error);
+      if (error.response && error.response.status === 440) {
+        setToken(null);
+        navigate("/login");
+      }
     }
   };
 
