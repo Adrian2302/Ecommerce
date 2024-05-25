@@ -55,6 +55,7 @@ public class Orders {
         this.city = ordersDto.getCity();
         this.province = ordersDto.getProvince();
         this.zipCode = ordersDto.getZipCode();
+//        this.cardHolderName = ordersDto.getCardHolderName();
         this.cardNumber = ordersDto.getCardNumber();
         this.status = ordersDto.getStatus();
     }

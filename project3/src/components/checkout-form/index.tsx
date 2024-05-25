@@ -17,6 +17,12 @@ import {
   getCreditCardType,
   validDate,
 } from "../../utils/functions";
+import tokenStateAtom from "../../states/token-state";
+import shoppingCartStateAtom from "../../states/shoppingcart-state";
+import updateCartStateAtom from "../../states/update-cart-state";
+import axios from "axios";
+import { calculateTotalPrice } from "../../utils/functions";
+import { useEffect, useState } from "react";
 
 const provinces = [
   "Heredia",
@@ -65,8 +71,19 @@ type FormFields = z.infer<typeof schema>;
 
 const CheckoutForm: React.FC = () => {
   const [cardState, setCardState] = useRecoilState<string>(cardStateAtom);
-  const setCartItem = useSetRecoilState<CartProduct[]>(cartItemStateAtom);
+  // const setCartItem = useSetRecoilState<CartProduct[]>(cartItemStateAtom);
   const setThankYou = useSetRecoilState<boolean>(thankYouStateAtom);
+  const [token, setToken] = useRecoilState(tokenStateAtom);
+  const [shoppingCartList, setShoppingCartList] = useRecoilState(
+    shoppingCartStateAtom
+  );
+  const [updateCart, setUpdateCart] = useRecoilState(updateCartStateAtom);
+  const [total, setTotal] = useState<number>();
+
+  useEffect(() => {
+    setTotal(calculateTotalPrice(shoppingCartList));
+  }, []);
+
   const {
     register,
     handleSubmit,
@@ -76,9 +93,36 @@ const CheckoutForm: React.FC = () => {
   });
 
   const onSubmit: SubmitHandler<FormFields> = async (data) => {
-    console.log(data);
-    setCartItem([]);
-    setThankYou(true);
+    try {
+      console.log(data);
+      // setCartItem([]);
+
+      await axios.post<void>(
+        `http://localhost:8080/api/order`,
+        {
+          address1: data.shipping.address1,
+          address2: data.shipping.address2,
+          city: data.shipping.city,
+          province: data.shipping.province,
+          zipCode: data.shipping.zipCode,
+          cardNumber: data.creditCard.cardNumber,
+          cardHolderName: data.creditCard.cardHolderName,
+          expirationDate: data.creditCard.expirationDate,
+          cvv: data.creditCard.cvv,
+          price: total! * 1.13 + 10,
+          status: "PENDING",
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      setThankYou(true);
+    } catch (error: any) {
+      console.log(error);
+    }
   };
 
   function cardType(card: string) {
@@ -230,7 +274,7 @@ const CheckoutForm: React.FC = () => {
         </div>
       </div>
       <Divider className="checkout-page__divider" />
-      <PriceSummary />
+      <PriceSummary total={total} />
       <div className="checkout-form__buy-btn-container">
         <Button
           disabled={isSubmitting}

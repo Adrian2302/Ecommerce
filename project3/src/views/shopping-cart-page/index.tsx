@@ -16,12 +16,6 @@ import LoadingCircle from "../../components/loading-circle";
 import CartItem from "../../components/cart-item";
 import { ShoppingCartListApiResponse } from "../../models/components-props";
 import shoppingCartStateAtom from "../../states/shoppingcart-state";
-// Si tienes WishlistItem, importarlo también
-// import WishlistItem from "../../components/wishlist-item";
-
-// interface ShoppingCartListApiResponse {
-//   items: CartProduct[];
-// }
 
 const ShoppingCartPage: React.FC = () => {
   const updateCart = useRecoilValue(updateCartStateAtom);

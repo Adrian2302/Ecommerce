@@ -30,7 +30,6 @@ public class OrdersController {
     private OrdersService ordersService;
 
     @PostMapping
-    @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN')")
     public ResponseEntity<OrdersDto> createOrder(@RequestBody OrdersDto ordersDto) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User currentUser = (User) authentication.getPrincipal();

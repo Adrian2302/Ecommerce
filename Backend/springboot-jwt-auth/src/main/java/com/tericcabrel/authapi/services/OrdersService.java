@@ -1,9 +1,6 @@
 package com.tericcabrel.authapi.services;
 
-import com.tericcabrel.authapi.dtos.OrdersDto;
-import com.tericcabrel.authapi.dtos.ProductDto;
-import com.tericcabrel.authapi.dtos.ShoppingCartDto;
-import com.tericcabrel.authapi.dtos.ShoppingCartItemDto;
+import com.tericcabrel.authapi.dtos.*;
 import com.tericcabrel.authapi.entities.*;
 import com.tericcabrel.authapi.exceptions.NoSizeSelectedException;
 import com.tericcabrel.authapi.exceptions.ProductAlreadyInCartException;
@@ -42,40 +39,38 @@ public class OrdersService {
     private OrdersRepository ordersRepository;
 
     @Transactional
-    public OrdersDto createOrder(Integer userId, OrdersDto newUserOder) {
-        User user = userRepository.findById(userId).orElse(null);
-        if (user == null) {
-            throw new UserNotFoundException();
-        }
+    public OrdersDto createOrder(Integer userId, OrdersDto newOrderDto) {
+        User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
 
         ShoppingCart userShoppingCart = shoppingCartRepository.findByUserId(userId);
 
-        Orders orderAdded = this.ordersRepository.save(new Orders(newUserOder));
-        orderAdded.setUser(user);
+        newOrderDto.setUser(new UserDto(user));
+        Orders newOrder = new Orders(newOrderDto);
+        newOrder.setItems(new ArrayList<>());
+//        newOrder.setUser(user);
 
-        for (ShoppingCartItem existingShoppingCartItem : userShoppingCart.getItems()) {
-            Product product = productRepository.findById(existingShoppingCartItem.getProduct().getId()).orElse(null);
-
-            if (product == null) {
-                throw new ProductNotFoundException();
-            }
+        for (ShoppingCartItem shoppingCartItem : userShoppingCart.getItems()) {
+            Product product = productRepository.findById(shoppingCartItem.getProduct().getId())
+                    .orElseThrow(ProductNotFoundException::new);
 
             OrdersItem newOrdersItem = new OrdersItem();
-            newOrdersItem.setOrders(orderAdded);
+            newOrdersItem.setOrders(newOrder);
             newOrdersItem.setProductName(product.getName());
-            newOrdersItem.setQuantity(existingShoppingCartItem.getQuantity());
+            newOrdersItem.setQuantity(shoppingCartItem.getQuantity());
             newOrdersItem.setPrice(product.getPrice());
-            newOrdersItem.setSize(existingShoppingCartItem.getSize());
+            newOrdersItem.setSize(shoppingCartItem.getSize());
 
-            orderAdded.getItems().add(newOrdersItem);
+            newOrder.getItems().add(newOrdersItem);
         }
 
         userShoppingCart.getItems().clear();
         shoppingCartRepository.save(userShoppingCart);
 
-        this.ordersRepository.save(orderAdded);
-        return new OrdersDto(orderAdded);
+        Orders savedOrder = ordersRepository.save(newOrder);
+
+        return new OrdersDto(savedOrder);
     }
+
 
     public List<Orders> allOrders() {
         return new ArrayList<>(ordersRepository.findAll());

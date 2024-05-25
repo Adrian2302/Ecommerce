@@ -19,8 +19,10 @@ public class OrdersDto {
     private Long cardNumber;
     private String cardHolderName;
     private StatusEnum status;
+    private String expirationDate;
+    private Long cvv;
 
-    public OrdersDto(Long id, UserDto user, List<OrdersItem> items, double price, Date purchaseDate, String address1, String address2, String city, String province, Long zipCode, Long cardNumber, String cardHolderName, StatusEnum status) {
+    public OrdersDto(Long id, UserDto user, List<OrdersItem> items, double price, Date purchaseDate, String address1, String address2, String city, String province, Long zipCode, Long cardNumber, String cardHolderName, StatusEnum status, String expirationDate) {
         this.id = id;
         this.user = user;
         this.items = items;
@@ -34,12 +36,23 @@ public class OrdersDto {
         this.cardNumber = cardNumber;
         this.cardHolderName = cardHolderName;
         this.status = status;
+        this.expirationDate = expirationDate;
     }
 
     public OrdersDto(Orders orders){
         this.id = orders.getId();
         this.user = new UserDto(orders.getUser());
         this.items = orders.getItems();
+        this.price = orders.getPrice();
+        this.purchaseDate = orders.getPurchaseDate();
+        this.address1 = orders.getAddress1();
+        this.address2 = orders.getAddress2();
+        this.city = orders.getCity();
+        this.province = orders.getProvince();
+        this.zipCode = orders.getZipCode();
+        this.cardNumber = orders.getCardNumber();
+        this.cardHolderName = orders.getCardHolderName();
+        this.status = orders.getStatus();
     }
 
     public Long getId() {
@@ -144,6 +157,22 @@ public class OrdersDto {
 
     public void setStatus(StatusEnum status) {
         this.status = status;
+    }
+
+    public String getExpirationDate() {
+        return expirationDate;
+    }
+
+    public void setExpirationDate(String expirationDate) {
+        this.expirationDate = expirationDate;
+    }
+
+    public Long getCvv() {
+        return cvv;
+    }
+
+    public void setCvv(Long cvv) {
+        this.cvv = cvv;
     }
 }
 
