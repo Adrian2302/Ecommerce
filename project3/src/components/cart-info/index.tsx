@@ -26,7 +26,10 @@ const CartInfo: React.FC<CartInfoProps> = ({ cartItems }) => {
           <CartSummary cartItems={cartItems} />
           <div className="cart-info__link-checkout-container">
             <Link to="/checkout" className="cart-info__link-checkout">
-              <Button className="cart-info__link-checkout-btn bg-[$stockx-color] text-[$white]">
+              <Button
+                className="cart-info__link-checkout-btn bg-[$stockx-color] text-[$white]"
+                tabIndex={0}
+              >
                 Proceed to checkout
               </Button>
             </Link>

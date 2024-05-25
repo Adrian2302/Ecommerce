@@ -162,22 +162,18 @@ public class ShoppingCartService {
                     .findFirst()
                     .orElse(null);
 
-            if(existingCartItem != null) {
-                if(!product.getSizes().isEmpty() && existingCartItem.getSize().equals(existingWishlistItem.getSize())){
+            if (existingCartItem != null) {
+                boolean sizeMatches = !product.getSizes().isEmpty() && existingCartItem.getSize().equals(existingWishlistItem.getSize());
+                if (sizeMatches || product.getSizes().isEmpty()) {
                     existingCartItem.setQuantity(existingCartItem.getQuantity() + existingWishlistItem.getQuantity());
                     shoppingCartItemRepository.save(existingCartItem);
-                }else{
-                    existingCartItem.setQuantity(existingCartItem.getQuantity() + existingWishlistItem.getQuantity());
-                    shoppingCartItemRepository.save(existingCartItem);
+                } else {
+                    ShoppingCartItem newShoppingCartItem = createNewShoppingCartItem(product, userShoppingCart, existingWishlistItem);
+                    userShoppingCart.getItems().add(newShoppingCartItem);
+                    shoppingCartRepository.save(userShoppingCart);
                 }
-            }else{
-                ShoppingCartItem newShoppingCartItem = new ShoppingCartItem();
-                newShoppingCartItem.setProduct(product);
-                newShoppingCartItem.setShoppingCart(userShoppingCart);
-                newShoppingCartItem.setQuantity(existingWishlistItem.getQuantity());
-                newShoppingCartItem.setPrice(product.getPrice());
-                newShoppingCartItem.setSize(existingWishlistItem.getSize());
-
+            } else {
+                ShoppingCartItem newShoppingCartItem = createNewShoppingCartItem(product, userShoppingCart, existingWishlistItem);
                 userShoppingCart.getItems().add(newShoppingCartItem);
                 shoppingCartRepository.save(userShoppingCart);
             }
@@ -195,6 +191,16 @@ public class ShoppingCartService {
         }
         userWishlist.getItems().clear();
         wishlistRepository.save(userWishlist);
+    }
+
+    private ShoppingCartItem createNewShoppingCartItem(Product product, ShoppingCart userShoppingCart, WishlistItem existingWishlistItem) {
+        ShoppingCartItem newShoppingCartItem = new ShoppingCartItem();
+        newShoppingCartItem.setProduct(product);
+        newShoppingCartItem.setShoppingCart(userShoppingCart);
+        newShoppingCartItem.setQuantity(existingWishlistItem.getQuantity());
+        newShoppingCartItem.setPrice(product.getPrice());
+        newShoppingCartItem.setSize(existingWishlistItem.getSize());
+        return newShoppingCartItem;
     }
 
 //    @Transactional

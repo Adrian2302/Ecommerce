@@ -126,7 +126,7 @@ const Header = () => {
         </NavbarItem>
         {token !== null ? (
           <NavbarItem className="lg:flex">
-            <Link to="/home">
+            <Link to="/login">
               <Button onClick={ClickHandlerFalse}>Log out</Button>
             </Link>
           </NavbarItem>
@@ -151,7 +151,7 @@ const Header = () => {
         ) : null}
         {token !== null ? (
           <NavbarMenuItem>
-            <Link to={"/home"}>
+            <Link to={"/login"}>
               <Button type="button" onClick={ClickHandlerFalse}>
                 Log out
               </Button>

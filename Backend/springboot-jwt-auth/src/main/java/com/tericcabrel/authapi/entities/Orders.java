@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.tericcabrel.authapi.dtos.OrdersDto;
 import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -24,6 +25,8 @@ public class Orders {
     @JsonManagedReference
     private List<OrdersItem> items;
     private double price;
+    @CreationTimestamp
+    @Column(updatable = false, name = "purchase_date")
     private Date purchaseDate;
     @Column(length = 65555)
     private String address1;
@@ -44,7 +47,7 @@ public class Orders {
     public Orders(OrdersDto ordersDto){
         this.id = ordersDto.getId();
         this.user = new User(ordersDto.getUser());
-//        this.items = ordersDto.getItems();
+        this.items = ordersDto.getItems();
         this.price = ordersDto.getPrice();
         this.purchaseDate = ordersDto.getPurchaseDate();
         this.address1 = ordersDto.getAddress1();

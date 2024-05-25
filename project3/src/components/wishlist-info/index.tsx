@@ -39,7 +39,7 @@ const WishlistInfo: React.FC<WishlistInfoProps> = ({ cartItems }) => {
       toast.success("Product added to cart!");
       setUpdateWishlist(!updateWishlist);
       setUpdateCart(!updateCart);
-      console.log(`update en wishlist info: ${updateCart}`)
+      console.log(`update en wishlist info: ${updateCart}`);
     } catch (error: any) {
       console.log(`El error: ${error.response.data.description}`);
       if (
@@ -68,6 +68,7 @@ const WishlistInfo: React.FC<WishlistInfoProps> = ({ cartItems }) => {
             <Button
               className="wishlist-info__btn bg-[$stockx-color] text-[$white]"
               onClick={toShoppingCart}
+              tabIndex={0}
             >
               Move to shopping cart
             </Button>

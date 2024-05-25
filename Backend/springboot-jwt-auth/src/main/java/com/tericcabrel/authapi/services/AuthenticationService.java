@@ -88,7 +88,6 @@ public class AuthenticationService {
     }
 
     private boolean isValidPassword(String password) {
-        // Expresión regular para validar la contraseña
         String passwordPattern = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{8,}$";
         return Pattern.compile(passwordPattern).matcher(password).matches();
     }
