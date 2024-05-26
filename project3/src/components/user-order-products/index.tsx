@@ -33,6 +33,8 @@ const UserOrderProducts: React.FC<UserOrderProductsProps> = ({
         isOpen={isOpen}
         onOpenChange={onOpenChange}
         scrollBehavior="inside"
+        size="5xl"
+        className="pb-4"
       >
         <ModalContent>
           {() => (

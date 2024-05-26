@@ -13,7 +13,6 @@ public class UserDto {
     private Date createdAt;
     private Date updatedAt;
     private Role role;
-//    private List<Orders> orders;
     private ShoppingCart shoppingCart;
     private Wishlist wishlist;
     private List<Orders> orders;

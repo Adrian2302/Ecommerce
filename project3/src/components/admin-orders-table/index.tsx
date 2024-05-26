@@ -36,6 +36,7 @@ const AdminOrdersTable: React.FC = () => {
       );
       setOrders(fetchedOrders.data);
       setLoading(false);
+      console.log(fetchedOrders);
     } catch (error: any) {
       console.log(`El error: ${error.response.data.description}`);
       if (error.response && error.response.status === 440) {
@@ -121,24 +122,6 @@ const AdminOrdersTable: React.FC = () => {
                       day: "numeric",
                     }).format(date);
                     return <TableCell>{newDate}</TableCell>;
-                    // } else if (
-                    //   columnKey === "status" &&
-                    //   order.status === "CONFIRMED"
-                    // ) {
-                    //   return (
-                    //     <TableCell className="text-[#006340]">
-                    //       {order.status}
-                    //     </TableCell>
-                    //   );
-                    // } else if (
-                    //   columnKey === "status" &&
-                    //   order.status === "CANCELLED"
-                    // ) {
-                    //   return (
-                    //     <TableCell className="text-[#bb2c2c]">
-                    //       {order.status}
-                    //     </TableCell>
-                    //   );
                   } else if (columnKey === "price") {
                     return <TableCell>${order.price}</TableCell>;
                   } else if (columnKey === "status") {

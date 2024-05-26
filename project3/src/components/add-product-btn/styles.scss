@@ -2,6 +2,8 @@
   background-color: $stockx-color;
   width: 15px;
   color: white;
+  position: absolute;
+  top: 15px;
   &--bold {
     font-weight: $fontWeights-black;
   }
