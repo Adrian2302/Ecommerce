@@ -1,30 +1,29 @@
 import { Divider } from "@nextui-org/react";
 import "./styles.scss";
 import React, { useEffect, useState } from "react";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import LoadingCircle from "../../components/loading-circle";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import tokenStateAtom from "../../states/token-state";
 import ProfileTable from "../../components/profile-table";
+import currentUserStateAtom from "../../states/current-user-state";
 
 const ProfilePage: React.FC = () => {
   const [token, setToken] = useRecoilState(tokenStateAtom);
+  const setCurrentUser = useSetRecoilState(currentUserStateAtom);
   const navigate = useNavigate();
   const [isLoading, setLoading] = useState(true);
-  const [userRole, setUserRole] = useState<number>();
 
   const fetchUser = async () => {
     try {
-      const user = await axios.get<number>(
-        `http://localhost:8080/users/me/role`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      setUserRole(user.data);
+      const user = await axios.get(`http://localhost:8080/users/me`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setCurrentUser(user.data);
+      setLoading(false);
       console.log(user.data);
     } catch (error: any) {
       console.log(`El error: ${error.response.data.description}`);
@@ -37,11 +36,10 @@ const ProfilePage: React.FC = () => {
 
   useEffect(() => {
     fetchUser();
-    setLoading(false);
   }, []);
 
   return (
-    <div className="user-profile-page">
+    <div className="profile-page">
       {isLoading ? (
         <LoadingCircle />
       ) : (
@@ -50,7 +48,7 @@ const ProfilePage: React.FC = () => {
             Profile
           </h1>
           <Divider className="profile-page__divider" />
-          <ProfileTable role={userRole} />
+          <ProfileTable />
         </>
       )}
     </div>

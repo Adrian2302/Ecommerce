@@ -86,8 +86,36 @@ export interface UserRole {
   role: number | undefined;
 }
 
+export interface Role {
+  id: number;
+  name: string;
+}
+
+export interface OrderItem {
+  id: number;
+  productName: string;
+  quantity: number;
+  price: number;
+  size?: string;
+}
+
+export interface Order {
+  id: number;
+  address1: string;
+  address2?: string;
+  cardHolderName: string;
+  city: string;
+  price: number;
+  province: string;
+  purchaseDate: Date;
+  items: OrderItem[];
+  status: string;
+}
+
 export interface UserData {
   fullName: string;
   email: string;
   createdAt: string;
+  role: Role;
+  orders: Order[];
 }
