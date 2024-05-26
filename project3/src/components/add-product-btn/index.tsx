@@ -1,5 +1,5 @@
 import "./styles.scss";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   Button,
   Divider,
@@ -11,9 +11,7 @@ import {
   ModalHeader,
   useDisclosure,
 } from "@nextui-org/react";
-// import cartItemStateAtom from "../../states/cart-item-state";
 import { useRecoilValue, useRecoilState } from "recoil";
-// import { CartProduct } from "../../models/components-props";
 import thankYouStateAtom from "../../states/thank-you-state";
 import tokenStateAtom from "../../states/token-state";
 import axios from "axios";
@@ -24,20 +22,21 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import toast, { Toaster } from "react-hot-toast";
+import { useDropzone } from "react-dropzone";
 
 const schema = z.object({
   product: z.object({
     name: z.string().min(1),
-    smallDescription: z.string().min(1).max(26),
-    category: z.string().min(1),
-    brand: z.string().min(1),
-    price: z.string().min(1),
-    retailPrice: z.string().min(1),
-    color: z.string().min(1),
-    releaseYear: z.enum(["2020", "2021", "2022", "2023", "2024"]),
-    fullDescription: z.string().min(1).max(200),
-    images: z.array(z.string()).min(1),
-    sizes: z.array(z.string()).optional(),
+    // smallDescription: z.string().min(1).max(26),
+    // category: z.string().min(1),
+    // brand: z.string().min(1),
+    // price: z.string().min(1),
+    // retailPrice: z.string().min(1),
+    // color: z.string().min(1),
+    // releaseYear: z.enum(["2020", "2021", "2022", "2023", "2024"]),
+    // fullDescription: z.string().min(1).max(200),
+    // images: z.array(z.string()).min(1),
+    // sizes: z.array(z.string()).optional(),
   }),
 });
 
@@ -50,6 +49,7 @@ const AddProductBtn: React.FC = () => {
   const [thankYouValue, setThankYou] =
     useRecoilState<boolean>(thankYouStateAtom);
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const [files, setFiles] = useState<File[]>([]);
 
   if (thankYouValue) {
     setThankYou(false);
@@ -63,25 +63,49 @@ const AddProductBtn: React.FC = () => {
     resolver: zodResolver(schema),
   });
 
+  const onDrop = (acceptedFiles: File[]) => {
+    setFiles([...files, ...acceptedFiles]);
+  };
+
+  const { getRootProps, getInputProps } = useDropzone({ onDrop });
+
   const onSubmit: SubmitHandler<FormFields> = async (data) => {
     try {
-      console.log(data);
+      console.log("hola");
+      const imageNames: string[] = [];
+
+      for (const file of files) {
+        const formData = new FormData();
+        formData.append("file", file);
+
+        const response = await axios.post<string>(
+          `http://localhost:8080/api/upload/image`,
+          formData,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        imageNames.push(response.data);
+      }
 
       await axios.post<void>(
         `http://localhost:8080/api/product`,
         {
           name: data.product.name,
-          smallDescription: data.product.smallDescription,
-          category: data.product.category,
-          brand: data.product.brand,
-          retailPrice: data.product.retailPrice,
-          price: data.product.price,
-          recentlySold: 0,
-          color: data.product.color,
-          releaseYear: data.product.releaseYear,
-          fullDescription: data.product.fullDescription,
-          images: data.product.images,
-          sizes: data.product.sizes,
+          // smallDescription: data.product.smallDescription,
+          // category: data.product.category,
+          // brand: data.product.brand,
+          // retailPrice: data.product.retailPrice,
+          // price: data.product.price,
+          // recentlySold: 0,
+          // color: data.product.color,
+          // releaseYear: data.product.releaseYear,
+          // fullDescription: data.product.fullDescription,
+          // images: imageNames,
+          // sizes: data.product.sizes,
         },
         {
           headers: {
@@ -89,7 +113,9 @@ const AddProductBtn: React.FC = () => {
           },
         }
       );
+
       toast.success("Product added!");
+      console.log("adios");
     } catch (error: any) {
       console.log(error);
       if (error.response && error.response.status === 440) {
@@ -136,6 +162,26 @@ const AddProductBtn: React.FC = () => {
                   {errors.product?.name && (
                     <div className="checkout-form__error-msg--red">
                       {errors.product.name.message}
+                    </div>
+                  )}
+                  {/* Dropzone para subir imágenes */}
+                  <div
+                    {...getRootProps({ className: "dropzone" })}
+                    className="bg-[lightblue] border"
+                  >
+                    <input {...getInputProps()} />
+                    <p>
+                      Drag 'n' drop some files here, or click to select files
+                    </p>
+                  </div>
+                  {files.length > 0 && (
+                    <div>
+                      <h4>Files:</h4>
+                      <ul>
+                        {files.map((file) => (
+                          <li key={file.name}>{file.name}</li>
+                        ))}
+                      </ul>
                     </div>
                   )}
                 </ModalBody>
