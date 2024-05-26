@@ -1,0 +1,34 @@
+.products-table {
+  width: 100%;
+  margin-inline: auto;
+  padding-inline: 0px;
+  padding: rem(16);
+
+  &__add-product-btn {
+    background-color: $stockx-color;
+    width: 15px;
+    color: white;
+    &--bold {
+      font-weight: $fontWeights-black;
+    }
+  }
+
+  &__title {
+    &--big {
+      font-size: rem(26);
+    }
+    &--bold {
+      font-weight: $fontWeights-bold;
+    }
+  }
+
+  &__divider {
+    margin: rem(16) 0;
+  }
+
+  &__content {
+    display: flex;
+    flex-wrap: wrap;
+    gap: rem(16);
+  }
+}

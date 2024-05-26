@@ -3,6 +3,7 @@ package com.ecommerce.api.services;
 import com.ecommerce.api.dtos.OrdersDto;
 import com.ecommerce.api.dtos.UserDto;
 import com.ecommerce.api.entities.*;
+import com.ecommerce.api.exceptions.OrderNotFoundException;
 import com.ecommerce.api.repositories.*;
 import com.ecommerce.api.dtos.*;
 import com.ecommerce.api.entities.*;
@@ -81,6 +82,14 @@ public class OrdersService {
     public List<Orders> getUserOrders(Integer id) {
         return ordersRepository.findByUserId(id);
     }
+
+    @Transactional
+    public void editOrderStatus(Long orderId, StatusEnum newStatus) {
+        final var optionalOrder = ordersRepository.findById(orderId).orElseThrow(OrderNotFoundException::new);
+        optionalOrder.setStatus(newStatus);
+        ordersRepository.save(optionalOrder);
+    }
+
 //
 //    @Transactional
 //    public void wishlistToShoppingCart(Integer userId) {

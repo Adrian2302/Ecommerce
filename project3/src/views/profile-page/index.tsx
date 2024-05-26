@@ -24,7 +24,6 @@ const ProfilePage: React.FC = () => {
       });
       setCurrentUser(user.data);
       setLoading(false);
-      console.log(user.data);
     } catch (error: any) {
       console.log(`El error: ${error.response.data.description}`);
       if (error.response && error.response.status === 440) {
@@ -39,7 +38,7 @@ const ProfilePage: React.FC = () => {
   }, []);
 
   return (
-    <div className="profile-page">
+    <main className="profile-page">
       {isLoading ? (
         <LoadingCircle />
       ) : (
@@ -51,7 +50,7 @@ const ProfilePage: React.FC = () => {
           <ProfileTable />
         </>
       )}
-    </div>
+    </main>
   );
 };
 

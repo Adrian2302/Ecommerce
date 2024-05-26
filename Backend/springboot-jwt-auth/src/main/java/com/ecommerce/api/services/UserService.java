@@ -1,9 +1,7 @@
 package com.ecommerce.api.services;
 
 import com.ecommerce.api.dtos.RegisterUserDto;
-import com.ecommerce.api.entities.Role;
-import com.ecommerce.api.entities.RoleEnum;
-import com.ecommerce.api.entities.User;
+import com.ecommerce.api.entities.*;
 import com.ecommerce.api.repositories.RoleRepository;
 import com.ecommerce.api.repositories.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -46,6 +44,14 @@ public class UserService {
                 .setEmail(input.getEmail())
                 .setPassword(passwordEncoder.encode(input.getPassword()))
                 .setRole(optionalRole.get());
+
+        ShoppingCart shoppingCart = new ShoppingCart();
+        shoppingCart.setUser(user);
+        user.setShoppingCart(shoppingCart);
+
+        Wishlist wishlist = new Wishlist();
+        wishlist.setUser(user);
+        user.setWishlist(wishlist);
 
         return userRepository.save(user);
     }

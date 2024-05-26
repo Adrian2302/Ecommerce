@@ -1,0 +1,8 @@
+.add-product-btn {
+  background-color: $stockx-color;
+  width: 15px;
+  color: white;
+  &--bold {
+    font-weight: $fontWeights-black;
+  }
+}

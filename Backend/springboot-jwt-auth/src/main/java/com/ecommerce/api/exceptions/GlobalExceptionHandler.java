@@ -62,6 +62,11 @@ public class GlobalExceptionHandler {
             errorDetail.setProperty("description", "Product not found.");
         }
 
+        if (exception instanceof OrderNotFoundException) {
+            errorDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(401), exception.getMessage());
+            errorDetail.setProperty("description", "Order not found.");
+        }
+
         if (exception instanceof ProductAlreadyInCartException) {
             errorDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(401), exception.getMessage());
             errorDetail.setProperty("description", "Product is already in the cart.");

@@ -64,14 +64,12 @@ public class OrdersController {
 //        return new ResponseEntity<>(HttpStatus.OK);
 //    }
 //
-//    @PutMapping("/editStatus")
-//    public ResponseEntity<Void> editOrderStatus(@RequestBody OrdersDto ordersDto) {
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//        User currentUser = (User) authentication.getPrincipal();
-//
-//        ordersService.editOrderStatus(currentUser, ordersDto.getId(), ordersDto.getStatus());
-//        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-//    }
+    @PutMapping("/editStatus")
+    @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN')")
+    public ResponseEntity<Void> editOrderStatus(@RequestBody OrdersDto ordersDto) {
+        ordersService.editOrderStatus(ordersDto.getId(), ordersDto.getStatus());
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 //
 //    @DeleteMapping("/remove")
 //    public ResponseEntity<Void> removeOrder(@RequestBody OrdersDto ordersDto) {

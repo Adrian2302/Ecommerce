@@ -23,6 +23,7 @@ const CartTable: React.FC = () => {
   return (
     <Table
       aria-label="Table with your product's summary"
+      isStriped
       bottomContent={
         <div className=" cart-table__bottom-content">
           <div className="cart-table__bottom-content-price">
