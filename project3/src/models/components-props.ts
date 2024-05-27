@@ -36,7 +36,7 @@ export type Products = {
   color: string;
   releaseYear: string;
   fullDescription: string;
-  sizes?: string[];
+  sizes: string[];
 };
 
 export type ProductCard = {

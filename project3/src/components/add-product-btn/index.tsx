@@ -195,7 +195,7 @@ const AddProductBtn: React.FC = () => {
         onOpenChange={onOpenChange}
         scrollBehavior="inside"
         size="5xl"
-        className="pb-4"
+        className="pb-8"
         placement="center"
       >
         <ModalContent>
@@ -206,7 +206,7 @@ const AddProductBtn: React.FC = () => {
               </ModalHeader>
               <Divider />
               <form onSubmit={handleSubmit(onSubmit)}>
-                <ModalBody className="max-h-[70vh] overflow-auto">
+                <ModalBody className="max-h-[65vh] overflow-auto">
                   {backendError && (
                     <p className="text-[#bb2c2c]">{backendError}</p>
                   )}
@@ -383,7 +383,7 @@ const AddProductBtn: React.FC = () => {
                   <Button
                     disabled={isSubmitting}
                     type="submit"
-                    className="add-product__form-buy-btn bg-[$stockx-color] text-[$white] w-[3rem]"
+                    className="add-product__form-btn bg-[$stockx-color] text-[$white] w-[3rem]"
                   >
                     {isSubmitting ? "Loading..." : "Create"}
                   </Button>

@@ -65,12 +65,15 @@ const EditProductBtn: React.FC<EditProductBtnProps> = ({ product }) => {
     useRecoilState<boolean>(thankYouStateAtom);
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [files, setFiles] = useState<File[]>([]);
-  const [sizes, setSizes] = useState<string[]>([]);
+  const [sizes, setSizes] = useState<string[]>(product.sizes);
+  const [images, setImages] = useState<string[]>(product.images);
   const [newSize, setNewSize] = useState<string>("");
   const [backendError, setBackendError] = useState("");
   const [updateProducts, setUpdateProducts] = useRecoilState(
     updateManageProductsStateAtom
   );
+
+  console.log(product.sizes);
 
   const handleeditSize = () => {
     if (newSize.trim() !== "") {
@@ -94,10 +97,22 @@ const EditProductBtn: React.FC<EditProductBtnProps> = ({ product }) => {
 
   const onDrop = (acceptedFiles: File[]) => {
     setFiles([...files, ...acceptedFiles]);
+    // setImages([...images, acceptedFiles.name]);
+    const newFiles = acceptedFiles.filter(
+      (file) => !images.includes(file.name)
+    );
+    const newImageNames = newFiles.map((file) => file.name);
+    setImages([...images, ...newImageNames]);
   };
 
   const handleRemoveFile = (fileToRemove: File) => {
     setFiles(files.filter((file) => file !== fileToRemove));
+    setImages(getFileNames(files));
+  };
+
+  const handleRemoveFileName = (imageToRemove: string) => {
+    setImages(images.filter((image) => image !== imageToRemove));
+    setFiles(files.filter((file) => file.name !== imageToRemove));
   };
 
   const handleRemoveSize = (sizeToRemove: string) => {
@@ -108,11 +123,11 @@ const EditProductBtn: React.FC<EditProductBtnProps> = ({ product }) => {
 
   const onSubmit: SubmitHandler<FormFields> = async (data) => {
     try {
-      const imageNames = getFileNames(files);
+      // const imageNames = getFileNames(files);
 
-      if (imageNames.length >= 1) {
+      if (images.length >= 1) {
         await axios.put<void>(
-          `http://localhost:8080/api/product${product.id}`,
+          `http://localhost:8080/api/product/${product.id}`,
           {
             name: data.product.name,
             smallDescription: data.product.smallDescription,
@@ -125,7 +140,7 @@ const EditProductBtn: React.FC<EditProductBtnProps> = ({ product }) => {
             recentlySold: 0,
             releaseYear: data.product.releaseYear,
             sizes: sizes,
-            images: imageNames,
+            images: images,
           },
           {
             headers: {
@@ -152,7 +167,7 @@ const EditProductBtn: React.FC<EditProductBtnProps> = ({ product }) => {
         toast.success("Product updated!");
         setBackendError("");
       } else {
-        setBackendError("Please edit at least 1 image");
+        setBackendError("Must have at least 1 image");
       }
     } catch (error: any) {
       setBackendError(error.response.data.description);
@@ -197,7 +212,7 @@ const EditProductBtn: React.FC<EditProductBtnProps> = ({ product }) => {
         onOpenChange={onOpenChange}
         scrollBehavior="inside"
         size="5xl"
-        className="pb-4"
+        className="pb-8"
         placement="center"
         onClose={() => {
           resetFormValues();
@@ -211,7 +226,7 @@ const EditProductBtn: React.FC<EditProductBtnProps> = ({ product }) => {
               </ModalHeader>
               <Divider />
               <form onSubmit={handleSubmit(onSubmit)}>
-                <ModalBody className="max-h-[70vh] overflow-auto">
+                <ModalBody className="max-h-[65vh] overflow-auto">
                   {backendError && (
                     <p className="text-[#bb2c2c]">{backendError}</p>
                   )}
@@ -378,15 +393,15 @@ const EditProductBtn: React.FC<EditProductBtnProps> = ({ product }) => {
                       (The order is important)
                     </p>
                   </div>
-                  {files.length > 0 && (
+                  {images.length > 0 && (
                     <div className="flex flex-wrap gap-2">
-                      {files.map((file) => (
+                      {images.map((image) => (
                         <Chip
-                          key={file.name}
-                          onClose={() => handleRemoveFile(file)}
+                          key={image}
+                          onClose={() => handleRemoveFileName(image)}
                           variant="flat"
                         >
-                          {file.name}
+                          {image}
                         </Chip>
                       ))}
                     </div>
@@ -396,7 +411,7 @@ const EditProductBtn: React.FC<EditProductBtnProps> = ({ product }) => {
                   <Button
                     disabled={isSubmitting}
                     type="submit"
-                    className="edit-product__form-buy-btn bg-[$stockx-color] text-[$white] w-[3rem]"
+                    className="edit-product__form-btn bg-[$stockx-color] text-[$white] w-[3rem]"
                   >
                     {isSubmitting ? "Loading..." : "Update"}
                   </Button>
