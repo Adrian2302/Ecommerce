@@ -1,0 +1,22 @@
+.edit-product {
+  &__btn {
+  }
+
+  &__form {
+    &-buy-btn {
+      background-color: $stockx-color;
+      width: 15px;
+      color: white;
+
+      &--bold {
+        font-weight: $fontWeights-black;
+      }
+    }
+  }
+
+  &__form-error-msg {
+    &--red {
+      color: red;
+    }
+  }
+}

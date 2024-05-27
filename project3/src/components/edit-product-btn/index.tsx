@@ -18,13 +18,14 @@ import thankYouStateAtom from "../../states/thank-you-state";
 import tokenStateAtom from "../../states/token-state";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import plusIcon from "../../assets/icons/plusIcon.svg";
+import editIcon from "../../assets/icons/editIcon.svg";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import toast, { Toaster } from "react-hot-toast";
 import { useDropzone } from "react-dropzone";
 import updateManageProductsStateAtom from "../../states/update-manage-products-state";
+import { Products } from "../../models/components-props";
 
 const schema = z.object({
   product: z.object({
@@ -53,7 +54,11 @@ const releseYears = [
 
 type FormFields = z.infer<typeof schema>;
 
-const AddProductBtn: React.FC = () => {
+interface EditProductBtnProps {
+  product: Products;
+}
+
+const EditProductBtn: React.FC<EditProductBtnProps> = ({ product }) => {
   const navigate = useNavigate();
   const [token, setToken] = useRecoilState(tokenStateAtom);
   const [thankYouValue, setThankYou] =
@@ -67,7 +72,7 @@ const AddProductBtn: React.FC = () => {
     updateManageProductsStateAtom
   );
 
-  const handleAddSize = () => {
+  const handleeditSize = () => {
     if (newSize.trim() !== "") {
       setSizes([...sizes, newSize]);
       setNewSize("");
@@ -81,7 +86,6 @@ const AddProductBtn: React.FC = () => {
   const {
     register,
     handleSubmit,
-    reset,
     setValue,
     formState: { errors, isSubmitting },
   } = useForm<FormFields>({
@@ -107,8 +111,8 @@ const AddProductBtn: React.FC = () => {
       const imageNames = getFileNames(files);
 
       if (imageNames.length >= 1) {
-        await axios.post<void>(
-          `http://localhost:8080/api/product`,
+        await axios.put<void>(
+          `http://localhost:8080/api/product${product.id}`,
           {
             name: data.product.name,
             smallDescription: data.product.smallDescription,
@@ -145,11 +149,10 @@ const AddProductBtn: React.FC = () => {
           );
         }
         setUpdateProducts(!updateProducts);
-        toast.success("Product added!");
+        toast.success("Product updated!");
         setBackendError("");
-        resetFormValues();
       } else {
-        setBackendError("Please add at least 1 image");
+        setBackendError("Please edit at least 1 image");
       }
     } catch (error: any) {
       setBackendError(error.response.data.description);
@@ -166,29 +169,28 @@ const AddProductBtn: React.FC = () => {
   }
 
   const resetFormValues = () => {
-    reset();
-    setValue("product.name", "");
-    setValue("product.smallDescription", "");
-    setValue("product.fullDescription", "");
-    setValue("product.category", "");
-    setValue("product.brand", "");
-    setValue("product.color", "");
-    setValue("product.price", "");
-    setValue("product.retailPrice", "");
-    setValue("product.category", "");
-    setFiles([]);
-    setSizes([]);
+    setValue("product.name", product.name);
+    setValue("product.smallDescription", product.smallDescription);
+    setValue("product.fullDescription", product.fullDescription);
+    setValue("product.category", product.category);
+    setValue("product.brand", product.brand);
+    setValue("product.color", product.color);
+    setValue("product.price", product.price.toString());
+    setValue("product.retailPrice", product.retailPrice.toString());
+    setValue("product.category", product.category);
+    // setFiles([]);
+    // setSizes([]);
   };
 
   return (
     <>
       <Button
         isIconOnly
-        className="add-product__btn add-product__btn--bold bg-[$stockx-color] text-[$white] absolute top-[15px] right-[15px]"
+        className="edit-product__btn"
         radius="full"
         onPress={onOpen}
       >
-        <img src={plusIcon} />
+        <img src={editIcon} />
       </Button>
       <Modal
         isOpen={isOpen}
@@ -197,12 +199,15 @@ const AddProductBtn: React.FC = () => {
         size="5xl"
         className="pb-4"
         placement="center"
+        onClose={() => {
+          resetFormValues();
+        }}
       >
         <ModalContent>
           {() => (
             <>
               <ModalHeader className="flex flex-col gap-1">
-                Create Product
+                Edit Product
               </ModalHeader>
               <Divider />
               <form onSubmit={handleSubmit(onSubmit)}>
@@ -214,11 +219,12 @@ const AddProductBtn: React.FC = () => {
                     {...register("product.name")}
                     type="text"
                     label="Name"
+                    defaultValue={product.name}
                     // isRequired
                     placeholder="Enter the product's name"
                   />
                   {errors.product?.name && (
-                    <div className="add-product__form-error-msg--red">
+                    <div className="edit-product__form-error-msg--red">
                       {errors.product.name.message}
                     </div>
                   )}
@@ -226,11 +232,12 @@ const AddProductBtn: React.FC = () => {
                     {...register("product.smallDescription")}
                     type="text"
                     label="Small Description"
+                    defaultValue={product.smallDescription}
                     // isRequired
                     placeholder="Enter small description"
                   />
                   {errors.product?.smallDescription && (
-                    <div className="add-product__form-error-msg--red">
+                    <div className="edit-product__form-error-msg--red">
                       {errors.product.smallDescription.message}
                     </div>
                   )}
@@ -238,10 +245,11 @@ const AddProductBtn: React.FC = () => {
                     {...register("product.fullDescription")}
                     label="Full Description"
                     placeholder="Enter full description"
+                    defaultValue={product.fullDescription}
                     // isRequired
                   />
                   {errors.product?.fullDescription && (
-                    <div className="add-product__form-error-msg--red">
+                    <div className="edit-product__form-error-msg--red">
                       {errors.product.fullDescription.message}
                     </div>
                   )}
@@ -249,11 +257,12 @@ const AddProductBtn: React.FC = () => {
                     {...register("product.brand")}
                     type="text"
                     label="Brand"
+                    defaultValue={product.brand}
                     // isRequired
                     placeholder="Enter the product's brand"
                   />
                   {errors.product?.brand && (
-                    <div className="add-product__form-error-msg--red">
+                    <div className="edit-product__form-error-msg--red">
                       {errors.product.brand.message}
                     </div>
                   )}
@@ -261,11 +270,12 @@ const AddProductBtn: React.FC = () => {
                     {...register("product.category")}
                     type="text"
                     label="Category"
+                    defaultValue={product.category}
                     // isRequired
                     placeholder="Enter the product's category"
                   />
                   {errors.product?.category && (
-                    <div className="add-product__form-error-msg--red">
+                    <div className="edit-product__form-error-msg--red">
                       {errors.product.category.message}
                     </div>
                   )}
@@ -273,11 +283,12 @@ const AddProductBtn: React.FC = () => {
                     {...register("product.color")}
                     type="text"
                     label="Color"
+                    defaultValue={product.color}
                     // isRequired
                     placeholder="Enter the product's color"
                   />
                   {errors.product?.category && (
-                    <div className="add-product__form-error-msg--red">
+                    <div className="edit-product__form-error-msg--red">
                       {errors.product.category.message}
                     </div>
                   )}
@@ -285,11 +296,12 @@ const AddProductBtn: React.FC = () => {
                     {...register("product.retailPrice")}
                     type="number"
                     label="Retail Price"
+                    defaultValue={product.retailPrice.toString()}
                     // isRequired
                     placeholder="Enter the product's retail price"
                   />
                   {errors.product?.retailPrice && (
-                    <div className="add-product__form-error-msg--red">
+                    <div className="edit-product__form-error-msg--red">
                       {errors.product.retailPrice.message}
                     </div>
                   )}
@@ -297,18 +309,19 @@ const AddProductBtn: React.FC = () => {
                     {...register("product.price")}
                     type="number"
                     label="Price"
+                    defaultValue={product.price.toString()}
                     // isRequired
                     placeholder="Enter the product's price"
                   />
                   {errors.product?.price && (
-                    <div className="add-product__form-error-msg--red">
+                    <div className="edit-product__form-error-msg--red">
                       {errors.product.price.message}
                     </div>
                   )}
                   <select
                     {...register("product.releaseYear")}
                     aria-label="select product's release year"
-                    defaultValue="Select the product's release year"
+                    defaultValue={product.releaseYear}
                     name="product.releaseYear"
                     id="product.releaseYear"
                     className="bg-[#f4f4f5] px-3 py-3.5 rounded-lg hover:bg-[#e5e7eb]"
@@ -321,7 +334,7 @@ const AddProductBtn: React.FC = () => {
                     ))}
                   </select>
                   {errors.product?.releaseYear && (
-                    <div className="add-product__form-error-msg--red">
+                    <div className="edit-product__form-error-msg--red">
                       {errors.product.releaseYear.message}
                     </div>
                   )}
@@ -334,7 +347,7 @@ const AddProductBtn: React.FC = () => {
                     />
                     <Button
                       type="button"
-                      onClick={handleAddSize}
+                      onClick={handleeditSize}
                       className="ml-4"
                     >
                       Add Size
@@ -383,9 +396,9 @@ const AddProductBtn: React.FC = () => {
                   <Button
                     disabled={isSubmitting}
                     type="submit"
-                    className="add-product__form-buy-btn bg-[$stockx-color] text-[$white] w-[3rem]"
+                    className="edit-product__form-buy-btn bg-[$stockx-color] text-[$white] w-[3rem]"
                   >
-                    {isSubmitting ? "Loading..." : "Create"}
+                    {isSubmitting ? "Loading..." : "Update"}
                   </Button>
                 </ModalFooter>
               </form>
@@ -398,4 +411,4 @@ const AddProductBtn: React.FC = () => {
   );
 };
 
-export default AddProductBtn;
+export default EditProductBtn;

@@ -1,6 +1,6 @@
 import "./styles.scss";
 import React from "react";
-import { Button, Card, useDisclosure } from "@nextui-org/react";
+import { Card } from "@nextui-org/react";
 import { Products } from "../../models/components-props";
 import { useRecoilState } from "recoil";
 import { getImageURL } from "../../utils/functions";
@@ -9,7 +9,7 @@ import axios from "axios";
 import tokenStateAtom from "../../states/token-state";
 import toast, { Toaster } from "react-hot-toast";
 import updateManageProductsStateAtom from "../../states/update-manage-products-state";
-import editIcon from "../../assets/icons/editIcon.svg";
+import EditProductBtn from "../edit-product-btn";
 
 interface ManageProductItemProps {
   product: Products;
@@ -21,7 +21,6 @@ const ManageProductItem: React.FC<ManageProductItemProps> = ({ product }) => {
   const [updateProducts, setUpdateProducts] = useRecoilState(
     updateManageProductsStateAtom
   );
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   const clickRemove = async () => {
     try {
@@ -75,9 +74,7 @@ const ManageProductItem: React.FC<ManageProductItemProps> = ({ product }) => {
             ${product.price}
           </p> */}
           <div className="manage-product-item__edit-btn-container">
-            <Button isIconOnly radius="full" onPress={onOpen}>
-              <img src={editIcon} />
-            </Button>
+            <EditProductBtn product={product} />
           </div>
         </div>
       </Card>
