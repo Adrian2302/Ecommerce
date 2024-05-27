@@ -27,8 +27,6 @@ const ProductsTable: React.FC = () => {
   const updateProducts = useRecoilValue(updateManageProductsStateAtom);
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [isLoading, setLoading] = useState(true);
-  const navigate = useNavigate();
-  const [token, setToken] = useRecoilState(tokenStateAtom);
   const [thankYouValue, setThankYou] =
     useRecoilState<boolean>(thankYouStateAtom);
   const [productsList, setProductsList] = useState<Products[]>([]);
@@ -40,27 +38,26 @@ const ProductsTable: React.FC = () => {
     setThankYou(false);
   }
 
-  const fetchProducts = async () => {
-    try {
-      const fetchedProductsList = await axios.get<ProductsApiResponse>(
-        "http://localhost:8080/api/product/filter",
-        {
-          params: {
-            name: searchTerm,
-            page: currentPage - 1,
-            size: POSTSPERPAGE,
-          },
-        }
-      );
-      setProductsList(fetchedProductsList.data.content);
-      setTotalPages(fetchedProductsList.data.totalPages);
-      setLoading(false);
-    } catch (error: any) {
-      console.log(`El error: ${error.response.data.description}`);
-    }
-  };
-
   useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const fetchedProductsList = await axios.get<ProductsApiResponse>(
+          "http://localhost:8080/api/product/filter",
+          {
+            params: {
+              name: searchTerm,
+              page: currentPage - 1,
+              size: POSTSPERPAGE,
+            },
+          }
+        );
+        setProductsList(fetchedProductsList.data.content);
+        setTotalPages(fetchedProductsList.data.totalPages);
+        setLoading(false);
+      } catch (error: any) {
+        console.log(`El error: ${error.response.data.description}`);
+      }
+    };
     fetchProducts();
   }, [searchTerm, currentPage, updateProducts]);
 
@@ -71,8 +68,6 @@ const ProductsTable: React.FC = () => {
   const handleSearchChange = (value: string) => {
     setSearchTerm(value);
   };
-
-  console.log(productsList);
 
   return (
     <main className="products-table">

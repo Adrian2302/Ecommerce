@@ -22,7 +22,7 @@ import plusIcon from "../../assets/icons/plusIcon.svg";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import { useDropzone } from "react-dropzone";
 import updateManageProductsStateAtom from "../../states/update-manage-products-state";
 
@@ -98,8 +98,6 @@ const AddProductBtn: React.FC = () => {
     const newFiles = acceptedFiles.filter(
       (file) => !files.some((existingFile) => existingFile.name === file.name)
     );
-
-    console.log(newFiles.length, acceptedFiles.length);
 
     if (newFiles.length < acceptedFiles.length) {
       toast.error("Some files were already added and won't be included again.");

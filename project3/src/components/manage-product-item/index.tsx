@@ -7,15 +7,17 @@ import { getImageURL } from "../../utils/functions";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import tokenStateAtom from "../../states/token-state";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import updateManageProductsStateAtom from "../../states/update-manage-products-state";
 import EditProductBtn from "../edit-product-btn";
+import updateCartStateAtom from "../../states/update-cart-state";
 
 interface ManageProductItemProps {
   product: Products;
 }
 
 const ManageProductItem: React.FC<ManageProductItemProps> = ({ product }) => {
+  const [updateCart, setUpdateCart] = useRecoilState(updateCartStateAtom);
   const navigate = useNavigate();
   const [token, setToken] = useRecoilState(tokenStateAtom);
   const [updateProducts, setUpdateProducts] = useRecoilState(
@@ -34,6 +36,7 @@ const ManageProductItem: React.FC<ManageProductItemProps> = ({ product }) => {
       );
       setUpdateProducts(!updateProducts);
       toast.success("Product removed!");
+      setUpdateCart(!updateCart);
     } catch (error: any) {
       console.log(`El error: ${error.response.data.description}`);
       if (error.response && error.response.status === 440) {
@@ -70,9 +73,6 @@ const ManageProductItem: React.FC<ManageProductItemProps> = ({ product }) => {
               {product.releaseYear} | {product.color}
             </p>
           </div>
-          {/* <p className="manage-product-item__price manage-product-item__price--bold manage-product-item__price--xl">
-            ${product.price}
-          </p> */}
           <div className="manage-product-item__edit-btn-container">
             <EditProductBtn product={product} />
           </div>

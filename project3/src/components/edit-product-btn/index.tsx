@@ -100,12 +100,19 @@ const EditProductBtn: React.FC<EditProductBtnProps> = ({ product }) => {
   });
 
   const onDrop = (acceptedFiles: File[]) => {
-    setFiles([...files, ...acceptedFiles]);
-    // setImages([...images, acceptedFiles.name]);
     const newFiles = acceptedFiles.filter(
       (file) => !images.includes(file.name)
     );
+    const duplicateFiles = acceptedFiles.filter((file) =>
+      images.includes(file.name)
+    );
+
+    if (duplicateFiles.length > 0) {
+      toast.error("Some files were already added and won't be included again.");
+    }
+
     const newImageNames = newFiles.map((file) => file.name);
+    setFiles([...files, ...newFiles]);
     setImages([...images, ...newImageNames]);
   };
 
