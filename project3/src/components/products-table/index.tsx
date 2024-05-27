@@ -21,6 +21,7 @@ import AddProductBtn from "../add-product-btn";
 import ManageProductItem from "../manage-product-item";
 import Pagination from "../../components/pagination";
 import updateManageProductsStateAtom from "../../states/update-manage-products-state";
+import { Toaster } from "react-hot-toast";
 
 const ProductsTable: React.FC = () => {
   const updateProducts = useRecoilValue(updateManageProductsStateAtom);
@@ -71,6 +72,8 @@ const ProductsTable: React.FC = () => {
     setSearchTerm(value);
   };
 
+  console.log(productsList);
+
   return (
     <main className="products-table">
       <h2 className="products-table__title products-table__title--big products-table__title--bold">
@@ -99,6 +102,7 @@ const ProductsTable: React.FC = () => {
           </div>
         )}
       </div>
+      <Toaster />
     </main>
   );
 };

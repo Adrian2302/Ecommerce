@@ -28,14 +28,20 @@ import updateManageProductsStateAtom from "../../states/update-manage-products-s
 
 const schema = z.object({
   product: z.object({
-    name: z.string().min(1),
-    smallDescription: z.string().min(1).max(26),
-    fullDescription: z.string().min(1).max(500),
-    category: z.string().min(1),
-    brand: z.string().min(1),
-    color: z.string().min(1),
-    price: z.string().min(1),
-    retailPrice: z.string().min(1),
+    name: z.string({ message: "Name can't be empty" }).min(1),
+    smallDescription: z
+      .string({ message: "Small description can't be empty" })
+      .min(1)
+      .max(26),
+    fullDescription: z
+      .string({ message: "Full description can't be empty" })
+      .min(1)
+      .max(500),
+    category: z.string({ message: "Category can't be empty" }).min(1),
+    brand: z.string({ message: "Brand can't be empty" }).min(1),
+    color: z.string({ message: "Color can't be empty" }).min(1),
+    price: z.string({ message: "Price can't be empty" }).min(1),
+    retailPrice: z.string({ message: "Retail price can't be empty" }).min(1),
     releaseYear: z.enum(["2020", "2021", "2022", "2023", "2024"], {
       message: "Select a year",
     }),
@@ -89,7 +95,17 @@ const AddProductBtn: React.FC = () => {
   });
 
   const onDrop = (acceptedFiles: File[]) => {
-    setFiles([...files, ...acceptedFiles]);
+    const newFiles = acceptedFiles.filter(
+      (file) => !files.some((existingFile) => existingFile.name === file.name)
+    );
+
+    console.log(newFiles.length, acceptedFiles.length);
+
+    if (newFiles.length < acceptedFiles.length) {
+      toast.error("Some files were already added and won't be included again.");
+    }
+
+    setFiles([...files, ...newFiles]);
   };
 
   const handleRemoveFile = (fileToRemove: File) => {
@@ -187,8 +203,9 @@ const AddProductBtn: React.FC = () => {
         className="add-product__btn add-product__btn--bold bg-[$stockx-color] text-[$white] absolute top-[15px] right-[15px]"
         radius="full"
         onPress={onOpen}
+        aria-label="Add button"
       >
-        <img src={plusIcon} />
+        <img src={plusIcon} aria-label="Add button image" />
       </Button>
       <Modal
         isOpen={isOpen}
@@ -393,7 +410,7 @@ const AddProductBtn: React.FC = () => {
           )}
         </ModalContent>
       </Modal>
-      <Toaster />
+      {/* <Toaster /> */}
     </>
   );
 };

@@ -1,30 +1,14 @@
-.checkout-table {
-  &__tab {
-    height: fit-content;
-    max-height: rem(700);
+.user-profile-page {
+  &__title {
+    &--big {
+      font-size: rem(22);
+    }
+    &--bold {
+      font-weight: $fontWeights-semibold;
+    }
   }
 
-  //   @include for-mobile-tablet {
-  //     &__tab {
-  //       max-height: rem(700);
-  //     }
-  //   }
-
-  //   @include for-tablet-up {
-  //     &__tab {
-  //       max-height: rem(700);
-  //     }
-  //   }
-
-  //   @include for-tablet-desktop {
-  //     &__tab {
-  //       max-height: rem(700);
-  //     }
-  //   }
-
-  //   @include for-desktop {
-  //     &__tab {
-  //       max-height: rem(700);
-  //     }
-  //   }
+  &__divider {
+    margin: rem(16) 0;
+  }
 }

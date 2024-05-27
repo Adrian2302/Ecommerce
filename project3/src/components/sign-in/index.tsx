@@ -10,7 +10,7 @@ const SignIn: React.FC = () => {
   return (
     <div className="signin">
       <Card className="max-w-full w-[340px] h-[465px]">
-        <CardBody className="overflow-hidden">
+        <CardBody>
           <Tabs
             fullWidth
             size="lg"

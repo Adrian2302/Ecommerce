@@ -22,9 +22,9 @@ const HomePage: React.FC = () => {
     <>
       <Hero />
       <main className="home-page">
-        <FeaturedCarousel itemList={data} />
-        <AdidasCarousel itemList={data} />
-        <NikeCarousel itemList={data} />
+        <FeaturedCarousel />
+        <AdidasCarousel />
+        <NikeCarousel />
         <div className="home-page__redirect">
           <Link className="home-page__redirect-link" to="/all-products">
             <Button

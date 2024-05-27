@@ -1,14 +1,35 @@
 import "./styles.scss";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Carousel from "../carousel";
-import { Products } from "../../models/components-props";
+import { Products, ProductsApiResponse } from "../../models/components-props";
+import axios from "axios";
 
-interface CarouselProps {
-  itemList: Products[];
-}
+const CarouselFeatured: React.FC = () => {
+  // const filteredItems = itemList.filter((item) => item.recentlySold > 100);
+  const [filteredProducts, setFilteredProducts] = useState<Products[]>([]);
 
-const CarouselFeatured: React.FC<CarouselProps> = ({ itemList }) => {
-  const filteredItems = itemList.filter((item) => item.recentlySold > 100);
+  const fetchFeaturedProducts = async () => {
+    try {
+      const response = await axios.get<ProductsApiResponse>(
+        "http://localhost:8080/api/product/filter",
+        {
+          params: {
+            years: 2024,
+            size: 20,
+          },
+        }
+      );
+
+      const products = response.data.content;
+      setFilteredProducts(products);
+    } catch (error) {
+      console.error("Error fetching products:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchFeaturedProducts();
+  }, []);
 
   return (
     <div className="carousel-featured">
@@ -18,7 +39,7 @@ const CarouselFeatured: React.FC<CarouselProps> = ({ itemList }) => {
       >
         Featured Products
       </p>
-      <Carousel itemList={filteredItems} />
+      <Carousel itemList={filteredProducts} />
     </div>
   );
 };

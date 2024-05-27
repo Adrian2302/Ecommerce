@@ -33,8 +33,8 @@ const Carousel: React.FC<CarouselProps> = ({ itemList }) => {
               <ProductItem
                 id={item.id}
                 name={item.name}
-                description={item.description}
-                image={item.image}
+                description={item.smallDescription}
+                image={item.images[0]}
                 price={item.price}
               />
             </div>

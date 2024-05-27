@@ -1,5 +1,7 @@
 package com.ecommerce.api.controllers;
 
+import com.ecommerce.api.dtos.ShoppingCartItemDto;
+import com.ecommerce.api.entities.User;
 import com.ecommerce.api.services.ProductService;
 import com.ecommerce.api.dtos.ProductDto;
 import com.ecommerce.api.utils.SearchCriteria;
@@ -8,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import org.springframework.data.domain.Page;
@@ -31,6 +35,12 @@ public class ProductController {
     public ResponseEntity<ProductDto> createProduct(@RequestBody ProductDto productDto) {
         ProductDto product = productService.createProduct(productDto);
         return new ResponseEntity<>(product, HttpStatus.CREATED);
+    }
+
+    @PutMapping("/editRecentlySold")
+    public ResponseEntity<Void> editProductRecentlySold(@RequestBody ProductDto productDto) {
+        productService.editProductRecentlySold(productDto.getId(), productDto.getRecentlySold());
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @GetMapping

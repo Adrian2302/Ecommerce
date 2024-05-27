@@ -44,7 +44,7 @@ const ProfilePage: React.FC = () => {
       ) : (
         <>
           <h1 className="profile-page__title profile-page__title--bold profile-page__title--big">
-            Profile
+            Dashboard
           </h1>
           <Divider className="profile-page__divider" />
           <ProfileTable />

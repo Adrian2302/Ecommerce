@@ -130,7 +130,7 @@ const Header = () => {
               <DropdownTrigger>
                 <Avatar
                   as="button"
-                  className="transition-transform bg-[white]"
+                  className="transition-transform bg-[none]"
                   src={profileIcon}
                 />
               </DropdownTrigger>

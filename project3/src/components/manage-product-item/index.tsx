@@ -78,7 +78,6 @@ const ManageProductItem: React.FC<ManageProductItemProps> = ({ product }) => {
           </div>
         </div>
       </Card>
-      <Toaster />
     </>
   );
 };

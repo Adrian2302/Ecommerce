@@ -15,6 +15,7 @@ const SignUp: React.FC<SignUpProps> = ({ setSelected }) => {
   const setToken = useSetRecoilState(tokenStateAtom);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [fullName, setFullName] = useState("");
   const [error, setError] = useState("");
   const emailRegex = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/;
@@ -23,15 +24,19 @@ const SignUp: React.FC<SignUpProps> = ({ setSelected }) => {
 
   const handleSignup = async (e: FormEvent) => {
     e.preventDefault();
-
     try {
-      await axios.post("http://localhost:8080/auth/signup", {
-        email,
-        password,
-        fullName,
-      });
-      toast.success("Signup succesful!");
-      setToken(null);
+      if (password === confirmPassword) {
+        await axios.post("http://localhost:8080/auth/signup", {
+          email,
+          password,
+          fullName,
+        });
+        toast.success("Signup succesful!");
+        setToken(null);
+        setError("");
+      } else {
+        setError("Passwords don't match");
+      }
     } catch (error: any) {
       setError(error.response.data.description);
     }
@@ -55,6 +60,10 @@ const SignUp: React.FC<SignUpProps> = ({ setSelected }) => {
       setError("");
     }
     setPassword(input);
+  };
+
+  const validateConfirmPassword = (input: string) => {
+    setConfirmPassword(input);
   };
 
   const validateName = (input: string) => {
@@ -91,6 +100,13 @@ const SignUp: React.FC<SignUpProps> = ({ setSelected }) => {
           placeholder="Enter your password"
           type="password"
           onChange={(e) => validatePassword(e.target.value)}
+        />
+        <Input
+          isRequired
+          label="Confirm Password"
+          placeholder="Confirm your password"
+          type="password"
+          onChange={(e) => validateConfirmPassword(e.target.value)}
         />
         {error && <p className="text-[#bb2c2c] text-[0.8rem]">{error}</p>}
         <p className="text-center text-small">

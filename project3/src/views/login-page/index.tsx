@@ -15,7 +15,7 @@ const LoginPage: React.FC = () => {
       <h1 className="login-page__title login-page__title--big login-page__title--bold">
         Sign In
       </h1>
-      <Divider className="shopping-cart-page__divider" />
+      <Divider className="login-page__divider" />
       <SignIn />
     </main>
   );

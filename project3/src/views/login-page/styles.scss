@@ -14,4 +14,8 @@
       font-weight: $fontWeights-bold;
     }
   }
+
+  &__divider {
+    margin: rem(16) 0;
+  }
 }

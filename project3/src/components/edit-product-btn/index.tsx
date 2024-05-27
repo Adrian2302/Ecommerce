@@ -1,5 +1,5 @@
 import "./styles.scss";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Button,
   Divider,
@@ -29,14 +29,20 @@ import { Products } from "../../models/components-props";
 
 const schema = z.object({
   product: z.object({
-    name: z.string().min(1),
-    smallDescription: z.string().min(1).max(26),
-    fullDescription: z.string().min(1).max(500),
-    category: z.string().min(1),
-    brand: z.string().min(1),
-    color: z.string().min(1),
-    price: z.string().min(1),
-    retailPrice: z.string().min(1),
+    name: z.string({ message: "Name can't be empty" }).min(1),
+    smallDescription: z
+      .string({ message: "Small description can't be empty" })
+      .min(1)
+      .max(26),
+    fullDescription: z
+      .string({ message: "Full description can't be empty" })
+      .min(1)
+      .max(500),
+    category: z.string({ message: "Category can't be empty" }).min(1),
+    brand: z.string({ message: "Brand can't be empty" }).min(1),
+    color: z.string({ message: "Color can't be empty" }).min(1),
+    price: z.string({ message: "Price can't be empty" }).min(1),
+    retailPrice: z.string({ message: "Retail price can't be empty" }).min(1),
     releaseYear: z.enum(["2020", "2021", "2022", "2023", "2024"], {
       message: "Select a year",
     }),
@@ -65,15 +71,13 @@ const EditProductBtn: React.FC<EditProductBtnProps> = ({ product }) => {
     useRecoilState<boolean>(thankYouStateAtom);
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [files, setFiles] = useState<File[]>([]);
-  const [sizes, setSizes] = useState<string[]>(product.sizes);
-  const [images, setImages] = useState<string[]>(product.images);
+  const [sizes, setSizes] = useState<string[]>([]);
+  const [images, setImages] = useState<string[]>([]);
   const [newSize, setNewSize] = useState<string>("");
   const [backendError, setBackendError] = useState("");
   const [updateProducts, setUpdateProducts] = useRecoilState(
     updateManageProductsStateAtom
   );
-
-  console.log(product.sizes);
 
   const handleeditSize = () => {
     if (newSize.trim() !== "") {
@@ -105,10 +109,10 @@ const EditProductBtn: React.FC<EditProductBtnProps> = ({ product }) => {
     setImages([...images, ...newImageNames]);
   };
 
-  const handleRemoveFile = (fileToRemove: File) => {
-    setFiles(files.filter((file) => file !== fileToRemove));
-    setImages(getFileNames(files));
-  };
+  // const handleRemoveFile = (fileToRemove: File) => {
+  //   setFiles(files.filter((file) => file !== fileToRemove));
+  //   setImages(getFileNames(files));
+  // };
 
   const handleRemoveFileName = (imageToRemove: string) => {
     setImages(images.filter((image) => image !== imageToRemove));
@@ -179,9 +183,14 @@ const EditProductBtn: React.FC<EditProductBtnProps> = ({ product }) => {
     }
   };
 
-  function getFileNames(files: File[]) {
-    return files.map((file) => file.name);
-  }
+  // function getFileNames(files: File[]) {
+  //   return files.map((file) => file.name);
+  // }
+
+  useEffect(() => {
+    setImages(product.images);
+    setSizes(product.sizes);
+  }, [product]);
 
   const resetFormValues = () => {
     setValue("product.name", product.name);
@@ -193,8 +202,8 @@ const EditProductBtn: React.FC<EditProductBtnProps> = ({ product }) => {
     setValue("product.price", product.price.toString());
     setValue("product.retailPrice", product.retailPrice.toString());
     setValue("product.category", product.category);
-    // setFiles([]);
-    // setSizes([]);
+    setImages(product.images);
+    setSizes(product.sizes);
   };
 
   return (
@@ -204,8 +213,9 @@ const EditProductBtn: React.FC<EditProductBtnProps> = ({ product }) => {
         className="edit-product__btn"
         radius="full"
         onPress={onOpen}
+        aria-label="Edit button"
       >
-        <img src={editIcon} />
+        <img src={editIcon} aria-label="Edit button image" />
       </Button>
       <Modal
         isOpen={isOpen}
@@ -356,7 +366,7 @@ const EditProductBtn: React.FC<EditProductBtnProps> = ({ product }) => {
                   <div className="flex items-center">
                     <Input
                       type="text"
-                      placeholder="Enter size"
+                      placeholder="Enter size (The order is important)"
                       value={newSize}
                       onChange={(e) => setNewSize(e.target.value)}
                     />
@@ -421,7 +431,6 @@ const EditProductBtn: React.FC<EditProductBtnProps> = ({ product }) => {
           )}
         </ModalContent>
       </Modal>
-      <Toaster />
     </>
   );
 };

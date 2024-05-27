@@ -2,11 +2,14 @@ package com.ecommerce.api.services;
 
 import com.ecommerce.api.dtos.ProductDto;
 import com.ecommerce.api.entities.Product;
+import com.ecommerce.api.entities.User;
 import com.ecommerce.api.exceptions.ProductAlreadyExistException;
+import com.ecommerce.api.exceptions.ProductNotFoundException;
 import com.ecommerce.api.exceptions.UserNotFoundException;
 import com.ecommerce.api.repositories.ProductRepository;
 import com.ecommerce.api.utils.ProductSpecification;
 import com.ecommerce.api.utils.SearchCriteria;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -112,6 +115,14 @@ public class ProductService {
         Page<Product> productsPage = productRepository.findAll(spec, pageable);
 
         return productsPage.map(ProductDto::new);
+    }
+
+    @Transactional
+    public void editProductRecentlySold(Long itemId, int quantity) {
+        final var optionalProduct = productRepository.findById(itemId).orElseThrow(ProductNotFoundException::new);
+
+        optionalProduct.setRecentlySold(quantity);
+        productRepository.save(optionalProduct);
     }
 }
 
