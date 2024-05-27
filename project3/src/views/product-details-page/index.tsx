@@ -14,8 +14,12 @@ import thankYouStateAtom from "../../states/thank-you-state";
 import axios from "axios";
 import ImagesSlider from "../../components/images-slider";
 import AddToWishlistBtn from "../../components/add-to-wishlist-btn";
+import ErrorPage from "../error-page";
+import LoadingCircle from "../../components/loading-circle";
+import { getImageURL } from "../../utils/functions";
 
 const ProductDetailsPage: React.FC = () => {
+  const [isLoading, setLoading] = useState(true);
   const [product, setProduct] = useState<Products>();
   const [thankYouValue, setThankYou] =
     useRecoilState<boolean>(thankYouStateAtom);
@@ -32,6 +36,7 @@ const ProductDetailsPage: React.FC = () => {
         );
 
         setProduct(response.data);
+        setLoading(false);
       } catch (error) {
         console.error("Error fetching products:", error);
       }
@@ -45,7 +50,9 @@ const ProductDetailsPage: React.FC = () => {
       {error && <p>There was an error loading the product</p>}
       {!loading && !error && !product && <ErrorPage />}
       {!loading && !error && product && ( */}
-      {product && (
+      {isLoading ? (
+        <LoadingCircle />
+      ) : product ? (
         <>
           <div className="product-details__container">
             <div className="product-details__buy-container">
@@ -57,10 +64,10 @@ const ProductDetailsPage: React.FC = () => {
                   className="product-details__heading-title product-details__heading-title--semi-bold product-details__heading-title--1xl"
                   tabIndex={0}
                 >
-                  {product?.name}
+                  {product.name}
                 </h1>
                 <p className="product-details__heading-info" tabIndex={0}>
-                  {product?.color}
+                  {product.color}
                 </p>
               </div>
               <AddToWishlistBtn productId={product.id} />
@@ -71,8 +78,8 @@ const ProductDetailsPage: React.FC = () => {
               ) : (
                 <img
                   className="product-details__image"
-                  src={product?.images[0]}
-                  alt={product?.name}
+                  src={getImageURL(product.images[0])}
+                  alt={product.name}
                   tabIndex={0}
                 />
               )}
@@ -89,6 +96,8 @@ const ProductDetailsPage: React.FC = () => {
             <Details product={product} />
           </div>
         </>
+      ) : (
+        <ErrorPage />
       )}
       {/* )} */}
     </main>

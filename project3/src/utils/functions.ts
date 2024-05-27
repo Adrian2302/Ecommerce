@@ -98,5 +98,5 @@ export const obtainSelfData = async (token: string) => {
 };
 
 export function getImageURL(url: string) {
-  return new URL(url, import.meta.url).href;
+  return new URL(`../assets/products/${url}`, import.meta.url).href;
 }

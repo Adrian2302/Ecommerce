@@ -20,10 +20,7 @@ const ImagesSlider: React.FC<ImagesSliderProp> = ({ imageSources }) => {
 
   return (
     <div className="image-slider">
-      <img
-        src={getImageURL(`../assets/products/${imageSources[currentImage]}`)}
-        alt="Product"
-      />
+      <img src={getImageURL(imageSources[currentImage])} alt="Product" />
       <Slider
         size="sm"
         aria-label="Product image slider"

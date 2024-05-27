@@ -1,10 +1,31 @@
-.add-product-btn {
-  background-color: $stockx-color;
-  width: 15px;
-  color: white;
-  position: absolute;
-  top: 15px;
-  &--bold {
-    font-weight: $fontWeights-black;
+.add-product {
+  &__btn {
+    background-color: $stockx-color;
+    width: 15px;
+    color: white;
+    position: absolute;
+    top: 15px;
+    &--bold {
+      font-weight: $fontWeights-black;
+    }
+  }
+
+  &__form {
+    &-buy-btn {
+      background-color: $stockx-color;
+      width: 15px;
+      color: white;
+      position: absolute;
+      top: 15px;
+      &--bold {
+        font-weight: $fontWeights-black;
+      }
+    }
+  }
+
+  &__form-error-msg {
+    &--red {
+      color: red;
+    }
   }
 }

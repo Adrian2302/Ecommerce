@@ -94,7 +94,7 @@ const CartItem: React.FC<CartProduct | WishlistProduct> = ({
           <img
             alt={product.name}
             className="cart-item__image"
-            src={getImageURL(`../assets/products/${product.images[0]}`)}
+            src={getImageURL(product.images[0])}
           />
         </div>
         <div className="cart-item__info">

@@ -36,7 +36,7 @@ const ProductItem: React.FC<ProductCard> = ({
         <Link className="product__image-container" to={`/details/${id}`}>
           <Image
             alt={name}
-            src={getImageURL(`../assets/products/${image}`)}
+            src={getImageURL(image)}
             className="product__image"
             classNames={{
               img: "justify-center",

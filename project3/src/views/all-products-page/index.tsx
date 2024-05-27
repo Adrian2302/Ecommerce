@@ -85,7 +85,6 @@ const AllProductsPage: React.FC = () => {
       );
 
       const products = response.data.content;
-
       setFilteredProducts(products);
       setTotalPages(response.data.totalPages);
     } catch (error) {

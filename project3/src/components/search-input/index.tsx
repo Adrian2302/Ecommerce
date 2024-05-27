@@ -22,7 +22,7 @@ const SearchInput: React.FC<SearchInputProps> = ({ onChangeCallback }) => {
       type="text"
       value={value}
       onChange={handleChange}
-      label="Search for brand, color, etc."
+      label="Search product by name."
     />
   );
 };

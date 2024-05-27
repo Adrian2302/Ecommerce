@@ -95,7 +95,7 @@ const WishlistItem: React.FC<WishlistProduct> = ({
           <img
             alt={product.name}
             className="wishlist-item__image"
-            src={getImageURL(`../assets/products/${product.images[0]}`)}
+            src={getImageURL(product.images[0])}
           />
         </div>
         <div className="wishlist-item__info">

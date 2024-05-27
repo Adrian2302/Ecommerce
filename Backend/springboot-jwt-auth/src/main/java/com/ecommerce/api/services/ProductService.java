@@ -47,7 +47,7 @@ public class ProductService {
 //        return productRepository.save(product);
 
         List<Product> products = this.productRepository.findAll();
-        boolean productNameExists = products.stream().anyMatch(product -> product.getName().equals(productDto.getName()));
+        boolean productNameExists = products.stream().anyMatch(product -> product.getName().equalsIgnoreCase(productDto.getName()));
 
         if (productNameExists) {
             throw new ProductAlreadyExistException();

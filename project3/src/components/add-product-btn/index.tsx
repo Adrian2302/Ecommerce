@@ -13,18 +13,18 @@ import {
   useDisclosure,
   Chip,
 } from "@nextui-org/react";
-import { useRecoilValue, useRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 import thankYouStateAtom from "../../states/thank-you-state";
 import tokenStateAtom from "../../states/token-state";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import updateCartStateAtom from "../../states/update-cart-state";
 import plusIcon from "../../assets/icons/plusIcon.svg";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import toast, { Toaster } from "react-hot-toast";
 import { useDropzone } from "react-dropzone";
+import updateManageProductsStateAtom from "../../states/update-manage-products-state";
 
 const schema = z.object({
   product: z.object({
@@ -39,7 +39,6 @@ const schema = z.object({
     releaseYear: z.enum(["2020", "2021", "2022", "2023", "2024"], {
       message: "Select a year",
     }),
-    sizes: z.array(z.string()),
   }),
 });
 
@@ -63,6 +62,10 @@ const AddProductBtn: React.FC = () => {
   const [files, setFiles] = useState<File[]>([]);
   const [sizes, setSizes] = useState<string[]>([]);
   const [newSize, setNewSize] = useState<string>("");
+  const [backendError, setBackendError] = useState("");
+  const [updateProducts, setUpdateProducts] = useRecoilState(
+    updateManageProductsStateAtom
+  );
 
   const handleAddSize = () => {
     if (newSize.trim() !== "") {
@@ -78,6 +81,8 @@ const AddProductBtn: React.FC = () => {
   const {
     register,
     handleSubmit,
+    reset,
+    setValue,
     formState: { errors, isSubmitting },
   } = useForm<FormFields>({
     resolver: zodResolver(schema),
@@ -101,46 +106,64 @@ const AddProductBtn: React.FC = () => {
     try {
       const imageNames = getFileNames(files);
 
-      await axios.post<void>(
-        `http://localhost:8080/api/product`,
-        {
-          name: data.product.name,
-          smallDescription: data.product.smallDescription,
-          fullDescription: data.product.fullDescription,
-          category: data.product.category,
-          brand: data.product.brand,
-          color: data.product.color,
-          retailPrice: data.product.retailPrice,
-          price: data.product.price,
-          recentlySold: 0,
-          releaseYear: data.product.releaseYear,
-          sizes: sizes,
-          images: imageNames,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
+      if (imageNames.length >= 1) {
+        await axios.post<void>(
+          `http://localhost:8080/api/product`,
+          {
+            name: data.product.name,
+            smallDescription: data.product.smallDescription,
+            fullDescription: data.product.fullDescription,
+            category: data.product.category,
+            brand: data.product.brand,
+            color: data.product.color,
+            retailPrice: data.product.retailPrice,
+            price: data.product.price,
+            recentlySold: 0,
+            releaseYear: data.product.releaseYear,
+            sizes: sizes,
+            images: imageNames,
           },
-        }
-      );
-
-      for (const file of files) {
-        const formData = new FormData();
-        formData.append("file", file);
-
-        await axios.post<string>(
-          `http://localhost:8080/api/upload/image`,
-          formData,
           {
             headers: {
               Authorization: `Bearer ${token}`,
             },
           }
         );
+
+        for (const file of files) {
+          const formData = new FormData();
+          formData.append("file", file);
+
+          await axios.post<string>(
+            `http://localhost:8080/api/upload/image`,
+            formData,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+        }
+        setUpdateProducts(!updateProducts);
+        toast.success("Product added!");
+        setBackendError("");
+        reset();
+        setValue("product.name", "");
+        setValue("product.smallDescription", "");
+        setValue("product.fullDescription", "");
+        setValue("product.category", "");
+        setValue("product.brand", "");
+        setValue("product.color", "");
+        setValue("product.price", "");
+        setValue("product.retailPrice", "");
+        setValue("product.category", "");
+        setFiles([]);
+        setSizes([]);
+      } else {
+        setBackendError("Please add at least 1 image");
       }
-      onOpen;
-      toast.success("Product added!");
     } catch (error: any) {
+      setBackendError(error.response.data.description);
       console.log(error);
       if (error.response && error.response.status === 440) {
         setToken(null);
@@ -157,7 +180,7 @@ const AddProductBtn: React.FC = () => {
     <>
       <Button
         isIconOnly
-        className="add-product-btn add-product-btn--bold bg-[$stockx-color] text-[$white] absolute top-[15px] right-[15px]"
+        className="add-product__btn add-product__btn--bold bg-[$stockx-color] text-[$white] absolute top-[15px] right-[15px]"
         radius="full"
         onPress={onOpen}
       >
@@ -180,6 +203,9 @@ const AddProductBtn: React.FC = () => {
               <Divider />
               <form onSubmit={handleSubmit(onSubmit)}>
                 <ModalBody className="max-h-[70vh] overflow-auto">
+                  {backendError && (
+                    <p className="text-[#bb2c2c]">{backendError}</p>
+                  )}
                   <Input
                     {...register("product.name")}
                     type="text"
@@ -188,7 +214,7 @@ const AddProductBtn: React.FC = () => {
                     placeholder="Enter the product's name"
                   />
                   {errors.product?.name && (
-                    <div className="checkout-form__error-msg--red">
+                    <div className="add-product__form-error-msg--red">
                       {errors.product.name.message}
                     </div>
                   )}
@@ -200,7 +226,7 @@ const AddProductBtn: React.FC = () => {
                     placeholder="Enter small description"
                   />
                   {errors.product?.smallDescription && (
-                    <div className="checkout-form__error-msg--red">
+                    <div className="add-product__form-error-msg--red">
                       {errors.product.smallDescription.message}
                     </div>
                   )}
@@ -211,7 +237,7 @@ const AddProductBtn: React.FC = () => {
                     // isRequired
                   />
                   {errors.product?.fullDescription && (
-                    <div className="checkout-form__error-msg--red">
+                    <div className="add-product__form-error-msg--red">
                       {errors.product.fullDescription.message}
                     </div>
                   )}
@@ -223,7 +249,7 @@ const AddProductBtn: React.FC = () => {
                     placeholder="Enter the product's brand"
                   />
                   {errors.product?.brand && (
-                    <div className="checkout-form__error-msg--red">
+                    <div className="add-product__form-error-msg--red">
                       {errors.product.brand.message}
                     </div>
                   )}
@@ -235,7 +261,7 @@ const AddProductBtn: React.FC = () => {
                     placeholder="Enter the product's category"
                   />
                   {errors.product?.category && (
-                    <div className="checkout-form__error-msg--red">
+                    <div className="add-product__form-error-msg--red">
                       {errors.product.category.message}
                     </div>
                   )}
@@ -247,7 +273,7 @@ const AddProductBtn: React.FC = () => {
                     placeholder="Enter the product's color"
                   />
                   {errors.product?.category && (
-                    <div className="checkout-form__error-msg--red">
+                    <div className="add-product__form-error-msg--red">
                       {errors.product.category.message}
                     </div>
                   )}
@@ -259,7 +285,7 @@ const AddProductBtn: React.FC = () => {
                     placeholder="Enter the product's retail price"
                   />
                   {errors.product?.retailPrice && (
-                    <div className="checkout-form__error-msg--red">
+                    <div className="add-product__form-error-msg--red">
                       {errors.product.retailPrice.message}
                     </div>
                   )}
@@ -271,7 +297,7 @@ const AddProductBtn: React.FC = () => {
                     placeholder="Enter the product's price"
                   />
                   {errors.product?.price && (
-                    <div className="checkout-form__error-msg--red">
+                    <div className="add-product__form-error-msg--red">
                       {errors.product.price.message}
                     </div>
                   )}
@@ -291,7 +317,7 @@ const AddProductBtn: React.FC = () => {
                     ))}
                   </select>
                   {errors.product?.releaseYear && (
-                    <div className="checkout-form__error-msg--red">
+                    <div className="add-product__form-error-msg--red">
                       {errors.product.releaseYear.message}
                     </div>
                   )}
@@ -353,7 +379,7 @@ const AddProductBtn: React.FC = () => {
                   <Button
                     disabled={isSubmitting}
                     type="submit"
-                    className="checkout-form__buy-btn bg-[$stockx-color] text-[$white] w-[3rem]"
+                    className="add-product__form-buy-btn bg-[$stockx-color] text-[$white] w-[3rem]"
                   >
                     {isSubmitting ? "Loading..." : "Create"}
                   </Button>

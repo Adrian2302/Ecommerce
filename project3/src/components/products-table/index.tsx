@@ -20,8 +20,10 @@ import SearchInput from "../search-input";
 import AddProductBtn from "../add-product-btn";
 import ManageProductItem from "../manage-product-item";
 import Pagination from "../../components/pagination";
+import updateManageProductsStateAtom from "../../states/update-manage-products-state";
 
 const ProductsTable: React.FC = () => {
+  const updateProducts = useRecoilValue(updateManageProductsStateAtom);
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [isLoading, setLoading] = useState(true);
   const navigate = useNavigate();
@@ -61,7 +63,7 @@ const ProductsTable: React.FC = () => {
 
   useEffect(() => {
     fetchProducts();
-  }, [searchTerm, currentPage]);
+  }, [searchTerm, currentPage, updateProducts]);
 
   useEffect(() => {
     setCurrentPage(1);
@@ -85,8 +87,8 @@ const ProductsTable: React.FC = () => {
           <div className="w-full">
             <SearchInput onChangeCallback={handleSearchChange} />
             <CartList
-              children={productsList.map((product) => (
-                <ManageProductItem product={product} />
+              children={productsList.map((product, index) => (
+                <ManageProductItem key={index} product={product} />
               ))}
               animation={false}
             />
