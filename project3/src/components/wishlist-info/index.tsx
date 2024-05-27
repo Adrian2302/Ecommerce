@@ -42,12 +42,7 @@ const WishlistInfo: React.FC<WishlistInfoProps> = ({ cartItems }) => {
       console.log(`update en wishlist info: ${updateCart}`);
     } catch (error: any) {
       console.log(`El error: ${error.response.data.description}`);
-      if (
-        error.response &&
-        error.response.status === 440
-        //   //  || error.response.status === 403
-        //   || error.response.status === 500
-      ) {
+      if (error.response && error.response.status === 440) {
         setToken(null);
         navigate("/login");
       }

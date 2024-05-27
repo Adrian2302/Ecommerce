@@ -1,6 +1,6 @@
 import "./styles.scss";
 import React from "react";
-import { Card, Input } from "@nextui-org/react";
+import { Button, Card, useDisclosure } from "@nextui-org/react";
 import { Products } from "../../models/components-props";
 import { useRecoilState } from "recoil";
 import { getImageURL } from "../../utils/functions";
@@ -9,6 +9,7 @@ import axios from "axios";
 import tokenStateAtom from "../../states/token-state";
 import toast, { Toaster } from "react-hot-toast";
 import updateManageProductsStateAtom from "../../states/update-manage-products-state";
+import editIcon from "../../assets/icons/editIcon.svg";
 
 interface ManageProductItemProps {
   product: Products;
@@ -20,6 +21,7 @@ const ManageProductItem: React.FC<ManageProductItemProps> = ({ product }) => {
   const [updateProducts, setUpdateProducts] = useRecoilState(
     updateManageProductsStateAtom
   );
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   const clickRemove = async () => {
     try {
@@ -35,8 +37,10 @@ const ManageProductItem: React.FC<ManageProductItemProps> = ({ product }) => {
       toast.success("Product removed!");
     } catch (error: any) {
       console.log(`El error: ${error.response.data.description}`);
-      setToken(null);
-      navigate("/login");
+      if (error.response && error.response.status === 440) {
+        setToken(null);
+        navigate("/login");
+      }
     }
   };
 
@@ -67,9 +71,14 @@ const ManageProductItem: React.FC<ManageProductItemProps> = ({ product }) => {
               {product.releaseYear} | {product.color}
             </p>
           </div>
-          <p className="manage-product-item__price manage-product-item__price--bold manage-product-item__price--xl">
+          {/* <p className="manage-product-item__price manage-product-item__price--bold manage-product-item__price--xl">
             ${product.price}
-          </p>
+          </p> */}
+          <div className="manage-product-item__edit-btn-container">
+            <Button isIconOnly radius="full" onPress={onOpen}>
+              <img src={editIcon} />
+            </Button>
+          </div>
         </div>
       </Card>
       <Toaster />

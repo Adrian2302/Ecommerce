@@ -48,8 +48,10 @@ const ShoppingCartPage: React.FC = () => {
       setLoading(false);
     } catch (error: any) {
       console.log(`El error: ${error.response.data.description}`);
-      setToken(null);
-      navigate("/login");
+      if (error.response && error.response.status === 440) {
+        setToken(null);
+        navigate("/login");
+      }
     }
   };
 

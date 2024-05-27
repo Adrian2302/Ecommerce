@@ -11,7 +11,7 @@ import {
   Badge,
   Button,
 } from "@nextui-org/react";
-import { useLocation, Link } from "react-router-dom";
+import { useLocation, Link, useNavigate } from "react-router-dom";
 import logo from "../../assets/icons/stockx-logo.png";
 import shoppingBag from "../../assets/icons/shopping-bag.svg";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
@@ -30,6 +30,7 @@ const Header = () => {
   const [token, setToken] = useRecoilState(tokenStateAtom);
   const [totalQuantity, setQuantity] = useState<number>();
   const setShoppingCartList = useSetRecoilState(shoppingCartStateAtom);
+  const navigate = useNavigate();
 
   // const cartItem = useRecoilValue(cartItemStateAtom);
 
@@ -52,6 +53,10 @@ const Header = () => {
       setQuantity(calculateQuantity(fetchedShoppingCartList.data.items));
     } catch (error: any) {
       console.log(`El error: ${error.response.data.description}`);
+      if (error.response && error.response.status === 440) {
+        setToken(null);
+        navigate("/login");
+      }
     }
   };
 

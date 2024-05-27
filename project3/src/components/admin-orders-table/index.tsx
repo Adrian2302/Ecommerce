@@ -36,7 +36,6 @@ const AdminOrdersTable: React.FC = () => {
       );
       setOrders(fetchedOrders.data);
       setLoading(false);
-      console.log(fetchedOrders);
     } catch (error: any) {
       console.log(`El error: ${error.response.data.description}`);
       if (error.response && error.response.status === 440) {

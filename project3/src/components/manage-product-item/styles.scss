@@ -33,14 +33,10 @@
     display: flex;
   }
 
-  &__price {
-    display: flex;
-    justify-content: center;
-    &--bold {
-      font-weight: $fontWeights-bold;
-    }
-    &--xl {
-      font-size: $fontSizes-xl;
+  &__edit-btn {
+    &-container {
+      display: flex;
+      justify-content: center;
     }
   }
 }

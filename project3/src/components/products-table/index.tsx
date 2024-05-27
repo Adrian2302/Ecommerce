@@ -56,8 +56,6 @@ const ProductsTable: React.FC = () => {
       setLoading(false);
     } catch (error: any) {
       console.log(`El error: ${error.response.data.description}`);
-      // setToken(null);
-      // navigate("/login");
     }
   };
 

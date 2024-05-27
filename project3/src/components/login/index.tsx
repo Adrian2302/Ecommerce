@@ -32,7 +32,6 @@ const Login: React.FC<LoginProps> = ({ setSelected }) => {
       setToken(response.data.token);
       navigate("/home");
     } catch (error: any) {
-      // console.error("Error fetching user info:", error);
       setError(error.response.data.description);
     }
   };
