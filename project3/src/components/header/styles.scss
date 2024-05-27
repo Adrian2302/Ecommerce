@@ -8,6 +8,12 @@
   &__shopping-bag {
     max-width: rem(38);
   }
+
+  &__logout-btn {
+    &--red {
+      color: $red;
+    }
+  }
 }
 
 header {

@@ -10,12 +10,17 @@ import {
   NavbarMenuItem,
   Badge,
   Button,
+  Dropdown,
+  DropdownTrigger,
+  Avatar,
+  DropdownMenu,
+  DropdownItem,
 } from "@nextui-org/react";
 import { useLocation, Link, useNavigate } from "react-router-dom";
 import logo from "../../assets/icons/stockx-logo.png";
+import profileIcon from "../../assets/icons/profile-icon.svg";
 import shoppingBag from "../../assets/icons/shopping-bag.svg";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
-// import cartItemStateAtom from "../../states/cart-item-state";
 import { calculateQuantity } from "../../utils/functions";
 import tokenStateAtom from "../../states/token-state";
 import shoppingCartStateAtom from "../../states/shoppingcart-state";
@@ -31,8 +36,6 @@ const Header = () => {
   const [totalQuantity, setQuantity] = useState<number>();
   const setShoppingCartList = useSetRecoilState(shoppingCartStateAtom);
   const navigate = useNavigate();
-
-  // const cartItem = useRecoilValue(cartItemStateAtom);
 
   function ClickHandlerFalse() {
     setToken(null);
@@ -64,11 +67,6 @@ const Header = () => {
     fetchShoppingCartItems();
   }, [updateCart, token]);
 
-  // function ClickHandlerTrue() {
-  //   // localStorage.setItem("isLoggedIn", "true");
-  //   setToken("true");
-  // }
-
   return (
     <Navbar
       onMenuOpenChange={setIsMenuOpen}
@@ -77,7 +75,7 @@ const Header = () => {
     >
       <NavbarContent>
         <NavbarMenuToggle
-          tabIndex={0}
+          tabIndex={isMenuOpen ? 0 : -1} // Ajusta el tabIndex dependiendo del estado del menú
           as={"li"}
           aria-label={isMenuOpen ? "Close menu" : "Open menu"}
           className="sm:hidden"
@@ -90,28 +88,25 @@ const Header = () => {
       </NavbarContent>
 
       <NavbarContent className="hidden sm:flex gap-4" justify="center">
-        <NavbarItem isActive={pathname === "/home" ? true : false}>
+        <NavbarItem isActive={pathname === "/home"}>
           <Link to="/home">Home</Link>
         </NavbarItem>
-        <NavbarItem isActive={pathname === "/all-products" ? true : false}>
+        <NavbarItem isActive={pathname === "/all-products"}>
           <Link to="/all-products">All products</Link>
         </NavbarItem>
-        {token !== null ? (
-          <NavbarItem isActive={pathname === "/wishlist" ? true : false}>
+        {token !== null && (
+          <NavbarItem isActive={pathname === "/wishlist"}>
             <Link to="/wishlist">Wishlist</Link>
           </NavbarItem>
-        ) : null}
-        {token !== null && totalQuantity! > 0 ? (
-          <NavbarItem isActive={pathname === "/checkout" ? true : false}>
+        )}
+        {token !== null && totalQuantity! > 0 && (
+          <NavbarItem isActive={pathname === "/checkout"}>
             <Link to="/checkout">Checkout</Link>
           </NavbarItem>
-        ) : null}
+        )}
       </NavbarContent>
       <NavbarContent justify="end">
-        <NavbarItem
-          className="lg:flex"
-          isActive={pathname === "/login" ? true : false}
-        >
+        <NavbarItem className="lg:flex" isActive={pathname === "/login"}>
           {token === null ? (
             <Link to="/login">Login</Link>
           ) : (
@@ -123,19 +118,42 @@ const Header = () => {
                 <img
                   className="header__shopping-bag"
                   src={shoppingBag}
-                  alt="StockX Logo"
+                  alt="Shopping Bag"
                 />
               </Link>
             </Badge>
           )}
         </NavbarItem>
-        {token !== null ? (
+        {token !== null && (
           <NavbarItem className="lg:flex">
-            <Link to="/login">
-              <Button onClick={ClickHandlerFalse}>Log out</Button>
-            </Link>
+            <Dropdown placement="bottom-end">
+              <DropdownTrigger>
+                <Avatar
+                  as="button"
+                  className="transition-transform bg-[white]"
+                  src={profileIcon}
+                />
+              </DropdownTrigger>
+              <DropdownMenu aria-label="Profile Actions" variant="flat">
+                <DropdownItem key="profile">
+                  <Link to="/profile">
+                    <button className="w-full text-left">Dashboard</button>
+                  </Link>
+                </DropdownItem>
+                <DropdownItem key="logout" color="danger">
+                  <Link to="/login">
+                    <button
+                      onClick={ClickHandlerFalse}
+                      className="header__logout-btn w-full text-left"
+                    >
+                      <p className="header__logout-btn--red">Log out</p>
+                    </button>
+                  </Link>
+                </DropdownItem>
+              </DropdownMenu>
+            </Dropdown>
           </NavbarItem>
-        ) : null}
+        )}
       </NavbarContent>
       <NavbarMenu>
         <NavbarMenuItem>
@@ -144,17 +162,17 @@ const Header = () => {
         <NavbarMenuItem>
           <Link to={"/all-products"}>All Products</Link>
         </NavbarMenuItem>
-        {token !== null ? (
+        {token !== null && (
           <NavbarMenuItem>
             <Link to={"/wishlist"}>Wishlist</Link>
           </NavbarMenuItem>
-        ) : null}
-        {token !== null && totalQuantity! > 0 ? (
+        )}
+        {token !== null && totalQuantity! > 0 && (
           <NavbarMenuItem>
             <Link to={"/checkout"}>Checkout</Link>
           </NavbarMenuItem>
-        ) : null}
-        {token !== null ? (
+        )}
+        {token !== null && (
           <NavbarMenuItem>
             <Link to={"/login"}>
               <Button type="button" onClick={ClickHandlerFalse}>
@@ -162,7 +180,7 @@ const Header = () => {
               </Button>
             </Link>
           </NavbarMenuItem>
-        ) : null}
+        )}
       </NavbarMenu>
     </Navbar>
   );
