@@ -79,6 +79,7 @@ const WishlistPage: React.FC = () => {
             ) : (
               <>
                 <CartList
+                  animation={true}
                   children={wishlist.map((item) => (
                     <WishlistItem
                       key={item.id}

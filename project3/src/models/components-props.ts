@@ -119,3 +119,8 @@ export interface UserData {
   role: Role;
   orders: Order[];
 }
+
+export interface ProductsApiResponse {
+  content: Products[];
+  totalPages: number;
+}

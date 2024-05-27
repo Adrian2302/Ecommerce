@@ -12,11 +12,7 @@ import { Accordion, AccordionItem, Slider } from "@nextui-org/react";
 import thankYouStateAtom from "../../states/thank-you-state";
 import { useRecoilState } from "recoil";
 import LoadingCircle from "../../components/loading-circle";
-
-interface ProductsApiResponse {
-  content: Products[];
-  totalPages: number;
-}
+import { ProductsApiResponse } from "../../models/components-props";
 
 const AllProductsPage: React.FC = () => {
   const [isLoading, setLoading] = useState(true);
@@ -32,6 +28,7 @@ const AllProductsPage: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const POSTSPERPAGE = 10;
+
   const [thankYouValue, setThankYou] =
     useRecoilState<boolean>(thankYouStateAtom);
   if (thankYouValue) {
@@ -153,7 +150,7 @@ const AllProductsPage: React.FC = () => {
             />
             <CheckboxFilter
               title="Date"
-              filter={["2020", "2021", "2022", "2023"]}
+              filter={["2020", "2021", "2022", "2023", "2024"]}
               onChangeCallback={handleDateChange}
             />
             {/* <PriceFilter onChangeCallback={handlePriceRangeChange} /> */}

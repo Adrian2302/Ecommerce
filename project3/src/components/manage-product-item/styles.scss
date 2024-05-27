@@ -1,0 +1,46 @@
+.wishlist-item {
+  display: grid;
+  padding: rem(16);
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  grid-template-columns: 1fr 1fr 1fr;
+  justify-content: center;
+
+  &__remove-btn {
+    position: absolute;
+    top: 0; /* Adjust this value as needed */
+    right: 20px;
+    &--big {
+      font-size: rem(32);
+    }
+  }
+
+  &__image {
+    width: rem(200);
+    min-width: rem(130);
+    object-fit: cover;
+  }
+
+  &__info {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  &__quantity {
+    max-width: rem(70);
+    display: flex;
+  }
+
+  &__price {
+    display: flex;
+    justify-content: center;
+    &--bold {
+      font-weight: $fontWeights-bold;
+    }
+    &--xl {
+      font-size: $fontSizes-xl;
+    }
+  }
+}

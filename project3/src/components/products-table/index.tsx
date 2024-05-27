@@ -14,51 +14,58 @@ import { useNavigate } from "react-router-dom";
 import updateCartStateAtom from "../../states/update-cart-state";
 import LoadingCircle from "../../components/loading-circle";
 import CartItem from "../../components/cart-item";
-import { ShoppingCartListApiResponse } from "../../models/components-props";
+import { Products, ProductsApiResponse } from "../../models/components-props";
 import shoppingCartStateAtom from "../../states/shoppingcart-state";
 import SearchInput from "../search-input";
 import AddProductBtn from "../add-product-btn";
+import ManageProductItem from "../manage-product-item";
+import Pagination from "../../components/pagination";
 
 const ProductsTable: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
-  const updateCart = useRecoilValue(updateCartStateAtom);
   const [isLoading, setLoading] = useState(true);
   const navigate = useNavigate();
   const [token, setToken] = useRecoilState(tokenStateAtom);
   const [thankYouValue, setThankYou] =
     useRecoilState<boolean>(thankYouStateAtom);
-  const [shoppingCartList, setShoppingCartList] = useRecoilState(
-    shoppingCartStateAtom
-  );
+  const [productsList, setProductsList] = useState<Products[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
+  const POSTSPERPAGE = 10;
 
   if (thankYouValue) {
     setThankYou(false);
   }
 
-  const fetchShoppingCartItems = async () => {
+  const fetchProducts = async () => {
     try {
-      const fetchedShoppingCartList =
-        await axios.get<ShoppingCartListApiResponse>(
-          `http://localhost:8080/api/cart`,
-          {
-            headers: {
-              Authorization: `Bearer ${token === undefined ? null : token}`,
-            },
-          }
-        );
-      setShoppingCartList(fetchedShoppingCartList.data.items);
+      const fetchedProductsList = await axios.get<ProductsApiResponse>(
+        "http://localhost:8080/api/product/filter",
+        {
+          params: {
+            name: searchTerm,
+            page: currentPage - 1,
+            size: POSTSPERPAGE,
+          },
+        }
+      );
+      setProductsList(fetchedProductsList.data.content);
+      setTotalPages(fetchedProductsList.data.totalPages);
       setLoading(false);
     } catch (error: any) {
       console.log(`El error: ${error.response.data.description}`);
-      setToken(null);
-      navigate("/login");
+      // setToken(null);
+      // navigate("/login");
     }
   };
 
   useEffect(() => {
-    fetchShoppingCartItems();
-    console.log(`update en shoppingcart: ${updateCart}`);
-  }, [updateCart]);
+    fetchProducts();
+  }, [searchTerm, currentPage]);
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchTerm]);
 
   const handleSearchChange = (value: string) => {
     setSearchTerm(value);
@@ -75,28 +82,21 @@ const ProductsTable: React.FC = () => {
         {isLoading ? (
           <LoadingCircle />
         ) : (
-          <>
-            {shoppingCartList.length === 0 ? (
-              <EmptyCart />
-            ) : (
-              <>
-                <SearchInput onChangeCallback={handleSearchChange} />
-                {/* <CartList
-                  children={shoppingCartList.map((item) => (
-                    <CartItem
-                      key={item.id}
-                      id={item.id}
-                      product={item.product}
-                      price={item.price}
-                      size={item.size}
-                      quantity={item.quantity}
-                    />
-                  ))}
-                />
-                <CartInfo cartItems={shoppingCartList} /> */}
-              </>
-            )}
-          </>
+          <div className="w-full">
+            <SearchInput onChangeCallback={handleSearchChange} />
+            <CartList
+              children={productsList.map((product) => (
+                <ManageProductItem product={product} />
+              ))}
+              animation={false}
+            />
+            <Pagination
+              totalPosts={totalPages * POSTSPERPAGE}
+              postsPerPage={POSTSPERPAGE}
+              setCurrentPage={setCurrentPage}
+              currentPage={currentPage}
+            />
+          </div>
         )}
       </div>
     </main>

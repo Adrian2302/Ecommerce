@@ -66,15 +66,15 @@ const ProductDetailsPage: React.FC = () => {
               <AddToWishlistBtn productId={product.id} />
             </div>
             <div className="product-details__image-container">
-              {product!.images.length === 1 ? (
+              {product.images.length > 1 ? (
+                <ImagesSlider imageSources={product!.images} />
+              ) : (
                 <img
                   className="product-details__image"
                   src={product?.images[0]}
                   alt={product?.name}
                   tabIndex={0}
                 />
-              ) : (
-                <ImagesSlider imageSources={product!.images} />
               )}
             </div>
             <div className="product-details__performance-container">

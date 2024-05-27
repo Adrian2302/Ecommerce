@@ -74,6 +74,7 @@ const ShoppingCartPage: React.FC = () => {
             ) : (
               <>
                 <CartList
+                  animation={true}
                   children={shoppingCartList.map((item) => (
                     <CartItem
                       key={item.id}

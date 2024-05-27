@@ -10,6 +10,8 @@ const range = 1;
 const getImageIndex = (value: number) => Math.floor(value / range);
 
 const ImagesSlider: React.FC<ImagesSliderProp> = ({ imageSources }) => {
+  // imageSources = imageSources.sort();
+  // console.log(imageSources);
   const [currentImage, setCurrentImage] = useState<number>(0);
 
   const selectImage = (value: number) => {
