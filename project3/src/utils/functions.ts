@@ -1,7 +1,6 @@
 import { CartProduct } from "../models/components-props";
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import axios from "axios";
 
 export function calculateTotalPrice(cartItems: CartProduct[]): number {
   return cartItems.reduce(

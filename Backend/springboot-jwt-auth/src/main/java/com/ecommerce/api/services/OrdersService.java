@@ -3,17 +3,12 @@ package com.ecommerce.api.services;
 import com.ecommerce.api.dtos.OrdersDto;
 import com.ecommerce.api.dtos.UserDto;
 import com.ecommerce.api.entities.*;
-import com.ecommerce.api.exceptions.InvalidCreditCardException;
-import com.ecommerce.api.exceptions.OrderNotFoundException;
-import com.ecommerce.api.repositories.*;
-import com.ecommerce.api.dtos.*;
-import com.ecommerce.api.entities.*;
-import com.ecommerce.api.exceptions.ProductNotFoundException;
-import com.ecommerce.api.exceptions.UserNotFoundException;
+import com.ecommerce.api.exceptions.*;
 import com.ecommerce.api.repositories.*;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import java.time.LocalDate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,12 +35,12 @@ public class OrdersService {
     public OrdersDto createOrder(Integer userId, OrdersDto newOrderDto) {
         User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
 
+        validateOrder(newOrderDto);
         ShoppingCart userShoppingCart = shoppingCartRepository.findByUserId(userId);
 
         final var shortCardNumber = String.valueOf(newOrderDto.getCardNumber()).substring(String.valueOf(newOrderDto.getCardNumber()).length()-3);
-        Long newCardNumber = Long.parseLong(shortCardNumber);
 
-        newOrderDto.setCardNumber(newCardNumber);
+        newOrderDto.setCardNumber(shortCardNumber);
         newOrderDto.setUser(new UserDto(user));
         Orders newOrder = new Orders(newOrderDto);
         newOrder.setItems(new ArrayList<>());
@@ -96,10 +91,31 @@ public class OrdersService {
         if(!validateCreditCard(newOrderDto.getCardNumber())){
             throw new InvalidCreditCardException();
         }
+        if(newOrderDto.getAddress1() == null){
+            throw new InvalidAddressException();
+        }
+        if(newOrderDto.getCity() == null){
+            throw new InvalidCityException();
+        }
+        if(newOrderDto.getProvince() == null){
+            throw new InvalidProvinceException();
+        }
+        if(newOrderDto.getZipCode().toString().length() != 5){
+            throw new InvalidZipCodeException();
+        }
+        if(newOrderDto.getCardHolderName() == null){
+            throw new InvalidCardHolderNameException();
+        }
+        if(!validDate(newOrderDto.getExpirationDate())){
+            throw new InvalidExpirationDateException();
+        }
+        if(newOrderDto.getCvv().toString().length() != 3){
+            throw new InvalidCvvException();
+        }
     }
 
-    public static boolean validateCreditCard(Long cardNumber) {
-        String cleanedNumber = cardNumber.toString().replaceAll("\\D", "");
+    public static boolean validateCreditCard(String cardNumber) {
+        String cleanedNumber = cardNumber.replaceAll("\\D", "");
 
         boolean isVisa = cleanedNumber.matches("^4\\d{12}(?:\\d{3})?$");
         boolean isMastercard = cleanedNumber.matches("^5[1-5]\\d{14}$");
@@ -125,6 +141,29 @@ public class OrdersService {
             alternate = !alternate;
         }
         return (sum % 10 == 0);
+    }
+
+    public static boolean validDate(String expirationDate) {
+        if (!expirationDate.matches("^\\d{2}/\\d{2}$")) {
+            return false;
+        }
+
+        String[] parts = expirationDate.split("/");
+        int month;
+        int year;
+        try {
+            month = Integer.parseInt(parts[0]);
+            year = Integer.parseInt(parts[1]);
+        } catch (NumberFormatException e) {
+            return false;
+        }
+
+        LocalDate currentDate = LocalDate.now();
+        int currentYear = currentDate.getYear() % 100;
+        int currentMonth = currentDate.getMonthValue();
+
+        return (year > currentYear && month >= 1 && month <= 12) ||
+                (year == currentYear && month > currentMonth && month <= 12);
     }
 }
 

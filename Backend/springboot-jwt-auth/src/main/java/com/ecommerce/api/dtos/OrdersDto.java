@@ -19,13 +19,13 @@ public class OrdersDto {
     private String city;
     private String province;
     private Long zipCode;
-    private Long cardNumber;
+    private String cardNumber;
     private String cardHolderName;
     private StatusEnum status;
     private String expirationDate;
     private Long cvv;
 
-    public OrdersDto(Long id, UserDto user, List<OrdersItem> items, double price, Date purchaseDate, String address1, String address2, String city, String province, Long zipCode, Long cardNumber, String cardHolderName, StatusEnum status, String expirationDate) {
+    public OrdersDto(Long id, UserDto user, List<OrdersItem> items, double price, Date purchaseDate, String address1, String address2, String city, String province, Long zipCode, String cardNumber, String cardHolderName, StatusEnum status, String expirationDate) {
         this.id = id;
         this.user = user;
         this.items = items;
@@ -138,11 +138,11 @@ public class OrdersDto {
         this.zipCode = zipCode;
     }
 
-    public Long getCardNumber() {
+    public String getCardNumber() {
         return cardNumber;
     }
 
-    public void setCardNumber(Long cardNumber) {
+    public void setCardNumber(String cardNumber) {
         this.cardNumber = cardNumber;
     }
 

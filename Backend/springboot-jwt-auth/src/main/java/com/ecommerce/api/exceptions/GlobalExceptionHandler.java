@@ -137,6 +137,36 @@ public class GlobalExceptionHandler {
             errorDetail.setProperty("description", "Invalid credit card.");
         }
 
+        if (exception instanceof InvalidAddressException) {
+            errorDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(401), exception.getMessage());
+            errorDetail.setProperty("description", "Address can't be empty.");
+        }
+
+        if (exception instanceof InvalidProvinceException) {
+            errorDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(401), exception.getMessage());
+            errorDetail.setProperty("description", "Province can't be empty.");
+        }
+
+        if (exception instanceof InvalidZipCodeException) {
+            errorDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(401), exception.getMessage());
+            errorDetail.setProperty("description", "Zip code can't be empty and must be of length 5.");
+        }
+
+        if (exception instanceof InvalidCardHolderNameException) {
+            errorDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(401), exception.getMessage());
+            errorDetail.setProperty("description", "Card holder name can't be empty.");
+        }
+
+        if (exception instanceof InvalidExpirationDateException) {
+            errorDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(401), exception.getMessage());
+            errorDetail.setProperty("description", "Expiration date can't be empty and must be a valid date.");
+        }
+
+        if (exception instanceof InvalidCvvException) {
+            errorDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(401), exception.getMessage());
+            errorDetail.setProperty("description", "CVV can't be empty and must be of length 3.");
+        }
+
         if (errorDetail == null) {
             errorDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(500), exception.getMessage());
             errorDetail.setProperty("description", "Unknown internal server error.");

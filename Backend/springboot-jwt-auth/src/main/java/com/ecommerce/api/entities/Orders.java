@@ -37,7 +37,7 @@ public class Orders {
 //    @JoinColumn(name = "province_id", nullable = false)
     private String province;
     private Long zipCode;
-    private Long cardNumber;
+    private String cardNumber;
     private String cardHolderName;
     private StatusEnum status;
 
@@ -140,11 +140,11 @@ public class Orders {
         this.zipCode = zipCode;
     }
 
-    public Long getCardNumber() {
+    public String getCardNumber() {
         return cardNumber;
     }
 
-    public void setCardNumber(Long cardNumber) {
+    public void setCardNumber(String cardNumber) {
         this.cardNumber = cardNumber;
     }
 
