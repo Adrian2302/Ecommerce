@@ -2,7 +2,6 @@ import "./styles.scss";
 import React from "react";
 import { Card, Input } from "@nextui-org/react";
 import { CartProduct } from "../../models/components-props";
-// import cartItemStateAtom from "../../states/cart-item-state";
 import { useRecoilState } from "recoil";
 import { getImageURL } from "../../utils/functions";
 import { useNavigate } from "react-router-dom";
@@ -17,27 +16,11 @@ const CartItem: React.FC<CartProduct> = ({
   size,
   quantity,
 }) => {
-  // const setCartItem = useSetRecoilState<CartProduct[]>(cartItemStateAtom);
   const navigate = useNavigate();
   const [token, setToken] = useRecoilState(tokenStateAtom);
   const [updateList, setUpdateList] = useRecoilState(updateCartStateAtom);
 
   const modifyItem = async (newQuantity: number) => {
-    // setCartItem((prevCart) => {
-    //   if (newQuantity <= 0) {
-    //     newQuantity = 1;
-    //   }
-    //   return prevCart.map((item: CartProduct) => {
-    //     if (item.size === size && item.id === id) {
-    //       return {
-    //         ...item,
-    //         quantity: newQuantity,
-    //       };
-    //     }
-    //     return item;
-    //   });
-    // });
-    // console.log(newQuantity);
     try {
       await axios.put(
         "http://localhost:8080/api/cart/editQuantity",
@@ -63,13 +46,6 @@ const CartItem: React.FC<CartProduct> = ({
 
   const clickRemove = async () => {
     try {
-      // const getUser = await axios.get("http://localhost:8080/users/me", {
-      //   headers: {
-      //     Authorization: `Bearer ${token === undefined ? null : token}`,
-      //   },
-      // });
-      // const user = getUser.data;
-
       await axios.delete<void>(`http://localhost:8080/api/cart/remove/${id}`, {
         headers: {
           Authorization: `Bearer ${token === undefined ? null : token}`,

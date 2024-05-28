@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import { Divider } from "@nextui-org/react";
 import CartList from "../../components/cart-list";
 import WishlistInfo from "../../components/wishlist-info";
-// import cartItemStateAtom from "../../states/cart-item-state";
 import { useRecoilValue, useRecoilState } from "recoil";
 import { WishlistProduct } from "../../models/components-props";
 import thankYouStateAtom from "../../states/thank-you-state";
@@ -16,10 +15,6 @@ import LoadingCircle from "../../components/loading-circle";
 import WishlistItem from "../../components/wishlist-item";
 import { WishlistApiResponse } from "../../models/components-props";
 
-// interface WishlistApiResponse {
-//   items: WishlistProduct[];
-// }
-
 const WishlistPage: React.FC = () => {
   const updateList = useRecoilValue(updateWishlistStateAtom);
   const [wishlist, setWishlist] = useState<WishlistProduct[]>([]);
@@ -31,17 +26,9 @@ const WishlistPage: React.FC = () => {
   if (thankYouValue) {
     setThankYou(false);
   }
-  // const cartItem = useRecoilValue<CartProduct[]>(cartItemStateAtom);
 
   const fetchWishlistItems = async () => {
     try {
-      //   const fetchUser = await axios.get("http://localhost:8080/users/me", {
-      //     headers: {
-      //       Authorization: `Bearer ${token === undefined ? null : token}`,
-      //     },
-      //   });
-      //   const user = fetchUser.data;
-
       const userWishlist = await axios.get<WishlistApiResponse>(
         `http://localhost:8080/api/wishlist`,
         {

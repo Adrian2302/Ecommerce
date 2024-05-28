@@ -1,12 +1,7 @@
 import "./styles.scss";
 import React, { useState } from "react";
-import {
-  SizeDictionary,
-  ProvinceDictionary,
-} from "../../models/components-props";
 
 interface MySelectProps {
-  // dictionary: SizeDictionary | ProvinceDictionary;
   dictionary: string[];
   onChange: (size: string) => void;
   label: string;

@@ -1,14 +1,10 @@
 .embla {
   padding-top: rem(16);
   &__viewport {
-    // Adjust the width to accommodate multiple slides
-    width: 100%; // You can adjust this value based on your layout requirements
-    // overflow: hidden;
-    // position: relative;
+    width: 100%;
     touch-action: pan-y;
     user-select: none;
     -webkit-tap-highlight-color: transparent;
-    // margin: 0 auto;
     max-width: 100%;
     max-width: rem(512);
     padding: 0 rem(16);
@@ -16,14 +12,13 @@
 
   &__container {
     display: flex;
-    flex-wrap: nowrap; // Ensure slides are displayed in a single row
+    flex-wrap: nowrap;
     height: 100%;
   }
 
   &__slide {
-    // Adjust the width of each slide to fit multiple slides within the viewport
-    flex: 0 0 calc(50% - 10px); // Adjust width to fit two slides with a 10px gap between them
-    margin-right: 10px; // Adjust spacing between slides as needed
+    flex: 0 0 calc(50% - 10px);
+    margin-right: 10px;
     box-sizing: border-box;
     transition: transform 0.3s ease;
   }
@@ -33,26 +28,6 @@
       flex: 0 0 calc(41% - 10px);
     }
   }
-
-  // @include for-tablet-up {
-  //   &__slide {
-  //     flex: 0 0 calc(40% - 10px);
-  //   }
-  // }
-
-  // @include for-tablet-desktop {
-  //   &__slide {
-  //     flex: 0 0 calc(30% - 10px);
-  //   }
-  // }
-
-  // @include for-desktop {
-  //   &__slide {
-  //     flex: 0 0 calc(20% - 10px);
-  //   }
-  // }
-
-  // Add additional styles as needed for responsiveness and layout adjustments
 }
 
 .carousel__btns {

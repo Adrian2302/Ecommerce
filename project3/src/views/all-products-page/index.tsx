@@ -8,7 +8,6 @@ import CheckboxFilter from "../../components/checkbox-filter";
 import useSelectedItems from "../../utils/useSelectedItems";
 import Pagination from "../../components/pagination";
 import { Accordion, AccordionItem, Slider } from "@nextui-org/react";
-// import PriceFilter from "../../components/price-filter";
 import thankYouStateAtom from "../../states/thank-you-state";
 import { useRecoilState } from "recoil";
 import LoadingCircle from "../../components/loading-circle";
@@ -24,7 +23,6 @@ const AllProductsPage: React.FC = () => {
   const [selectedDates, handleDateChange] = useSelectedItems([]);
   const [selectedBrands, handleBrandChange] = useSelectedItems([]);
   const [selectedCategories, handleCategoryChange] = useSelectedItems([]);
-  // const [selectedPriceRanges, handlePriceRangeChange] = useSelectedItems([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const POSTSPERPAGE = 10;
@@ -36,7 +34,6 @@ const AllProductsPage: React.FC = () => {
   }
 
   useEffect(() => {
-    // Fetch unique brands and categories only once when component mounts
     const fetchUniqueBrandsAndCategories = async () => {
       try {
         const response = await axios.get<ProductsApiResponse>(
@@ -74,7 +71,7 @@ const AllProductsPage: React.FC = () => {
           params: {
             brands: formattedBrands,
             categories: formattedCategories,
-            years: formattedYears, //|| undefined,
+            years: formattedYears,
             minPrice: priceRange[0],
             maxPrice: priceRange[1],
             name: searchTerm,
@@ -99,7 +96,6 @@ const AllProductsPage: React.FC = () => {
     selectedBrands,
     selectedCategories,
     selectedDates,
-    // selectedPriceRanges,
     priceRange,
     currentPage,
   ]);
@@ -152,7 +148,6 @@ const AllProductsPage: React.FC = () => {
               filter={["2020", "2021", "2022", "2023", "2024"]}
               onChangeCallback={handleDateChange}
             />
-            {/* <PriceFilter onChangeCallback={handlePriceRangeChange} /> */}
             <Slider
               size="sm"
               aria-label="Price Range slider"
@@ -173,7 +168,6 @@ const AllProductsPage: React.FC = () => {
       ) : (
         <div className="all-products__list">
           {filteredProducts.length === 0 ? (
-            // <Nothing />
             <p>No items match the description</p>
           ) : (
             <ProductList itemList={filteredProducts} />

@@ -1,27 +1,17 @@
 import "./styles.scss";
 import React, { useEffect, useState } from "react";
-import { Button, Divider } from "@nextui-org/react";
+import { Divider } from "@nextui-org/react";
 import CartList from "../../components/cart-list";
-import CartInfo from "../../components/cart-info";
-// import cartItemStateAtom from "../../states/cart-item-state";
 import { useRecoilValue, useRecoilState } from "recoil";
-// import { CartProduct } from "../../models/components-props";
 import thankYouStateAtom from "../../states/thank-you-state";
-import EmptyCart from "../../components/empty-cart";
-import tokenStateAtom from "../../states/token-state";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
-import updateCartStateAtom from "../../states/update-cart-state";
 import LoadingCircle from "../../components/loading-circle";
-import CartItem from "../../components/cart-item";
 import { Products, ProductsApiResponse } from "../../models/components-props";
-import shoppingCartStateAtom from "../../states/shoppingcart-state";
 import SearchInput from "../search-input";
 import AddProductBtn from "../add-product-btn";
 import ManageProductItem from "../manage-product-item";
 import Pagination from "../../components/pagination";
 import updateManageProductsStateAtom from "../../states/update-manage-products-state";
-import { Toaster } from "react-hot-toast";
 
 const ProductsTable: React.FC = () => {
   const updateProducts = useRecoilValue(updateManageProductsStateAtom);

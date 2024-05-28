@@ -110,7 +110,6 @@ const WishlistItem: React.FC<WishlistProduct> = ({
             {product.releaseYear} | {product.color}
           </p>
           {size ? (
-            // <p>Size: {size}</p>
             <>
               <div>
                 <label

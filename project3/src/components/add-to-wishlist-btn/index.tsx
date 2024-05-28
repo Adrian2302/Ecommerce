@@ -18,7 +18,6 @@ const AddToWishlistBtn: React.FC<AddToWishlistBtnProps> = ({ productId }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Fetch unique brands and categories only once when component mounts
     const fetchWishlistItem = async () => {
       try {
         const getUser = await axios.get("http://localhost:8080/users/me", {
@@ -58,14 +57,6 @@ const AddToWishlistBtn: React.FC<AddToWishlistBtnProps> = ({ productId }) => {
       });
       const user = getUser.data;
       if (wished === true) {
-        // await axios.delete<void>(
-        //   `http://localhost:8080/api/wishlist/remove/${user.id}/${productId}`,
-        //   {
-        //     headers: {
-        //       Authorization: `Bearer ${token === undefined ? null : token}`,
-        //     },
-        //   }
-        // );
         await axios.delete<void>(
           `http://localhost:8080/api/wishlist/remove/${productId}`,
           {
@@ -95,7 +86,6 @@ const AddToWishlistBtn: React.FC<AddToWishlistBtnProps> = ({ productId }) => {
       console.log(`El error: ${error.response.data.description}`);
       if (
         (error.response && error.response.status === 440) ||
-        // error.response.status === 403 ||
         error.response.status === 500
       ) {
         setToken(null);
@@ -105,20 +95,9 @@ const AddToWishlistBtn: React.FC<AddToWishlistBtnProps> = ({ productId }) => {
   };
 
   return (
-    <Button
-      isIconOnly
-      className="" //z-10 absolute right-5 top-5;
-      radius="full"
-      variant="light"
-      onPress={() => setLiked()}
-    >
+    <Button isIconOnly radius="full" variant="light" onPress={() => setLiked()}>
       <img
         src={wished === true ? redHeart : blackHeart}
-        // src={blackHeart}
-        // style={{
-        //   filter:
-        //     "invert(24%) sepia(18%) saturate(7080%) hue-rotate(338deg) brightness(97%) contrast(97%)",
-        // }}
         alt="Wishlist button"
       ></img>
     </Button>

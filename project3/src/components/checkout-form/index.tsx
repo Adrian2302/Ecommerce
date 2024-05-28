@@ -3,9 +3,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Button, Divider, Input } from "@nextui-org/react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
-// import cartItemStateAtom from "../../states/cart-item-state";
 import cardStateAtom from "../../states/card-state";
-// import { CartProduct } from "../../models/components-props";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import mastercard from "../../assets/icons/mastercard.jpeg";
 import visa from "../../assets/icons/visa.png";
@@ -72,7 +70,6 @@ type FormFields = z.infer<typeof schema>;
 
 const CheckoutForm: React.FC = () => {
   const [cardState, setCardState] = useRecoilState<string>(cardStateAtom);
-  // const setCartItem = useSetRecoilState<CartProduct[]>(cartItemStateAtom);
   const setThankYou = useSetRecoilState<boolean>(thankYouStateAtom);
   const [token, setToken] = useRecoilState(tokenStateAtom);
   const shoppingCartList = useRecoilValue(shoppingCartStateAtom);
@@ -95,7 +92,6 @@ const CheckoutForm: React.FC = () => {
   const onSubmit: SubmitHandler<FormFields> = async (data) => {
     try {
       console.log(data);
-      // setCartItem([]);
 
       await axios.post<void>(
         `http://localhost:8080/api/order`,
@@ -136,7 +132,6 @@ const CheckoutForm: React.FC = () => {
 
   return (
     <form className="checkout-form__form" onSubmit={handleSubmit(onSubmit)}>
-      {/* Shipping Information */}
       <h2 className="checkout-form__title checkout-form__title--bold checkout-form__title--lg">
         Shipping Info
       </h2>
@@ -207,7 +202,6 @@ const CheckoutForm: React.FC = () => {
         )}
       </div>
 
-      {/* Credit Card Information */}
       <h2 className="checkout-form__title checkout-form__title--bold checkout-form__title--lg">
         Payment Method
       </h2>

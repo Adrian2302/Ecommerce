@@ -16,10 +16,6 @@ import WishlistPage from "./views/wishlist-page";
 import ProfilePage from "./views/profile-page";
 
 function App() {
-  // const [token, setToken] = useRecoilState(tokenStateAtom);
-  // if (token === null) {
-  //   setToken(null);
-  // }
   return (
     <div>
       <Header />
@@ -34,9 +30,6 @@ function App() {
           <Route path="/shopping-cart" Component={ShoppingCartPage} />
           <Route path="/checkout" Component={CheckoutPage} />
           <Route path="/profile" Component={ProfilePage} />
-          {/* <Route element={<AdminRoute />}>
-            <Route path="/admin-home-page" Component={AdminHomePage} />
-          </Route> */}
         </Route>
         <Route path="/" element={<Navigate to="/home" />} />
         <Route path="*" Component={ErrorPage} />

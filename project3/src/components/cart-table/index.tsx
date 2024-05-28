@@ -9,14 +9,11 @@ import {
   getKeyValue,
 } from "@nextui-org/react";
 import { useRecoilValue } from "recoil";
-// import { CartProduct } from "../../models/components-props";
-// import cartItemStateAtom from "../../states/cart-item-state";
 import "./styles.scss";
 import { calculateTotalPrice } from "../../utils/functions";
 import shoppingCartStateAtom from "../../states/shoppingcart-state";
 
 const CartTable: React.FC = () => {
-  // const cartItem = useRecoilValue<CartProduct[]>(cartItemStateAtom);
   const shoppingCartList = useRecoilValue(shoppingCartStateAtom);
   const total = calculateTotalPrice(shoppingCartList);
 

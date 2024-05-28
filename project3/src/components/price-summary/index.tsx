@@ -1,16 +1,10 @@
 import "./styles.scss";
-// import { useRecoilValue } from "recoil";
-// import cartItemStateAtom from "../../states/cart-item-state";
-// import { calculateTotalPrice } from "../../utils/functions";
-// import { CartProduct } from "../../models/components-props";
 
 interface PriceSummaryProps {
   total: number | undefined;
 }
 
 const PriceSummary: React.FC<PriceSummaryProps> = ({ total }) => {
-  // const cartItem = useRecoilValue<CartProduct[]>(cartItemStateAtom);
-  // const total = calculateTotalPrice(cartItem);
   return (
     <div className="price-summary__container">
       <div className="price-summary">

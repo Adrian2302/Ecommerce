@@ -1,7 +1,6 @@
 import "./styles.scss";
 import React, { FormEvent, useState } from "react";
 import { Input, Link, Button } from "@nextui-org/react";
-// import { useNavigate } from "react-router-dom";
 import { useSetRecoilState } from "recoil";
 import tokenStateAtom from "../../states/token-state";
 import axios from "axios";

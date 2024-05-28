@@ -5,7 +5,6 @@ import { Products, ProductsApiResponse } from "../../models/components-props";
 import axios from "axios";
 
 const CarouselFeatured: React.FC = () => {
-  // const filteredItems = itemList.filter((item) => item.recentlySold > 100);
   const [filteredProducts, setFilteredProducts] = useState<Products[]>([]);
 
   const fetchFeaturedProducts = async () => {

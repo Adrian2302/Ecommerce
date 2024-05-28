@@ -75,7 +75,7 @@ const Header = () => {
     >
       <NavbarContent>
         <NavbarMenuToggle
-          tabIndex={isMenuOpen ? 0 : -1} // Ajusta el tabIndex dependiendo del estado del menú
+          tabIndex={isMenuOpen ? 0 : -1}
           as={"li"}
           aria-label={isMenuOpen ? "Close menu" : "Open menu"}
           className="sm:hidden"

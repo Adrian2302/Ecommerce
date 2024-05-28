@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 import { Products } from "../../models/components-props";
 import { Button } from "@nextui-org/react";
 import { useRecoilState } from "recoil";
-// import cartItemStateAtom from "../../states/cart-item-state";
 import MySelect from "../../components/my-select";
 import toast, { Toaster } from "react-hot-toast";
 import tokenStateAtom from "../../states/token-state";
@@ -19,55 +18,7 @@ const BuySection: React.FC<BuySectionProps> = ({ product }) => {
   const [selectedSize, setSelectedSize] = useState<string>();
   const [token, setToken] = useRecoilState(tokenStateAtom);
   const [updateCart, setUpdateCart] = useRecoilState(updateCartStateAtom);
-  // const [cartItem, setCartItem] =
-  //   useRecoilState<CartProduct[]>(cartItemStateAtom);
-
   const navigate = useNavigate();
-
-  // const isProductInCart = (productId: number, size?: string) => {
-  //   return cartItem.some((item) => item.id === productId && item.size === size);
-  // };
-
-  // const AddProduct = () => {
-  //   if (token === null) {
-  //     navigate("/login");
-  //   } else if (product !== undefined) {
-  //     if (isProductInCart(product.id, selectedSize)) {
-  //       toast.error("Product is already in the cart.");
-  //       return;
-  //     }
-  //     if (product.sizes !== undefined) {
-  //       if (!selectedSize) {
-  //         toast.error("Please select a size.");
-  //         return;
-  //       }
-  //       const cartProduct: CartProduct = {
-  //         id: product.id,
-  //         name: product.name,
-  //         image: product.images[0],
-  //         price: product.price,
-  //         color: product.color,
-  //         releaseDate: product.releaseYear,
-  //         size: selectedSize,
-  //         quantity: 1,
-  //       };
-  //       setCartItem((prevCart) => [...prevCart, cartProduct]);
-  //       toast.success("Product added to cart!");
-  //     } else {
-  //       const cartProduct: CartProduct = {
-  //         id: product.id,
-  //         name: product.name,
-  //         image: product.images[0],
-  //         price: product.price,
-  //         color: product.color,
-  //         releaseDate: product.releaseYear,
-  //         quantity: 1,
-  //       };
-  //       setCartItem((prevCart) => [...prevCart, cartProduct]);
-  //       toast.success("Product added to cart!");
-  //     }
-  //   }
-  // };
 
   const AddProduct = async (e: FormEvent) => {
     e.preventDefault();
@@ -97,7 +48,6 @@ const BuySection: React.FC<BuySectionProps> = ({ product }) => {
       console.log(`El error: ${error.response.data.description}`);
       if (
         (error.response && error.response.status === 440) ||
-        // error.response.status === 403 ||
         error.response.status === 500
       ) {
         setToken(null);

@@ -1,7 +1,6 @@
 import "./styles.scss";
 import React, { FormEvent, useState } from "react";
 import { Input, Link, Button } from "@nextui-org/react";
-// import useFetch from "../../utils/useFetch";
 import { useNavigate } from "react-router-dom";
 import { useSetRecoilState } from "recoil";
 import tokenStateAtom from "../../states/token-state";
@@ -16,7 +15,6 @@ const Login: React.FC<LoginProps> = ({ setSelected }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  // const { data, loading } = useFetch("/data/users.json");
   const navigate = useNavigate();
   const emailRegex = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/;
 
@@ -35,24 +33,6 @@ const Login: React.FC<LoginProps> = ({ setSelected }) => {
       setError(error.response.data.description);
     }
   };
-
-  // const handleLogin = () => {
-  //   if (!loading && data) {
-  //     const user = data.find((user) => user.email === email);
-  //     if (user) {
-  //       if (user.password === password) {
-  //         localStorage.setItem("isLoggedIn", "true");
-  //         navigate("/home");
-  //       } else {
-  //         setError("Invalid email or password.");
-  //       }
-  //     } else {
-  //       setError("Invalid email or password.");
-  //     }
-  //   } else {
-  //     setError("Error fetching user data");
-  //   }
-  // };
 
   const validateEmail = (input: string) => {
     if (!emailRegex.test(input)) {

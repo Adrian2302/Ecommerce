@@ -129,8 +129,6 @@ const EditProductBtn: React.FC<EditProductBtnProps> = ({ product }) => {
 
   const onSubmit: SubmitHandler<FormFields> = async (data) => {
     try {
-      // const imageNames = getFileNames(files);
-
       if (images.length >= 1) {
         await axios.put<void>(
           `http://localhost:8080/api/product/${product.id}`,
@@ -184,10 +182,6 @@ const EditProductBtn: React.FC<EditProductBtnProps> = ({ product }) => {
       }
     }
   };
-
-  // function getFileNames(files: File[]) {
-  //   return files.map((file) => file.name);
-  // }
 
   useEffect(() => {
     setImages(product.images);

@@ -368,7 +368,6 @@ const AddProductBtn: React.FC = () => {
                       ))}
                     </div>
                   )}
-                  {/* Dropzone para subir imágenes */}
                   <div
                     {...getRootProps({ className: "dropzone" })}
                     className="bg-[#f4f4f5] px-3 py-6 rounded-lg hover:bg-[#e5e7eb] flex justify-center items-center"
@@ -407,7 +406,6 @@ const AddProductBtn: React.FC = () => {
           )}
         </ModalContent>
       </Modal>
-      {/* <Toaster /> */}
     </>
   );
 };

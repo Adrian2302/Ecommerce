@@ -3,9 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Divider } from "@nextui-org/react";
 import CartList from "../../components/cart-list";
 import CartInfo from "../../components/cart-info";
-// import cartItemStateAtom from "../../states/cart-item-state";
 import { useRecoilValue, useRecoilState } from "recoil";
-// import { CartProduct } from "../../models/components-props";
 import thankYouStateAtom from "../../states/thank-you-state";
 import EmptyCart from "../../components/empty-cart";
 import tokenStateAtom from "../../states/token-state";
@@ -19,7 +17,6 @@ import shoppingCartStateAtom from "../../states/shoppingcart-state";
 
 const ShoppingCartPage: React.FC = () => {
   const updateCart = useRecoilValue(updateCartStateAtom);
-  // const [shoppingCartList, setShoppingCartList] = useState<CartProduct[]>([]);
   const [isLoading, setLoading] = useState(true);
   const navigate = useNavigate();
   const [token, setToken] = useRecoilState(tokenStateAtom);

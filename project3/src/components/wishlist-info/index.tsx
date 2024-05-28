@@ -53,11 +53,6 @@ const WishlistInfo: React.FC<WishlistInfoProps> = ({ cartItems }) => {
     <>
       {totalItems > 0 ? (
         <Card className="wishlist-info sticky top-20">
-          {/* <div className="wishlist-info__container">
-            <h2>Summary:</h2>
-            <p>Total products: {totalItems}</p>
-            <p>Total Price: ${totalPrice.toFixed(2)}</p>
-          </div> */}
           <CartSummary cartItems={cartItems} />
           <div className="wishlist-info__btn-container">
             <Button

@@ -1,7 +1,6 @@
 import "./styles.scss";
 import React from "react";
 import Hero from "../../components/hero";
-import useFetch from "../../utils/useFetch";
 import FeaturedCarousel from "../../components/carousel-featured";
 import AdidasCarousel from "../../components/carousel-adidas";
 import NikeCarousel from "../../components/carousel-nike";
@@ -11,7 +10,6 @@ import thankYouStateAtom from "../../states/thank-you-state";
 import { useRecoilState } from "recoil";
 
 const HomePage: React.FC = () => {
-  const { data } = useFetch("/data/products.json");
   const [thankYouValue, setThankYou] =
     useRecoilState<boolean>(thankYouStateAtom);
   if (thankYouValue) {

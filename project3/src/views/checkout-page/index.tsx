@@ -2,8 +2,6 @@ import { Divider } from "@nextui-org/react";
 import CheckoutTable from "../../components/checkout-table";
 import "./styles.scss";
 import React, { useEffect, useState } from "react";
-// import { calculateQuantity } from "../../utils/functions";
-// import cartItemStateAtom from "../../states/cart-item-state";
 import { useRecoilValue } from "recoil";
 import ThankYou from "../../components/thank-you";
 import thankYouStateAtom from "../../states/thank-you-state";
@@ -14,12 +12,9 @@ import LoadingCircle from "../../components/loading-circle";
 const CheckoutPage: React.FC = () => {
   const thankyou = useRecoilValue<boolean>(thankYouStateAtom);
   const [isLoading, setLoading] = useState(true);
-  // const cartItem = useRecoilValue(cartItemStateAtom);
   const shoppingCartList = useRecoilValue(shoppingCartStateAtom);
-  // const [quantity, setQuantity] = useState<number>();
 
   useEffect(() => {
-    // setQuantity(calculateQuantity(shoppingCartList));
     setLoading(false);
   }, [shoppingCartList]);
 
