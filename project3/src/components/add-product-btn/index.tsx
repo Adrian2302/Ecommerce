@@ -32,7 +32,7 @@ const schema = z.object({
     smallDescription: z
       .string({ message: "Small description can't be empty" })
       .min(1)
-      .max(26),
+      .max(36),
     fullDescription: z
       .string({ message: "Full description can't be empty" })
       .min(1)
@@ -210,7 +210,6 @@ const AddProductBtn: React.FC = () => {
         onOpenChange={onOpenChange}
         scrollBehavior="inside"
         size="5xl"
-        className="pb-8"
         placement="center"
       >
         <ModalContent>

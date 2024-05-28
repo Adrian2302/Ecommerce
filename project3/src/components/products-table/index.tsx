@@ -70,7 +70,7 @@ const ProductsTable: React.FC = () => {
   };
 
   return (
-    <main className="products-table">
+    <div className="products-table">
       <h2 className="products-table__title products-table__title--big products-table__title--bold">
         Manage products
       </h2>
@@ -97,8 +97,7 @@ const ProductsTable: React.FC = () => {
           </div>
         )}
       </div>
-      <Toaster />
-    </main>
+    </div>
   );
 };
 

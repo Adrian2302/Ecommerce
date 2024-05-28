@@ -1,6 +1,7 @@
 package com.ecommerce.api.controllers;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -17,6 +18,7 @@ public class FileUploadController {
     private String uploadPath;
 
     @PostMapping("/image")
+    @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN')")
     public String handleFileUpload(@RequestParam("file") MultipartFile file) {
         // Usar el nombre original del archivo
         String fileName = file.getOriginalFilename();

@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import tokenStateAtom from "../../states/token-state";
 import ProfileTable from "../../components/profile-table";
 import currentUserStateAtom from "../../states/current-user-state";
+import { Toaster } from "react-hot-toast";
 
 const ProfilePage: React.FC = () => {
   const [token, setToken] = useRecoilState(tokenStateAtom);
@@ -48,6 +49,7 @@ const ProfilePage: React.FC = () => {
           </h1>
           <Divider className="profile-page__divider" />
           <ProfileTable />
+          <Toaster />
         </>
       )}
     </main>

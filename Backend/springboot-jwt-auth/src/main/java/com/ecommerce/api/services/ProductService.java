@@ -3,9 +3,7 @@ package com.ecommerce.api.services;
 import com.ecommerce.api.dtos.ProductDto;
 import com.ecommerce.api.entities.Product;
 import com.ecommerce.api.entities.User;
-import com.ecommerce.api.exceptions.ProductAlreadyExistException;
-import com.ecommerce.api.exceptions.ProductNotFoundException;
-import com.ecommerce.api.exceptions.UserNotFoundException;
+import com.ecommerce.api.exceptions.*;
 import com.ecommerce.api.repositories.ProductRepository;
 import com.ecommerce.api.utils.ProductSpecification;
 import com.ecommerce.api.utils.SearchCriteria;
@@ -23,31 +21,12 @@ import java.util.List;
 
 @Service
 public class ProductService {
-//    private final ProductRepository productRepository;
-//
-//    public ProductService(ProductRepository productRepository) {
-//        this.productRepository = productRepository;
-//    }
-
 
     @Autowired
     private ProductRepository productRepository;
 
     public ProductDto createProduct(ProductDto productDto) {
-//        Product product = new Product();
-//        product.setName(productDto.getName());
-//        product.setSmallDescription(productDto.getSmallDescription());
-//        product.setImages(productDto.getImages());
-//        product.setCategory(productDto.getCategory());
-//        product.setBrand(productDto.getBrand());
-//        product.setRetailPrice(productDto.getRetailPrice());
-//        product.setPrice(productDto.getPrice());
-//        product.setRecentlySold(productDto.getRecentlySold());
-//        product.setColor(productDto.getColor());
-//        product.setReleaseYear(productDto.getReleaseYear());
-//        product.setFullDescription(productDto.getFullDescription());
-//        product.setSizes(productDto.getSizes());
-//        return productRepository.save(product);
+        isValidProduct(productDto);
 
         List<Product> products = this.productRepository.findAll();
         boolean productNameExists = products.stream().anyMatch(product -> product.getName().equalsIgnoreCase(productDto.getName()));
@@ -78,6 +57,7 @@ public class ProductService {
     }
 
     public boolean editProduct(Long id, ProductDto updatedProduct) {
+        isValidProduct(updatedProduct);
         List<Product> products = this.productRepository.findAll();
         boolean productExist = products.stream().anyMatch(product -> product.getId().equals(id));
 
@@ -123,6 +103,39 @@ public class ProductService {
 
         optionalProduct.setRecentlySold(quantity);
         productRepository.save(optionalProduct);
+    }
+
+    private void isValidProduct(ProductDto productDto){
+        if(productDto.getName() == null){
+            throw new InvalidProductNameException();
+        }
+        if(productDto.getSmallDescription() == null){
+            throw new InvalidProductDescriptionException();
+        }
+        if(productDto.getFullDescription() == null){
+            throw new InvalidProductDescriptionException();
+        }
+        if(productDto.getCategory() == null){
+            throw new InvalidProductCategoryException();
+        }
+        if(productDto.getColor() == null){
+            throw new InvalidProductColorException();
+        }
+        if(productDto.getBrand() == null){
+            throw new InvalidProductBrandException();
+        }
+        if(productDto.getPrice() <= 0){
+            throw new InvalidProductPriceException();
+        }
+        if(productDto.getRetailPrice() <= 0){
+            throw new InvalidProductRetailPriceException();
+        }
+        if(productDto.getReleaseYear() < 2020 &&  productDto.getReleaseYear() > 2024){
+            throw new InvalidProductReleaseYearException();
+        }
+        if(productDto.getImages().isEmpty()){
+            throw new InvalidProductImagesException();
+        }
     }
 }
 

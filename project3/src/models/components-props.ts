@@ -104,6 +104,7 @@ export interface Order {
   address1: string;
   address2?: string;
   cardHolderName: string;
+  cardNumber: number;
   city: string;
   price: number;
   province: string;

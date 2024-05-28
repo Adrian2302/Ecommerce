@@ -22,7 +22,7 @@ import editIcon from "../../assets/icons/editIcon.svg";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import { useDropzone } from "react-dropzone";
 import updateManageProductsStateAtom from "../../states/update-manage-products-state";
 import { Products } from "../../models/components-props";
@@ -33,7 +33,7 @@ const schema = z.object({
     smallDescription: z
       .string({ message: "Small description can't be empty" })
       .min(1)
-      .max(26),
+      .max(36),
     fullDescription: z
       .string({ message: "Full description can't be empty" })
       .min(1)
@@ -115,11 +115,6 @@ const EditProductBtn: React.FC<EditProductBtnProps> = ({ product }) => {
     setFiles([...files, ...newFiles]);
     setImages([...images, ...newImageNames]);
   };
-
-  // const handleRemoveFile = (fileToRemove: File) => {
-  //   setFiles(files.filter((file) => file !== fileToRemove));
-  //   setImages(getFileNames(files));
-  // };
 
   const handleRemoveFileName = (imageToRemove: string) => {
     setImages(images.filter((image) => image !== imageToRemove));
@@ -229,7 +224,6 @@ const EditProductBtn: React.FC<EditProductBtnProps> = ({ product }) => {
         onOpenChange={onOpenChange}
         scrollBehavior="inside"
         size="5xl"
-        className="pb-8"
         placement="center"
         onClose={() => {
           resetFormValues();

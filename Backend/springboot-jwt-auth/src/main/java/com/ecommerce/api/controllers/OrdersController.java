@@ -55,30 +55,22 @@ public class OrdersController {
         return new ResponseEntity<>(userOrders, HttpStatus.OK);
     }
 
-//    @PutMapping("/convertToOrder")
-//    public ResponseEntity<Void> ShoppingCartToOrder() {
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//        User currentUser = (User) authentication.getPrincipal();
-//
-//        ordersService.ShoppingCartToOrder(currentUser.getId());
-//        return new ResponseEntity<>(HttpStatus.OK);
-//    }
-//
     @PutMapping("/editStatus")
     @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN')")
     public ResponseEntity<Void> editOrderStatus(@RequestBody OrdersDto ordersDto) {
         ordersService.editOrderStatus(ordersDto.getId(), ordersDto.getStatus());
         return new ResponseEntity<>(HttpStatus.OK);
     }
-//
-//    @DeleteMapping("/remove")
-//    public ResponseEntity<Void> removeOrder(@RequestBody OrdersDto ordersDto) {
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//        User currentUser = (User) authentication.getPrincipal();
-//
-//        ordersService.removeOrder(currentUser.getId(), ordersDto.getId());
-//        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-//    }
+
+    @DeleteMapping("/remove")
+    @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN')")
+    public ResponseEntity<Void> removeOrder(@RequestBody OrdersDto ordersDto) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User currentUser = (User) authentication.getPrincipal();
+
+        ordersService.deleteOrder(ordersDto.getId());
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 
 }
 

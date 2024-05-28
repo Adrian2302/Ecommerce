@@ -43,12 +43,6 @@ public class WishlistController {
         return new ResponseEntity<>(wishlistDto, HttpStatus.OK);
     }
 
-//    @DeleteMapping("/remove/{userId}/{itemId}")
-//    public ResponseEntity<Void> removeItemFromWishlist(@PathVariable Integer userId, @PathVariable Long itemId) {
-//        wishlistService.removeItemFromWishlist(userId, itemId);
-//        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-//    }
-
     @DeleteMapping("/remove/{itemId}")
     public ResponseEntity<Void> removeItemFromWishlist(@PathVariable Long itemId) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

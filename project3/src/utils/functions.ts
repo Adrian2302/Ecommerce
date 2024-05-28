@@ -84,19 +84,6 @@ export function ScrollToTop() {
   return null;
 }
 
-export const obtainSelfData = async (token: string) => {
-  try {
-    const response = await axios.get("http://localhost:8080/users/me", {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    return response;
-  } catch (error) {
-    console.log(error);
-  }
-};
-
 export function getImageURL(url: string) {
   return new URL(`../assets/products/${url}`, import.meta.url).href;
 }

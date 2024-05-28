@@ -38,6 +38,7 @@ public class ProductController {
     }
 
     @PutMapping("/editRecentlySold")
+    @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN')")
     public ResponseEntity<Void> editProductRecentlySold(@RequestBody ProductDto productDto) {
         productService.editProductRecentlySold(productDto.getId(), productDto.getRecentlySold());
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);

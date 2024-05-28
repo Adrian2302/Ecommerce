@@ -87,6 +87,56 @@ public class GlobalExceptionHandler {
             errorDetail.setProperty("description", "Password must contain at least 8 characters, have at least 1 lowercase and 1 uppercase letter and 1 number.");
         }
 
+        if (exception instanceof InvalidProductNameException) {
+            errorDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(401), exception.getMessage());
+            errorDetail.setProperty("description", "Product name can't be empty.");
+        }
+
+        if (exception instanceof InvalidProductDescriptionException) {
+            errorDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(401), exception.getMessage());
+            errorDetail.setProperty("description", "Product description can't be empty.");
+        }
+
+        if (exception instanceof InvalidProductCategoryException) {
+            errorDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(401), exception.getMessage());
+            errorDetail.setProperty("description", "Product category can't be empty.");
+        }
+
+        if (exception instanceof InvalidProductColorException) {
+            errorDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(401), exception.getMessage());
+            errorDetail.setProperty("description", "Product color can't be empty.");
+        }
+
+        if (exception instanceof InvalidProductBrandException) {
+            errorDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(401), exception.getMessage());
+            errorDetail.setProperty("description", "Product brand can't be empty.");
+        }
+
+        if (exception instanceof InvalidProductPriceException) {
+            errorDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(401), exception.getMessage());
+            errorDetail.setProperty("description", "Product price can't be empty.");
+        }
+
+        if (exception instanceof InvalidProductRetailPriceException) {
+            errorDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(401), exception.getMessage());
+            errorDetail.setProperty("description", "Product retail price can't be empty.");
+        }
+
+        if (exception instanceof InvalidProductReleaseYearException) {
+            errorDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(401), exception.getMessage());
+            errorDetail.setProperty("description", "Product release year must be between 2020 and 2024.");
+        }
+
+        if (exception instanceof InvalidProductImagesException) {
+            errorDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(401), exception.getMessage());
+            errorDetail.setProperty("description", "Product images can't be empty.");
+        }
+
+        if (exception instanceof InvalidCreditCardException) {
+            errorDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(401), exception.getMessage());
+            errorDetail.setProperty("description", "Invalid credit card.");
+        }
+
         if (errorDetail == null) {
             errorDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(500), exception.getMessage());
             errorDetail.setProperty("description", "Unknown internal server error.");

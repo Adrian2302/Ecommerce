@@ -123,6 +123,10 @@ const AdminOrdersTable: React.FC = () => {
                     return <TableCell>{newDate}</TableCell>;
                   } else if (columnKey === "price") {
                     return <TableCell>${order.price}</TableCell>;
+                  } else if (columnKey === "cardNumber") {
+                    return (
+                      <TableCell>**************{order.cardNumber}</TableCell>
+                    );
                   } else if (columnKey === "status") {
                     return (
                       <TableCell>
