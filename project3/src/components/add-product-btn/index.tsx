@@ -376,7 +376,6 @@ const AddProductBtn: React.FC = () => {
                     <input {...getInputProps()} />
                     <p>
                       Drag 'n' drop some files here or click to select files
-                      (The order is important)
                     </p>
                   </div>
                   {files.length > 0 && (

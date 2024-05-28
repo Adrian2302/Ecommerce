@@ -23,6 +23,10 @@ const BuySection: React.FC<BuySectionProps> = ({ product }) => {
   const AddProduct = async (e: FormEvent) => {
     e.preventDefault();
     try {
+      if (token == null || token == undefined) {
+        setToken(null);
+        navigate("/login");
+      }
       if (
         product.sizes!.length > 0 &&
         (selectedSize === null || selectedSize === undefined)
