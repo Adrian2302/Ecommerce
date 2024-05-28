@@ -119,6 +119,7 @@ const AddProductBtn: React.FC = () => {
   const onSubmit: SubmitHandler<FormFields> = async (data) => {
     try {
       const imageNames = getFileNames(files);
+      imageNames.sort();
 
       if (imageNames.length >= 1) {
         await axios.post<void>(

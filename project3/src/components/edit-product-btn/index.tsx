@@ -129,6 +129,7 @@ const EditProductBtn: React.FC<EditProductBtnProps> = ({ product }) => {
 
   const onSubmit: SubmitHandler<FormFields> = async (data) => {
     try {
+      images.sort();
       if (images.length >= 1) {
         await axios.put<void>(
           `http://localhost:8080/api/product/${product.id}`,

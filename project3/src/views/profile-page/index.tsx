@@ -49,9 +49,9 @@ const ProfilePage: React.FC = () => {
           </h1>
           <Divider className="profile-page__divider" />
           <ProfileTable />
-          <Toaster />
         </>
       )}
+      <Toaster />
     </main>
   );
 };

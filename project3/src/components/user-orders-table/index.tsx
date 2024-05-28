@@ -75,6 +75,8 @@ const UserOrdersTable: React.FC = () => {
                     {order.status}
                   </TableCell>
                 );
+              } else if (columnKey === "cardNumber") {
+                return <TableCell>**************{order.cardNumber}</TableCell>;
               } else if (columnKey === "price") {
                 return <TableCell>${order.price}</TableCell>;
               } else {
