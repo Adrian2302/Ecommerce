@@ -33,8 +33,6 @@ public class Orders {
     @Column(length = 65555)
     private String address2;
     private String city;
-//    @ManyToOne
-//    @JoinColumn(name = "province_id", nullable = false)
     private String province;
     private Long zipCode;
     private String cardNumber;

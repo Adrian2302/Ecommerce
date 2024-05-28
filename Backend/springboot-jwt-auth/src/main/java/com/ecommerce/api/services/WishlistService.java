@@ -42,14 +42,6 @@ public class WishlistService {
             throw new ProductNotFoundException();
         }
 
-//        for (WishlistItem existingItem : userWishlist.getItems()) {
-//            if (existingItem.getProduct().getId().equals(itemDto.getProduct().getId()) && existingItem.getSize().equals(itemDto.getSize())) {
-//                throw new ProductAlreadyInCartException();
-//            } else if (product.getSizes() != null && itemDto.getSize() == null) {
-//                throw new NoSizeSelectedException();
-//            }
-//        }
-
         WishlistItem wishlistItem = new WishlistItem();
         wishlistItem.setProduct(product);
         wishlistItem.setWishlist(userWishlist);
@@ -84,21 +76,6 @@ public class WishlistService {
         }
         return false;
     }
-
-    //SIRVE
-//    @Transactional
-//    public void removeItemFromWishlist(Integer userId, Long itemId) {
-//        User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
-//
-//        Wishlist userWishlist = user.getWishlist();
-//        WishlistItem itemToRemove = userWishlist.getItems().stream()
-//                .filter(item -> item.getProduct().getId().equals(itemId))
-//                .findFirst()
-//                .orElseThrow(ProductNotFoundException::new);
-//
-//        userWishlist.getItems().remove(itemToRemove);
-//        wishlistRepository.save(userWishlist);
-//    }
 
     @Transactional
     public void removeItemFromWishlist(Integer userId, Long itemId) {

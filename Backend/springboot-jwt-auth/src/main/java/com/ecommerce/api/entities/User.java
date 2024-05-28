@@ -36,7 +36,6 @@ public class User implements UserDetails {
     @ManyToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "role_id", referencedColumnName = "id", nullable = false)
     private Role role;
-//    private List<Orders> orders;
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @JsonManagedReference
     private ShoppingCart shoppingCart;
@@ -59,8 +58,8 @@ public class User implements UserDetails {
         this.updatedAt = userDto.getUpdatedAt();
         this.role = userDto.getRole();
         this.orders = userDto.getOrders();
-        this.shoppingCart = userDto.getShoppingCart(); //this.shoppingCart = new ShoppingCart(userDto.getShoppingCart());
-        this.wishlist = userDto.getWishlist(); //this.wishlist = new Wishlist(userDto.getWishlist());
+        this.shoppingCart = userDto.getShoppingCart();
+        this.wishlist = userDto.getWishlist();
     }
 
     @Override
@@ -177,14 +176,6 @@ public class User implements UserDetails {
                 ", updatedAt=" + updatedAt +
                 '}';
     }
-
-//    public List<Orders> getOrders() {
-//        return orders;
-//    }
-//
-//    public void setOrders(List<Orders> orders) {
-//        this.orders = orders;
-//    }
 
     public ShoppingCart getShoppingCart() {
         return shoppingCart;

@@ -9,14 +9,6 @@ public class OrdersItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-//    @ManyToOne(cascade = CascadeType.ALL)
-//    @JoinColumn(name = "product_id", nullable = false)
-//    @OnDelete(action = OnDeleteAction.CASCADE)
-//    private Product product;
-//    @ManyToOne //(cascade = CascadeType.REMOVE)
-//    @JoinColumn(name = "product_id", nullable = false)
-//    @OnDelete(action = OnDeleteAction.CASCADE)
-//    private Product product;
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "orders_id")
     @JsonBackReference

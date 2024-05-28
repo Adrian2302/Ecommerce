@@ -20,17 +20,13 @@ public class FileUploadController {
     @PostMapping("/image")
     @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN')")
     public String handleFileUpload(@RequestParam("file") MultipartFile file) {
-        // Usar el nombre original del archivo
         String fileName = file.getOriginalFilename();
         try {
-            // Asegurarse de que el directorio existe
             Files.createDirectories(Paths.get(uploadPath));
 
-            // Guardar el archivo en la ubicación especificada
             Path filePath = Paths.get(uploadPath, fileName);
             Files.copy(file.getInputStream(), filePath);
 
-            // Devolver el nombre del archivo
             return fileName;
         } catch (IOException e) {
             e.printStackTrace();

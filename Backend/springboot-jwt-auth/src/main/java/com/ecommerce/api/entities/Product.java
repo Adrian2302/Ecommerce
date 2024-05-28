@@ -25,8 +25,6 @@ public class Product {
     private String fullDescription;
     @ElementCollection(fetch = FetchType.EAGER)
     private List<String> sizes;
-//    @OneToMany(cascade = CascadeType.ALL)
-//    private List<WishlistItem> items;
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<WishlistItem> WishlistItems;
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)

@@ -106,14 +106,6 @@ public class UserDto {
         this.updatedAt = updatedAt;
     }
 
-//    public List<Orders> getOrders() {
-//        return orders;
-//    }
-//
-//    public void setOrders(List<Orders> orders) {
-//        this.orders = orders;
-//    }
-
     public ShoppingCart getShoppingCart() {
         return shoppingCart;
     }

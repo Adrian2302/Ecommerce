@@ -6,5 +6,4 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface WishlistItemRepository extends JpaRepository<WishlistItem, Long> {
-//    void deleteById(Long id);
 }
